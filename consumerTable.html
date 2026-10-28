@@ -1,0 +1,4419 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        name="viewport" />
+
+<title>Consumer Goods Management & Monitoring - Community Market Hub</title>
+
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+
+<style>
+
+    :root {
+        --primary: #003e1e;
+        --primary-container: #1a5632;
+        --primary-fixed: #b2f1c1;
+        --primary-fixed-dim: #97d5a6;
+        --on-primary: #ffffff;
+
+        --secondary: #904d00;
+        --secondary-container: #fe932c;
+
+        --surface: #fff8f6;
+        --surface-container-lowest: #ffffff;
+        --surface-container-low: #fbf2f0;
+        --surface-container: #f5ecea;
+        --surface-container-high: #efe6e4;
+        --surface-container-highest: #e9e1df;
+
+        --outline: #717971;
+        --outline-variant: #c0c9bf;
+
+        --on-surface: #1e1b1a;
+        --on-surface-variant: #404941;
+
+        --error: #ba1a1a;
+        --error-container: #ffdad6;
+
+        --font-display: 'Manrope', sans-serif;
+        --font-body: 'Be Vietnam Pro', sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        background-color: var(--surface);
+        color: var(--on-surface);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    button,
+    input,
+    select {
+        font-family: inherit;
+    }
+
+    /* =====================================================
+       LOGIN
+       ===================================================== */
+
+    .login-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background-color: rgba(30, 27, 26, 0.55);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .login-overlay.hidden-modal {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 24rem;
+        background: #ffffff;
+        border-radius: 1rem;
+        border: 1px solid var(--surface-container-high);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        padding: 1.75rem;
+        text-align: center;
+    }
+
+    .login-icon-badge {
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 1rem;
+        background: rgba(26, 86, 50, 0.1);
+        border: 1px solid var(--primary-fixed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        margin: 0 auto 1rem;
+    }
+
+    .login-title {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 1.25rem;
+    }
+
+    .login-error {
+        display: none;
+        padding: 0.625rem;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+        background-color: #ffe4e6;
+        border: 1px solid #fecdd3;
+        color: #9f1239;
+        font-size: 0.75rem;
+        font-weight: 500;
+        align-items: center;
+        gap: 0.5rem;
+        text-align: left;
+    }
+
+    .login-error.show {
+        display: flex;
+    }
+
+    .input-wrapper {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .input-icon-left {
+        position: absolute;
+        left: 0.85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--outline);
+        font-size: 1.125rem;
+        pointer-events: none;
+    }
+
+    .password-input {
+        width: 100%;
+        padding: 0.65rem 2.5rem 0.65rem 2.6rem;
+        font-size: 0.825rem;
+        background-color: var(--surface-container-low);
+        border: 1px solid var(--outline-variant);
+        border-radius: 0.75rem;
+        color: var(--on-surface);
+        font-family: monospace;
+        outline: none;
+    }
+
+    .password-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px var(--primary-fixed);
+    }
+
+    .password-toggle-btn {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--outline);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.25rem;
+    }
+
+    .unlock-btn {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        background-color: var(--primary);
+        color: #ffffff;
+        font-family: var(--font-display);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+    }
+
+    .unlock-btn:hover {
+        background-color: var(--primary-container);
+    }
+
+    /* =====================================================
+       LOCKED DASHBOARD
+       ===================================================== */
+
+    .dashboard-locked {
+        filter: blur(8px);
+        user-select: none;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .dashboard-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .app-header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background-color: rgba(255, 248, 246, 0.96);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(192, 201, 191, 0.5);
+    }
+
+    .header-content {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0.625rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .home-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.4rem 0.85rem;
+        border-radius: 9999px;
+        background: var(--surface-container);
+        border: 1px solid var(--outline-variant);
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: var(--primary);
+    }
+
+    .brand-cluster {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+    }
+
+    .brand-icon-wrap {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 9999px;
+        background: rgba(26, 86, 50, 0.1);
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .brand-eyebrow {
+        font-family: var(--font-display);
+        font-size: 0.625rem;
+        font-weight: 700;
+        color: var(--secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: block;
+        line-height: 1.1;
+    }
+
+    .brand-title {
+        font-family: var(--font-display);
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1.2;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+    }
+
+    .lock-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.4rem 0.75rem;
+        background: var(--surface-container);
+        color: var(--secondary);
+        border: 1px solid var(--outline-variant);
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 0.75rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+
+    /* =====================================================
+       MAIN
+       ===================================================== */
+
+    .main-container {
+        max-width: 1600px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        flex: 1;
+    }
+
+    /* =====================================================
+       SUMMARY
+       ===================================================== */
+
+    .summary-card {
+        background: #ffffff;
+        border: 1px solid var(--surface-container-high);
+        border-radius: 0.75rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+
+    .summary-header {
+        padding: 0.85rem 1.25rem;
+        border-bottom: 1px solid var(--surface-container-high);
+        background: rgba(251, 242, 240, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .summary-title {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 0.875rem;
+        color: var(--primary);
+    }
+
+    .summary-subtitle {
+        font-size: 0.6875rem;
+        color: var(--outline);
+    }
+
+    .summary-tag {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 0.6875rem;
+        color: var(--primary);
+    }
+
+    .summary-grid {
+        padding: 1rem 1.25rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .kpi-box {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .kpi-paid {
+        border: 1px solid var(--outline-variant);
+        background: rgba(240, 253, 244, 0.45);
+    }
+
+    .kpi-paid .kpi-label,
+    .kpi-paid .kpi-val {
+        color: var(--primary);
+    }
+
+    .kpi-pending {
+        border: 1px solid #fde68a;
+        background: rgba(255, 251, 235, 0.45);
+    }
+
+    .kpi-pending .kpi-label,
+    .kpi-pending .kpi-val {
+        color: var(--secondary);
+    }
+
+    .kpi-gcash {
+        border: 1px solid #bae6fd;
+        background: rgba(240, 249, 255, 0.45);
+    }
+
+    .kpi-gcash .kpi-label,
+    .kpi-gcash .kpi-val {
+        color: #0369a1;
+    }
+
+    .kpi-cancelled {
+        border: 1px solid #fecdd3;
+        background: rgba(255, 241, 242, 0.45);
+    }
+
+    .kpi-cancelled .kpi-label,
+    .kpi-cancelled .kpi-val {
+        color: #9f1239;
+    }
+
+    .kpi-neutral {
+        border: 1px solid var(--outline-variant);
+        background: var(--surface-container-low);
+    }
+
+    .kpi-neutral .kpi-label,
+    .kpi-neutral .kpi-val {
+        color: var(--on-surface);
+    }
+
+    .kpi-neutral .highlight-sec {
+        color: var(--secondary);
+    }
+
+    .kpi-neutral .highlight-pri {
+        color: var(--primary);
+    }
+
+    .kpi-revenue-box {
+        border: 1px solid var(--primary-fixed-dim);
+        background: rgba(178, 241, 193, 0.25);
+    }
+
+    .kpi-label {
+        font-family: var(--font-display);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .kpi-val {
+        font-family: var(--font-display);
+        font-size: 1.125rem;
+        font-weight: 800;
+    }
+
+    .kpi-rev-val {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    /* =====================================================
+       CONTROLS
+       ===================================================== */
+
+    .controls-card {
+        background: #ffffff;
+        border: 1px solid var(--surface-container-high);
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .filters-group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.625rem;
+        flex: 1;
+    }
+
+    .search-box-wrap {
+        position: relative;
+        min-width: 220px;
+        max-width: 420px;
+        flex: 1;
+    }
+
+    .search-box-wrap .search-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--outline);
+        font-size: 1.125rem;
+        pointer-events: none;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.45rem 0.75rem 0.45rem 2.25rem;
+        font-size: 0.75rem;
+        background: var(--surface-container-low);
+        border: 1px solid var(--outline-variant);
+        border-radius: 0.5rem;
+        color: var(--on-surface);
+        outline: none;
+    }
+
+    .date-select-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--surface-container-low);
+        border: 1px solid var(--outline-variant);
+        border-radius: 0.5rem;
+        padding: 0.35rem 0.65rem;
+        min-width: 160px;
+    }
+
+    .date-select-wrap select {
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--on-surface);
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .reset-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.4rem 0.75rem;
+        background: var(--surface-container);
+        color: var(--secondary);
+        border: 1px solid var(--outline-variant);
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 0.75rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+
+    .view-switcher-group {
+        display: inline-flex;
+        padding: 0.25rem;
+        background: var(--surface-container);
+        border: 1px solid var(--outline-variant);
+        border-radius: 0.5rem;
+        gap: 0.25rem;
+    }
+
+    .view-btn {
+        padding: 0.25rem 0.625rem;
+        font-size: 0.75rem;
+        font-family: var(--font-display);
+        font-weight: 700;
+        border-radius: 0.375rem;
+        border: none;
+        background: transparent;
+        color: var(--outline);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .view-btn.active {
+        background: #ffffff;
+        color: var(--primary);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    /* =====================================================
+       TABLE
+       ===================================================== */
+
+    .table-card {
+        background: #ffffff;
+        border: 1px solid var(--surface-container-high);
+        border-radius: 0.75rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+
+    .table-card.hidden {
+        display: none;
+    }
+
+    .table-header-bar {
+        padding: 0.75rem 1rem;
+        background: var(--surface-container-low);
+        border-bottom: 1px solid var(--surface-container-high);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .table-header-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--primary);
+    }
+
+    .record-badge {
+        font-size: 0.6875rem;
+        font-family: var(--font-display);
+        font-weight: 700;
+        padding: 0.2rem 0.65rem;
+        border-radius: 9999px;
+        background: var(--primary-fixed);
+        color: var(--primary);
+    }
+
+    .table-scroll {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .registry-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    .registry-table th {
+        padding: 0.75rem 0.875rem;
+        background: var(--surface-container);
+        border-bottom: 1px solid var(--outline-variant);
+        color: var(--on-surface-variant);
+        font-family: var(--font-display);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.656rem;
+        letter-spacing: 0.05em;
+        user-select: none;
+    }
+
+    .registry-table td {
+        padding: 0.625rem 0.875rem;
+        border-bottom: 1px solid var(--surface-container-high);
+        color: var(--on-surface);
+        vertical-align: middle;
+    }
+
+    .registry-table tbody tr:hover {
+        background-color: var(--surface-container-low);
+    }
+
+    .col-contact {
+        min-width: 180px;
+    }
+
+    .col-address {
+        min-width: 210px;
+        max-width: 240px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .col-qty {
+        min-width: 100px;
+        text-align: center;
+    }
+
+    .col-item {
+        min-width: 200px;
+        max-width: 260px;
+    }
+
+    .col-amount {
+        min-width: 115px;
+        text-align: right;
+    }
+
+    .col-payment {
+        min-width: 130px;
+    }
+
+    .col-given {
+        min-width: 120px;
+        text-align: right;
+    }
+
+    .col-change {
+        min-width: 105px;
+        text-align: right;
+    }
+
+    .col-gcash {
+        min-width: 150px;
+    }
+
+    .col-delivery {
+        min-width: 150px;
+    }
+
+    .col-status {
+        min-width: 140px;
+        text-align: center;
+    }
+
+    .contact-name {
+        font-family: var(--font-display);
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .contact-sub {
+        display: block;
+        font-size: 0.625rem;
+        color: var(--outline);
+        font-family: monospace;
+        margin-top: 2px;
+    }
+
+    .amount-text {
+        font-family: var(--font-display);
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    .change-positive {
+        font-family: var(--font-display);
+        font-weight: 700;
+        color: var(--secondary);
+    }
+
+    .change-zero {
+        font-family: var(--font-display);
+        font-weight: 600;
+        color: var(--outline);
+    }
+
+    .item-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.25rem 0.55rem;
+        border-radius: 0.375rem;
+        background: var(--surface-container);
+        border: 1px solid var(--outline-variant);
+        font-family: var(--font-display);
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .qty-number {
+        color: var(--secondary);
+        font-family: var(--font-display);
+        font-weight: 800;
+    }
+
+    .payment-gcash {
+        color: #0284c7;
+        font-family: var(--font-display);
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .gcash-ref {
+        font-family: monospace;
+        font-size: 0.6875rem;
+        color: #0369a1;
+    }
+
+    /* =====================================================
+       STATUS
+       ===================================================== */
+
+    .status-select {
+        font-size: 0.6875rem;
+        font-family: var(--font-display);
+        font-weight: 700;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        cursor: pointer;
+        outline: none;
+        border: 1px solid;
+    }
+
+    .status-select.status-paid {
+        background-color: var(--primary-fixed);
+        color: var(--primary);
+        border-color: var(--primary-fixed-dim);
+    }
+
+    .status-select.status-pending {
+        background-color: #fef3c7;
+        color: #92400e;
+        border-color: #fde68a;
+    }
+
+    .status-select.status-gcash {
+        background-color: #e0f2fe;
+        color: #0369a1;
+        border-color: #bae6fd;
+    }
+
+    .status-select.status-cancelled {
+        background-color: #ffe4e6;
+        color: #9f1239;
+        border-color: #fecdd3;
+    }
+
+    .status-select.status-delivered {
+        background-color: #dbeafe;
+        color: #1e40af;
+        border-color: #93c5fd;
+    }
+
+    /* =====================================================
+       DELIVERY BADGE
+       ===================================================== */
+
+    .delivery-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.375rem;
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+        font-family: var(--font-display);
+        font-size: 0.6875rem;
+        font-weight: 700;
+    }
+
+    /* =====================================================
+       CARDS
+       ===================================================== */
+
+    .cards-view-wrapper {
+        max-width: 36rem;
+        margin: 0 auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .cards-view-wrapper.hidden {
+        display: none;
+    }
+
+    .card-view-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .card-item {
+        background: #ffffff;
+        border-radius: 1rem;
+        border: 1px solid var(--surface-container-high);
+        padding: 1.25rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .card-item-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--surface-container-high);
+        gap: 0.75rem;
+    }
+
+    .card-badge-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.25rem 0.65rem;
+        border-radius: 9999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        font-family: var(--font-display);
+        white-space: nowrap;
+    }
+
+    .card-badge-status.paid {
+        background: #b2f1c1;
+        color: #003e1e;
+        border: 1px solid #97d5a6;
+    }
+
+    .card-badge-status.pending {
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+    }
+
+    .card-badge-status.gcash {
+        background: #e0f2fe;
+        color: #0369a1;
+        border: 1px solid #bae6fd;
+    }
+
+    .card-badge-status.cancelled {
+        background: #ffe4e6;
+        color: #9f1239;
+        border: 1px solid #fecdd3;
+    }
+
+    .card-badge-status.delivered {
+        background: #dbeafe;
+        color: #1e40af;
+        border: 1px solid #93c5fd;
+    }
+
+    .card-data-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        padding: 0.75rem;
+        border-radius: 0.75rem;
+        background: var(--surface-container-low);
+        font-size: 0.75rem;
+    }
+
+    .card-label {
+        display: block;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--outline);
+        margin-bottom: 0.2rem;
+    }
+
+    .card-value {
+        font-family: var(--font-display);
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 640px) {
+
+        .header-content {
+            padding: 0.5rem 0.75rem;
+        }
+
+        .main-container {
+            padding: 0.75rem;
+        }
+
+        .brand-eyebrow {
+            font-size: 0.55rem;
+        }
+
+        .brand-title {
+            font-size: 0.82rem;
+        }
+
+        .lock-btn span:last-child {
+            display: none;
+        }
+
+        .summary-grid {
+            padding: 1rem 1.25rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .kpi-box {
+            padding: 0.7rem;
+        }
+
+        .kpi-label {
+            font-size: 0.68rem;
+        }
+
+        .kpi-val {
+            font-size: 1rem;
+        }
+
+        .controls-card {
+            align-items: stretch;
+        }
+
+        .filters-group {
+            width: 100%;
+        }
+
+        .search-box-wrap {
+            min-width: 100%;
+            max-width: none;
+        }
+
+        .date-select-wrap {
+            flex: 1;
+        }
+
+        .view-switcher-group {
+            width: 100%;
+        }
+
+        .view-btn {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN MODAL
+     ===================================================== -->
+
+<div class="login-overlay" id="loginOverlay">
+
+    <div class="login-card">
+
+        <div class="login-icon-badge">
+            <span class="material-symbols-outlined" style="font-size:28px;">
+                inventory_2
+            </span>
+        </div>
+
+        <h2 class="login-title">
+            Consumer Goods Station Access
+        </h2>
+
+        <div class="login-error" id="loginError">
+
+            <span class="material-symbols-outlined" style="font-size:16px;">
+                error
+            </span>
+
+            <span id="errorText">
+                Incorrect password. Please enter '1234' to unlock.
+            </span>
+
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event); return false;">
+
+            <div class="input-wrapper">
+
+                <span class="material-symbols-outlined input-icon-left">
+                    key
+                </span>
+
+                <input
+                    autocomplete="current-password"
+                    class="password-input"
+                    id="loginPassword"
+                    placeholder="Enter Password"
+                    type="password"
+                />
+
+                <button
+                    class="password-toggle-btn"
+                    onclick="togglePinVisibility()"
+                    title="Toggle visibility"
+                    type="button">
+
+                    <span
+                        class="material-symbols-outlined"
+                        id="pinEyeIcon"
+                        style="font-size:18px;">
+                        visibility
+                    </span>
+
+                </button>
+
+            </div>
+
+            <button
+                class="unlock-btn"
+                id="unlockDashboardBtn"
+                type="submit">
+
+                <span class="material-symbols-outlined" style="font-size:18px;">
+                    lock_open
+                </span>
+
+                <span>
+                    UNLOCK DASHBOARD
+                </span>
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN DASHBOARD
+     ===================================================== -->
+
+<div
+    class="dashboard-container dashboard-locked"
+    id="mainDashboardContainer">
+
+    <!-- HEADER -->
+
+    <header class="app-header">
+
+        <div class="header-content">
+
+            <div class="header-left">
+
+                <a
+                    class="home-pill"
+                    href="<?= APP_URL ?>?page=index"
+                    target="_top"
+                    title="Back to Home">
+
+                    HOME
+
+                </a>
+
+                <div class="brand-cluster">
+
+                    <div class="brand-icon-wrap">
+
+                        <span
+                            class="material-symbols-outlined"
+                            style="font-size:19px;">
+
+                            inventory_2
+
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <span class="brand-eyebrow">
+                            COMMUNITY MARKET HUB
+                        </span>
+
+                        <h1 class="brand-title">
+                            Consumer Goods Table
+                        </h1>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+                <button
+                    class="lock-btn"
+                    onclick="lockStation()"
+                    title="Lock terminal or log out"
+                    type="button">
+
+                    <span
+                        class="material-symbols-outlined"
+                        style="font-size:16px;">
+
+                        lock
+
+                    </span>
+
+                    <span>
+                        Lock / Logout
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="main-container">
+
+
+        <!-- =================================================
+             SUMMARY
+             ================================================= -->
+
+        <section class="summary-card">
+
+            <div class="summary-header">
+
+                <div>
+
+                    <h3 class="summary-title">
+                        Consumer Goods Operations & Receivables Summary
+                    </h3>
+
+                    <p class="summary-subtitle">
+                        Fulfillment Status | Consumer Goods Workflow
+                    </p>
+
+                </div>
+
+                <span class="summary-tag">
+                    Community Market Hub Monitored
+                </span>
+
+            </div>
+
+
+            <div class="summary-grid">
+
+                <div class="kpi-box kpi-paid">
+
+                    <span class="kpi-label">
+                        Paid
+                    </span>
+
+                    <span class="kpi-val" id="kpiPaid">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-box kpi-pending">
+
+                    <span class="kpi-label">
+                        Pending
+                    </span>
+
+                    <span class="kpi-val" id="kpiPending">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-box kpi-gcash">
+
+                    <span class="kpi-label">
+                        GCash - Pending
+                    </span>
+
+                    <span class="kpi-val" id="kpiGcashPending">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-box kpi-cancelled">
+
+                    <span class="kpi-label">
+                        Cancelled
+                    </span>
+
+                    <span class="kpi-val" id="kpiCancelled">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-box kpi-neutral">
+
+                    <span class="kpi-label">
+                        Total Items
+                    </span>
+
+                    <span
+                        class="kpi-val highlight-sec"
+                        id="kpiItems">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-box kpi-neutral">
+
+                    <span class="kpi-label">
+                        Total Orders
+                    </span>
+
+                    <span
+                        class="kpi-val highlight-pri"
+                        id="kpiTotalOrders">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-box kpi-neutral">
+
+                    <span class="kpi-label">
+                        Need Change
+                    </span>
+
+                    <span class="kpi-val" id="kpiNeedChange">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-box kpi-revenue-box">
+
+                    <span class="kpi-label">
+                        Collected
+                    </span>
+
+                    <span
+                        class="kpi-rev-val"
+                        id="kpiRevenue">
+
+                        ₱0.00
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CONTROLS
+             ================================================= -->
+
+        <section class="controls-card">
+
+            <div class="filters-group">
+
+                <div class="search-box-wrap">
+
+                    <span class="material-symbols-outlined search-icon">
+                        search
+                    </span>
+
+                    <input
+                        autocomplete="off"
+                        class="search-input"
+                        id="searchInput"
+                        placeholder="Search contact, address, item, status..."
+                        type="text"
+                    />
+
+                </div>
+
+
+                <div class="date-select-wrap">
+
+                    <span
+                        class="material-symbols-outlined"
+                        style="font-size:16px;color:var(--outline);">
+
+                        calendar_today
+
+                    </span>
+
+                    <select id="dateFilter">
+
+                        <option selected value="today">
+                            Today
+                        </option>
+
+                        <option value="yesterday">
+                            Yesterday
+                        </option>
+
+                        <option value="tomorrow">
+                            Tomorrow
+                        </option>
+
+                        <option value="7days">
+                            Last 7 Days
+                        </option>
+
+                        <option value="month">
+                            This Month
+                        </option>
+
+                        <option value="all">
+                            All Dates
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="reset-btn"
+                    id="resetBtn"
+                    title="Reset all filters"
+                    type="button">
+
+                    <span
+                        class="material-symbols-outlined"
+                        style="font-size:15px;">
+
+                        restart_alt
+
+                    </span>
+
+                    <span>
+                        Reset
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <div class="view-switcher-group">
+
+                <button
+                    class="view-btn active"
+                    id="viewBtnTable"
+                    onclick="switchView('table')"
+                    type="button">
+
+                    <span
+                        class="material-symbols-outlined"
+                        style="font-size:15px;">
+
+                        table_rows
+
+                    </span>
+
+                    <span>
+                        Table
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="view-btn"
+                    id="viewBtnCards"
+                    onclick="switchView('cards')"
+                    type="button">
+
+                    <span
+                        class="material-symbols-outlined"
+                        style="font-size:15px;">
+
+                        grid_view
+
+                    </span>
+
+                    <span>
+                        Cards
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TABLE VIEW
+             ================================================= -->
+
+        <div
+            class="table-card"
+            id="tableViewWrapper">
+
+            <div class="table-header-bar">
+
+                <div class="table-header-title">
+
+                    <span
+                        class="material-symbols-outlined"
+                        style="font-size:18px;">
+
+                        inventory_2
+
+                    </span>
+
+                    <span>
+                        Consumer Goods Operations Monitoring Registry
+                    </span>
+
+                </div>
+
+                <span
+                    class="record-badge"
+                    id="recordCountBadge">
+
+                    Showing 0 of 0 orders
+
+                </span>
+
+            </div>
+
+
+            <div class="table-scroll">
+
+                <table
+                    class="registry-table"
+                    id="consumerTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th class="col-contact">
+                                Contact Info
+                            </th>
+
+                            <th class="col-address">
+                                Address
+                            </th>
+
+                            <th class="col-qty">
+                                Item Qty
+                            </th>
+
+                            <th class="col-item">
+                                Item
+                            </th>
+
+                            <th class="col-amount">
+                                Amount Due
+                            </th>
+
+                            <th class="col-payment">
+                                Payment Type
+                            </th>
+
+                            <th class="col-given">
+                                Payment Given
+                            </th>
+
+                            <th class="col-change">
+                                Change
+                            </th>
+
+                            <th class="col-gcash">
+                                GCash Ref.#
+                            </th>
+
+                            <th class="col-delivery">
+                                Delivery Time
+                            </th>
+
+                            <th class="col-status">
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="consumerTableBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CARD VIEW
+             ================================================= -->
+
+        <div
+            class="cards-view-wrapper hidden"
+            id="cardsViewWrapper">
+
+            <div class="card-view-nav">
+
+                <span id="cardSearchHint">
+                    Card 1 of 0
+                </span>
+
+                <div
+                    style="
+                        display:flex;
+                        align-items:center;
+                        gap:0.5rem;
+                    ">
+
+                    <span id="cardPaginationIndicator">
+                        Showing 1 of 0
+                    </span>
+
+                    <div
+                        style="
+                            display:inline-flex;
+                            border:1px solid var(--outline-variant);
+                            border-radius:0.375rem;
+                            overflow:hidden;
+                            background:#fff;
+                        ">
+
+                        <button
+                            id="btnPrevCard"
+                            onclick="prevCard()"
+                            type="button"
+                            style="
+                                padding:0.25rem 0.5rem;
+                                border:none;
+                                background:none;
+                                cursor:pointer;
+                                color:var(--primary);
+                            ">
+
+                            <span class="material-symbols-outlined">
+                                chevron_left
+                            </span>
+
+                        </button>
+
+                        <button
+                            id="btnNextCard"
+                            onclick="nextCard()"
+                            type="button"
+                            style="
+                                padding:0.25rem 0.5rem;
+                                border:none;
+                                border-left:1px solid var(--outline-variant);
+                                background:none;
+                                cursor:pointer;
+                                color:var(--primary);
+                            ">
+
+                            <span class="material-symbols-outlined">
+                                chevron_right
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="singleCardSlot">
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+```
+
+<script>
+
+/* =========================================================
+   LIVE CONSUMER DATA
+   Data comes from Code.gs -> getConsumerData()
+   ========================================================= */
+
+let ALL_CONSUMER_DATA = [];
+let filteredOrders = [];
+let activeCardIndex = 0;
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+function handleLogin(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    const passwordInput =
+        document.getElementById('loginPassword');
+
+    const errorBox =
+        document.getElementById('loginError');
+
+    const overlay =
+        document.getElementById('loginOverlay');
+
+    const dashboard =
+        document.getElementById('mainDashboardContainer');
+
+    if (!passwordInput) return;
+
+    const val =
+        passwordInput.value.trim();
+
+    if (val === '1234') {
+
+        if (errorBox) {
+            errorBox.classList.remove('show');
+        }
+
+        if (overlay) {
+            overlay.classList.add('hidden-modal');
+        }
+
+        if (dashboard) {
+            dashboard.classList.remove('dashboard-locked');
+        }
+
+        passwordInput.value = '';
+
+        loadConsumerData();
+
+    } else {
+
+        if (errorBox) {
+            errorBox.classList.add('show');
+        }
+
+        passwordInput.focus();
+
+    }
+
+}
+
+
+/* =========================================================
+   PASSWORD VISIBILITY
+   ========================================================= */
+
+function togglePinVisibility() {
+
+    const input =
+        document.getElementById('loginPassword');
+
+    const icon =
+        document.getElementById('pinEyeIcon');
+
+    if (!input) return;
+
+    if (input.type === 'password') {
+
+        input.type = 'text';
+
+        if (icon) {
+            icon.textContent = 'visibility_off';
+        }
+
+    } else {
+
+        input.type = 'password';
+
+        if (icon) {
+            icon.textContent = 'visibility';
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   LOCK
+   ========================================================= */
+
+function lockStation() {
+
+    const overlay =
+        document.getElementById('loginOverlay');
+
+    const dashboard =
+        document.getElementById('mainDashboardContainer');
+
+    const errorBox =
+        document.getElementById('loginError');
+
+    const input =
+        document.getElementById('loginPassword');
+
+    if (errorBox) {
+        errorBox.classList.remove('show');
+    }
+
+    if (input) {
+        input.value = '';
+    }
+
+    if (overlay) {
+        overlay.classList.remove('hidden-modal');
+    }
+
+    if (dashboard) {
+        dashboard.classList.add('dashboard-locked');
+    }
+
+    if (input) {
+
+        setTimeout(function() {
+            input.focus();
+        }, 150);
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD CONSUMER DATA
+   ========================================================= */
+
+function loadConsumerData() {
+
+    const tbody =
+        document.getElementById('consumerTableBody');
+
+    const cardSlot =
+        document.getElementById('singleCardSlot');
+
+
+    if (tbody) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="11"
+                    style="
+                        text-align:center;
+                        padding:3rem 1rem;
+                        color:var(--outline);
+                    ">
+
+                    <span
+                        class="material-symbols-outlined"
+                        style="
+                            font-size:36px;
+                            display:block;
+                            margin-bottom:0.5rem;
+                        ">
+                        progress_activity
+                    </span>
+
+                    Loading Consumer Data...
+
+                </td>
+            </tr>
+        `;
+
+    }
+
+
+    if (cardSlot) {
+
+        cardSlot.innerHTML = `
+            <div
+                style="
+                    background:#ffffff;
+                    border-radius:1rem;
+                    padding:2rem;
+                    text-align:center;
+                    color:var(--outline);
+                ">
+
+                Loading Consumer Data...
+
+            </div>
+        `;
+
+    }
+
+
+    google.script.run
+
+        .withSuccessHandler(function(result) {
+
+            console.log(
+                'Consumer Data received:',
+                result
+            );
+
+
+            /*
+             * IMPORTANT
+             *
+             * getConsumerData() returns:
+             *
+             * {
+             *     headers: [...],
+             *     rows: [...]
+             * }
+             *
+             * NOT a plain array.
+             */
+
+            let data = [];
+
+
+            if (
+                result &&
+                Array.isArray(result.rows)
+            ) {
+
+                data = result.rows;
+
+            }
+
+            /*
+             * Also support a plain array just in case
+             * the backend is changed later.
+             */
+
+            else if (
+                Array.isArray(result)
+            ) {
+
+                data = result;
+
+            }
+
+
+            console.log(
+                'Consumer rows:',
+                data
+            );
+
+
+            /*
+             * Convert Google Sheet data
+             * into the structure used by the UI.
+             */
+
+            ALL_CONSUMER_DATA =
+                data.map(function(row) {
+
+                    const amountDue =
+                        parseFloat(
+                            row.amountDue ??
+                            row.amount ??
+                            row.grandTotal ??
+                            0
+                        ) || 0;
+
+
+                    const paymentGiven =
+                        parseFloat(
+                            row.paymentGiven ??
+                            row.amountGiven ??
+                            row.payment ??
+                            0
+                        ) || 0;
+
+
+                    const change =
+                        parseFloat(
+                            row.change ??
+                            0
+                        ) || 0;
+
+
+                    /*
+                     * Consumer Data may use:
+                     *
+                     * quantity
+                     * qty
+                     * itemQty
+                     *
+                     * or Items
+                     *
+                     * If no quantity field exists,
+                     * use 0 instead of breaking.
+                     */
+
+                    const itemQty =
+                        Number(
+                            row.itemQty ??
+                            row.quantity ??
+                            row.qty ??
+                            0
+                        ) || 0;
+
+
+                    const item =
+                        String(
+                            row.item ??
+                            row.items ??
+                            ''
+                        );
+
+
+                    const paymentType =
+                        String(
+                            row.paymentType ??
+                            row.payment ??
+                            ''
+                        );
+
+
+                    const deliveryTime =
+                        String(
+                            row.deliveryTime ??
+                            row.deliveryTiming ??
+                            row.delivery ??
+                            ''
+                        );
+
+
+                    const gcashRef =
+                        String(
+                            row.gcashRef ??
+                            row.gcashReference ??
+                            row['GCash Reference'] ??
+                            ''
+                        );
+
+
+                    let paymentGivenDisplay;
+
+
+                    if (
+                        paymentType
+                            .toLowerCase()
+                            .includes('gcash')
+                    ) {
+
+                        paymentGivenDisplay =
+                            'GCash';
+
+                    } else {
+
+                        paymentGivenDisplay =
+                            '₱' +
+                            paymentGiven.toLocaleString(
+                                'en-PH',
+                                {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }
+                            );
+
+                    }
+
+
+                    let changeDisplay;
+
+
+                    if (change > 0) {
+
+                        changeDisplay =
+                            '₱' +
+                            change.toLocaleString(
+                                'en-PH',
+                                {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }
+                            );
+
+                    } else {
+
+                        changeDisplay =
+                            '₱0.00 / Exact';
+
+                    }
+
+
+                    /*
+                     * Use actual Google Sheet row number.
+                     */
+
+                    const rowId =
+                        row.rowId ??
+                        row.id ??
+                        0;
+
+
+                    const orderId =
+                        'CON-' +
+                        String(rowId)
+                            .padStart(4, '0');
+
+
+                    /*
+                     * Support several possible date fields.
+                     */
+
+                    const timestamp =
+                        row.timestamp ??
+                        row.timeStamp ??
+                        row['Time Stamp'] ??
+                        row.date ??
+                        row['Date'] ??
+                        row.deliveryDate ??
+                        row['Delivery Date'] ??
+                        '';
+
+
+                    const dateInfo =
+                        createDateInfo(
+                            timestamp
+                        );
+
+
+                    return {
+
+                        rowId: rowId,
+
+                        id: orderId,
+
+                        contact:
+                            String(
+                                row.customer ??
+                                row.contact ??
+                                row.contactInfo ??
+                                row['Contact Info'] ??
+                                ''
+                            ),
+
+                        address:
+                            String(
+                                row.address ??
+                                row['Address'] ??
+                                ''
+                            ),
+
+                        itemQty:
+                            itemQty,
+
+                        item:
+                            item,
+
+                        amountDue:
+                            amountDue,
+
+                        paymentType:
+                            paymentType,
+
+                        paymentGiven:
+                            paymentGiven,
+
+                        paymentGivenDisplay:
+                            paymentGivenDisplay,
+
+                        change:
+                            change,
+
+                        changeDisplay:
+                            changeDisplay,
+
+                        gcashRef:
+                            gcashRef,
+
+                        deliveryTime:
+                            deliveryTime,
+
+                        status:
+                            normalizeStatus(
+                                row.status ??
+                                row['Status']
+                            ),
+
+                        timestamp:
+                            timestamp,
+
+                        dateCategory:
+                            dateInfo.category,
+
+                        dateTag:
+                            dateInfo.tag
+
+                    };
+
+                });
+
+
+            console.log(
+                'Processed Consumer Data:',
+                ALL_CONSUMER_DATA
+            );
+
+
+            activeCardIndex = 0;
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Start with ALL instead of TODAY.
+             * This prevents the dashboard from appearing
+             * empty when there are no orders today.
+             */
+
+            const dateFilter =
+                document.getElementById(
+                    'dateFilter'
+                );
+
+
+            if (dateFilter) {
+
+                /*
+                 * Only set "all" if the filter currently
+                 * has the normal default "today".
+                 *
+                 * This makes initial loading show data.
+                 */
+
+                if (!dateFilter.value) {
+    dateFilter.value = 'today';
+}
+
+            }
+
+
+            applyFilters();
+
+
+        })
+
+
+        .withFailureHandler(function(error) {
+
+            console.error(
+                'getConsumerData error:',
+                error
+            );
+
+            ALL_CONSUMER_DATA = [];
+            filteredOrders = [];
+
+
+            const message =
+                error &&
+                error.message
+                    ? error.message
+                    : String(error);
+
+
+            if (tbody) {
+
+                tbody.innerHTML = `
+                    <tr>
+
+                        <td
+                            colspan="11"
+                            style="
+                                text-align:center;
+                                padding:3rem 1rem;
+                                color:#b91c1c;
+                            ">
+
+                            <span
+                                class="material-symbols-outlined"
+                                style="
+                                    font-size:36px;
+                                    display:block;
+                                    margin-bottom:0.5rem;
+                                ">
+                                error
+                            </span>
+
+                            <strong>
+                                Error loading Consumer Data
+                            </strong>
+
+                            <p
+                                style="
+                                    font-size:0.75rem;
+                                    margin-top:0.5rem;
+                                ">
+
+                                ${escapeHtml(message)}
+
+                            </p>
+
+                        </td>
+
+                    </tr>
+                `;
+
+            }
+
+
+            if (cardSlot) {
+
+                cardSlot.innerHTML = `
+                    <div
+                        style="
+                            background:#fff;
+                            border:1px solid #f0cccc;
+                            border-radius:1rem;
+                            padding:2rem;
+                            text-align:center;
+                            color:#b91c1c;
+                        ">
+
+                        <span
+                            class="material-symbols-outlined"
+                            style="
+                                font-size:36px;
+                                display:block;
+                                margin-bottom:0.5rem;
+                            ">
+                            error
+                        </span>
+
+                        <strong>
+                            Error loading Consumer Data
+                        </strong>
+
+                        <p
+                            style="
+                                font-size:0.75rem;
+                                margin-top:0.5rem;
+                            ">
+
+                            ${escapeHtml(message)}
+
+                        </p>
+
+                    </div>
+                `;
+
+            }
+
+
+            updateKPICounters([]);
+
+        })
+
+        .getConsumerData();
+
+}
+
+
+/* =========================================================
+   DATE INFORMATION
+   ========================================================= */
+
+function createDateInfo(timestamp) {
+
+    if (
+        timestamp === null ||
+        timestamp === undefined ||
+        String(timestamp).trim() === ''
+    ) {
+
+        return {
+            category: 'all',
+            tag: ''
+        };
+
+    }
+
+
+    let orderDate;
+
+
+    /*
+     * Google Apps Script normally sends a Date
+     * as a formatted string.
+     */
+
+    if (
+        timestamp instanceof Date
+    ) {
+
+        orderDate =
+            new Date(timestamp);
+
+    }
+
+    else {
+
+        orderDate =
+            new Date(
+                String(timestamp)
+            );
+
+    }
+
+
+    /*
+     * If normal JavaScript parsing fails,
+     * try common YYYY-MM-DD format.
+     */
+
+    if (
+        isNaN(orderDate.getTime())
+    ) {
+
+        const text =
+            String(timestamp).trim();
+
+
+        const match =
+            text.match(
+                /^(\d{4})-(\d{1,2})-(\d{1,2})/
+            );
+
+
+        if (match) {
+
+            orderDate =
+                new Date(
+                    Number(match[1]),
+                    Number(match[2]) - 1,
+                    Number(match[3])
+                );
+
+        }
+
+    }
+
+
+    if (
+        isNaN(orderDate.getTime())
+    ) {
+
+        return {
+            category: 'all',
+            tag: String(timestamp)
+        };
+
+    }
+
+
+    const now =
+        new Date();
+
+
+    const today =
+        new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+        );
+
+
+    const dateOnly =
+        new Date(
+            orderDate.getFullYear(),
+            orderDate.getMonth(),
+            orderDate.getDate()
+        );
+
+
+    // FIXED MATH: Proper multiplication for milliseconds in a day (1000ms * 60s * 60m * 24h)
+    const difference =
+        Math.round(
+            (
+                today -
+                dateOnly
+            ) /
+            (1000 * 60 * 60 * 24)
+        );
+
+
+    const timeText =
+        orderDate.toLocaleTimeString(
+            'en-PH',
+            {
+                hour: 'numeric',
+                minute: '2-digit'
+            }
+        );
+
+
+    if (difference === 0) {
+
+        return {
+            category: 'today',
+            tag: 'Today, ' + timeText
+        };
+
+    }
+
+
+    if (difference === 1) {
+
+        return {
+            category: 'yesterday',
+            tag: 'Yesterday, ' + timeText
+        };
+
+    }
+
+
+    if (
+        difference > 1 &&
+        difference < 7
+    ) {
+
+        return {
+            category: '7days',
+            tag: difference + ' days ago'
+        };
+
+    }
+
+
+    if (
+        difference >= 7 &&
+        difference < 30
+    ) {
+
+        return {
+            category: 'month',
+            tag: difference + ' days ago'
+        };
+
+    }
+
+
+    if (difference < 0) {
+
+        const futureDays =
+            Math.abs(difference);
+
+
+        if (futureDays === 1) {
+
+            return {
+                category: 'tomorrow',
+                tag: 'Tomorrow, ' + timeText
+            };
+
+        }
+
+
+        return {
+            category: 'all',
+            tag:
+                orderDate.toLocaleDateString(
+                    'en-PH'
+                ) +
+                ', ' +
+                timeText
+        };
+
+    }
+
+
+    return {
+        category: 'month',
+        tag:
+            orderDate.toLocaleDateString(
+                'en-PH'
+            )
+    };
+
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+function normalizeStatus(status) {
+
+    const value =
+        String(status || '')
+            .trim()
+            .toLowerCase();
+
+
+    if (value === 'paid') {
+        return 'paid';
+    }
+
+
+    if (value === 'pending') {
+        return 'pending';
+    }
+
+
+    if (
+        value === 'gcash - pending' ||
+        value === 'gcash pending'
+    ) {
+
+        return 'GCash - pending';
+
+    }
+
+
+    if (
+        value === 'cancelled' ||
+        value === 'canceled'
+    ) {
+
+        return 'Cancelled';
+
+    }
+
+
+    if (value === 'delivered') {
+        return 'Delivered';
+    }
+
+
+    return 'pending';
+
+}
+
+
+/* =========================================================
+   STATUS CLASS
+   ========================================================= */
+
+function getStatusClass(status) {
+
+    status =
+        normalizeStatus(status);
+
+
+    if (status === 'paid') {
+        return 'status-paid';
+    }
+
+
+    if (status === 'pending') {
+        return 'status-pending';
+    }
+
+
+    if (status === 'GCash - pending') {
+        return 'status-gcash';
+    }
+
+
+    if (status === 'Delivered') {
+        return 'status-delivered';
+    }
+
+
+    return 'status-cancelled';
+
+}
+
+
+/* =========================================================
+   KPI COUNTERS
+   ========================================================= */
+
+function updateKPICounters(dataset) {
+
+    dataset =
+        Array.isArray(dataset)
+            ? dataset
+            : [];
+
+
+    let paid = 0;
+    let pending = 0;
+    let gcashPending = 0;
+    let cancelled = 0;
+    let totalItems = 0;
+    let needChange = 0;
+    let revenue = 0;
+
+
+    dataset.forEach(function(item) {
+
+        const status =
+            normalizeStatus(
+                item.status
+            );
+
+
+        if (status === 'paid') {
+
+            paid++;
+
+        }
+
+        else if (status === 'pending') {
+
+            pending++;
+
+        }
+
+        else if (
+            status === 'GCash - pending'
+        ) {
+
+            gcashPending++;
+
+        }
+
+        else if (
+            status === 'Cancelled'
+        ) {
+
+            cancelled++;
+
+        }
+
+
+        totalItems +=
+            Number(
+                item.itemQty || 0
+            );
+
+
+        if (
+            Number(item.change || 0) > 0
+        ) {
+
+            needChange++;
+
+        }
+
+
+        if (
+            status === 'paid' ||
+            status === 'Delivered'
+        ) {
+
+            revenue +=
+                Number(
+                    item.amountDue || 0
+                );
+
+        }
+
+    });
+
+
+    setText(
+        'kpiPaid',
+        paid
+    );
+
+
+    setText(
+        'kpiPending',
+        pending
+    );
+
+
+    setText(
+        'kpiGcashPending',
+        gcashPending
+    );
+
+
+    setText(
+        'kpiCancelled',
+        cancelled
+    );
+
+
+    setText(
+        'kpiItems',
+        totalItems
+    );
+
+
+    setText(
+        'kpiTotalOrders',
+        dataset.length
+    );
+
+
+    setText(
+        'kpiNeedChange',
+        needChange
+    );
+
+
+    setText(
+        'kpiRevenue',
+        '₱' +
+        revenue.toLocaleString(
+            'en-PH',
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        )
+    );
+
+
+    const badge =
+        document.getElementById(
+            'recordCountBadge'
+        );
+
+
+    if (badge) {
+
+        badge.textContent =
+            `Showing ${dataset.length} of ${ALL_CONSUMER_DATA.length} orders`;
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLE RENDER
+   ========================================================= */
+
+function renderTable(data) {
+
+    const tbody =
+        document.getElementById(
+            'consumerTableBody'
+        );
+
+
+    if (!tbody) return;
+
+
+    tbody.innerHTML = '';
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        tbody.innerHTML = `
+            <tr>
+
+                <td
+                    colspan="11"
+                    style="
+                        text-align:center;
+                        padding:3rem 1rem;
+                        color:var(--outline);
+                    ">
+
+                    <span
+                        class="material-symbols-outlined"
+                        style="
+                            font-size:36px;
+                            display:block;
+                            margin-bottom:0.5rem;
+                            color:var(--outline-variant);
+                        ">
+                        search_off
+                    </span>
+
+                    <strong
+                        style="
+                            color:var(--on-surface-variant);
+                            font-size:0.875rem;
+                        ">
+
+                        No matching consumer orders found
+
+                    </strong>
+
+                    <p
+                        style="
+                            font-size:0.75rem;
+                            margin-top:0.25rem;
+                        ">
+
+                        Try modifying your date or search filters.
+
+                    </p>
+
+                </td>
+
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    data.forEach(function(row) {
+
+        const tr =
+            document.createElement('tr');
+
+
+        const paymentIsGCash =
+            String(
+                row.paymentType || ''
+            )
+                .toLowerCase()
+                .includes('gcash');
+
+
+        tr.innerHTML = `
+
+            <td class="col-contact">
+
+                <span class="contact-name">
+                    ${escapeHtml(row.contact)}
+                </span>
+
+                <span class="contact-sub">
+
+                    ${escapeHtml(row.id)}
+
+                    •
+
+                    ${escapeHtml(row.dateTag)}
+
+                </span>
+
+            </td>
+
+
+            <td
+                class="col-address"
+                title="${escapeHtml(row.address)}">
+
+                ${escapeHtml(row.address)}
+
+            </td>
+
+
+            <td class="col-qty">
+
+                <span class="item-pill">
+
+                    <span class="qty-number">
+
+                        ${Number(
+                            row.itemQty || 0
+                        )}
+
+                    </span>
+
+                    qty
+
+                </span>
+
+            </td>
+
+
+            <td class="col-item">
+
+                ${escapeHtml(row.item)}
+
+            </td>
+
+
+            <td class="col-amount amount-text">
+
+                ₱${Number(
+                    row.amountDue || 0
+                ).toFixed(2)}
+
+            </td>
+
+
+            <td class="col-payment">
+
+                ${
+                    paymentIsGCash
+
+                    ?
+
+                    `
+                    <span class="payment-gcash">
+
+                        <span
+                            class="material-symbols-outlined"
+                            style="font-size:14px;">
+                            qr_code_2
+                        </span>
+
+                        GCash
+
+                    </span>
+                    `
+
+                    :
+
+                    escapeHtml(
+                        row.paymentType ||
+                        'Cash'
+                    )
+                }
+
+            </td>
+
+
+            <td class="col-given">
+
+                ${
+                    paymentIsGCash
+
+                    ?
+
+                    `
+                    <span class="payment-gcash">
+                        GCash
+                    </span>
+                    `
+
+                    :
+
+                    escapeHtml(
+                        row.paymentGivenDisplay
+                    )
+                }
+
+            </td>
+
+
+            <td
+                class="col-change ${
+                    Number(row.change || 0) > 0
+                        ? 'change-positive'
+                        : 'change-zero'
+                }">
+
+                ${escapeHtml(
+                    row.changeDisplay
+                )}
+
+            </td>
+
+
+            <td class="col-gcash">
+
+                ${
+                    row.gcashRef
+
+                    ?
+
+                    `
+                    <span class="gcash-ref">
+                        ${escapeHtml(row.gcashRef)}
+                    </span>
+                    `
+
+                    :
+
+                    `<span style="color:var(--outline);">
+                        —
+                    </span>`
+                }
+
+            </td>
+
+
+            <td class="col-delivery">
+
+                ${
+                    row.deliveryTime
+
+                    ?
+
+                    `
+                    <span class="delivery-badge">
+
+                        <span
+                            class="material-symbols-outlined"
+                            style="font-size:13px;">
+                            schedule
+                        </span>
+
+                        ${escapeHtml(
+                            row.deliveryTime
+                        )}
+
+                    </span>
+                    `
+
+                    :
+
+                    `<span style="color:var(--outline);">
+                        —
+                    </span>`
+                }
+
+            </td>
+
+
+            <td class="col-status">
+
+                ${createStatusDropdown(row)}
+
+            </td>
+
+        `;
+
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =========================================================
+   STATUS DROPDOWN
+   ========================================================= */
+
+function createStatusDropdown(row) {
+
+    const statuses = [
+        'pending',
+        'paid',
+        'GCash - pending',
+        'Cancelled',
+        'Delivered'
+    ];
+
+
+    const currentStatus =
+        normalizeStatus(
+            row.status
+        );
+
+
+    let html = `
+
+        <select
+            class="status-select ${getStatusClass(currentStatus)}"
+            onchange="
+                updateConsumerStatus(
+                    ${Number(row.rowId)},
+                    this.value
+                )
+            ">
+
+    `;
+
+
+    statuses.forEach(function(status) {
+
+        const selected =
+            currentStatus === status
+                ? 'selected'
+                : '';
+
+
+        html += `
+
+            <option
+                value="${escapeHtml(status)}"
+                ${selected}>
+
+                ${escapeHtml(status)}
+
+            </option>
+
+        `;
+
+    });
+
+
+    html += `
+        </select>
+    `;
+
+
+    return html;
+
+}
+
+
+/* =========================================================
+   UPDATE STATUS
+   ========================================================= */
+
+function updateConsumerStatus(
+    rowId,
+    newStatus
+) {
+
+    const order =
+        ALL_CONSUMER_DATA.find(
+            function(item) {
+
+                return Number(
+                    item.rowId
+                ) === Number(rowId);
+
+            }
+        );
+
+
+    if (order) {
+
+        order.status =
+            normalizeStatus(
+                newStatus
+            );
+
+    }
+
+
+    google.script.run
+
+        .withSuccessHandler(function() {
+
+            console.log(
+                'Consumer status updated:',
+                rowId,
+                newStatus
+            );
+
+            loadConsumerData();
+
+        })
+
+        .withFailureHandler(function(error) {
+
+            console.error(
+                'Consumer status update error:',
+                error
+            );
+
+
+            alert(
+                'Failed to update status:\n\n' +
+                (
+                    error.message ||
+                    String(error)
+                )
+            );
+
+
+            loadConsumerData();
+
+        })
+
+        .updateConsumerStatus(
+            Number(rowId),
+            newStatus
+        );
+
+}
+
+
+/* =========================================================
+   CARD VIEW
+   ========================================================= */
+
+function renderCards(data) {
+
+    const slot =
+        document.getElementById(
+            'singleCardSlot'
+        );
+
+
+    const hint =
+        document.getElementById(
+            'cardSearchHint'
+        );
+
+
+    const indicator =
+        document.getElementById(
+            'cardPaginationIndicator'
+        );
+
+
+    const prevBtn =
+        document.getElementById(
+            'btnPrevCard'
+        );
+
+
+    const nextBtn =
+        document.getElementById(
+            'btnNextCard'
+        );
+
+
+    if (!slot) return;
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        activeCardIndex = 0;
+
+
+        slot.innerHTML = `
+
+            <div
+                style="
+                    background:#ffffff;
+                    border-radius:1rem;
+                    border:1px solid var(--surface-container-high);
+                    padding:2rem;
+                    text-align:center;
+                    color:var(--outline);
+                ">
+
+                <span
+                    class="material-symbols-outlined"
+                    style="
+                        font-size:36px;
+                        display:block;
+                        margin-bottom:0.5rem;
+                    ">
+                    search_off
+                </span>
+
+                <p
+                    style="
+                        font-family:var(--font-display);
+                        font-weight:700;
+                        color:var(--on-surface-variant);
+                    ">
+
+                    No orders match the current filter.
+
+                </p>
+
+            </div>
+
+        `;
+
+
+        if (hint) {
+            hint.textContent =
+                'No matching cards';
+        }
+
+
+        if (indicator) {
+            indicator.textContent =
+                '0 orders';
+        }
+
+
+        if (prevBtn) {
+            prevBtn.disabled = true;
+        }
+
+
+        if (nextBtn) {
+            nextBtn.disabled = true;
+        }
+
+
+        return;
+
+    }
+
+
+    if (
+        activeCardIndex >= data.length
+    ) {
+
+        activeCardIndex = 0;
+
+    }
+
+
+    const row =
+        data[activeCardIndex];
+
+
+    if (hint) {
+
+        hint.textContent =
+            `Card ${activeCardIndex + 1} of ${data.length}`;
+
+    }
+
+
+    if (indicator) {
+
+        indicator.textContent =
+            `Showing ${activeCardIndex + 1} of ${data.length}`;
+
+    }
+
+
+    if (prevBtn) {
+
+        prevBtn.disabled =
+            activeCardIndex === 0;
+
+    }
+
+
+    if (nextBtn) {
+
+        nextBtn.disabled =
+            activeCardIndex ===
+            data.length - 1;
+
+    }
+
+
+    const status =
+        normalizeStatus(
+            row.status
+        );
+
+
+    let statusClass =
+        'pending';
+
+
+    if (status === 'paid') {
+        statusClass = 'paid';
+    }
+
+    else if (
+        status === 'GCash - pending'
+    ) {
+        statusClass = 'gcash';
+    }
+
+    else if (
+        status === 'Cancelled'
+    ) {
+        statusClass = 'cancelled';
+    }
+
+    else if (
+        status === 'Delivered'
+    ) {
+        statusClass = 'delivered';
+    }
+
+
+    const paymentIsGCash =
+        String(
+            row.paymentType || ''
+        )
+            .toLowerCase()
+            .includes('gcash');
+
+
+    slot.innerHTML = `
+
+        <div class="card-item">
+
+
+            <div class="card-item-header">
+
+                <div
+                    style="
+                        display:flex;
+                        align-items:center;
+                        gap:0.5rem;
+                    ">
+
+                    <span
+                        style="
+                            width:1.75rem;
+                            height:1.75rem;
+                            border-radius:9999px;
+                            background:rgba(26,86,50,0.1);
+                            color:var(--primary);
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            font-weight:800;
+                            font-size:0.75rem;
+                        ">
+
+                        ${activeCardIndex + 1}
+
+                    </span>
+
+
+                    <div>
+
+                        <span
+                            style="
+                                font-size:0.65rem;
+                                color:var(--outline);
+                                font-family:monospace;
+                                display:block;
+                            ">
+
+                            ${escapeHtml(row.id)}
+
+                            •
+
+                            ${escapeHtml(row.dateTag)}
+
+                        </span>
+
+
+                        <span
+                            style="
+                                font-family:var(--font-display);
+                                font-weight:700;
+                                font-size:0.8rem;
+                                color:var(--primary);
+                            ">
+
+                            ${escapeHtml(row.contact)}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <span
+                    class="card-badge-status ${statusClass}">
+
+                    ${escapeHtml(row.status)}
+
+                </span>
+
+            </div>
+
+
+            <div
+                style="
+                    display:flex;
+                    align-items:flex-start;
+                    gap:0.35rem;
+                    font-size:0.75rem;
+                ">
+
+                <span
+                    class="material-symbols-outlined"
+                    style="
+                        font-size:16px;
+                        color:var(--secondary);
+                    ">
+                    location_on
+                </span>
+
+                <span
+                    style="
+                        font-weight:500;
+                        color:var(--on-surface);
+                    ">
+
+                    ${escapeHtml(row.address)}
+
+                </span>
+
+            </div>
+
+
+            <div
+                style="
+                    background:#ffffff;
+                    padding:0.85rem;
+                    border-radius:0.75rem;
+                    border:1px solid var(--surface-container-high);
+                ">
+
+                <span class="card-label">
+                    Item
+                </span>
+
+                <span
+                    style="
+                        font-family:var(--font-display);
+                        font-weight:800;
+                        color:var(--primary);
+                        font-size:0.9rem;
+                    ">
+
+                    ${escapeHtml(row.item)}
+
+                </span>
+
+            </div>
+
+
+            <div class="card-data-grid">
+
+                <div>
+
+                    <span class="card-label">
+                        Item Qty
+                    </span>
+
+                    <span
+                        class="card-value"
+                        style="font-size:0.9rem;">
+
+                        ${Number(row.itemQty || 0)}
+                        Qty
+
+                    </span>
+
+                </div>
+
+
+                <div style="text-align:right;">
+
+                    <span class="card-label">
+                        Amount Due
+                    </span>
+
+                    <span
+                        class="card-value"
+                        style="font-size:1rem;">
+
+                        ₱${Number(
+                            row.amountDue || 0
+                        ).toFixed(2)}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="card-data-grid"
+                style="
+                    background:var(--surface-container);
+                ">
+
+                <div>
+
+                    <span class="card-label">
+                        Payment Type
+                    </span>
+
+                    <span
+                        style="
+                            font-family:var(--font-display);
+                            font-weight:700;
+                            color:${
+                                paymentIsGCash
+                                    ? '#0284c7'
+                                    : 'var(--on-surface)'
+                            };
+                        ">
+
+                        ${escapeHtml(
+                            row.paymentType ||
+                            'Cash'
+                        )}
+
+                    </span>
+
+                </div>
+
+
+                <div style="text-align:right;">
+
+                    <span class="card-label">
+                        Payment Given
+                    </span>
+
+                    <span
+                        style="
+                            font-family:var(--font-display);
+                            font-weight:800;
+                        ">
+
+                        ${escapeHtml(
+                            row.paymentGivenDisplay
+                        )}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    padding:0.5rem 0.75rem;
+                    background:var(--surface-container-low);
+                    border-radius:0.5rem;
+                ">
+
+                <span
+                    style="
+                        color:var(--outline);
+                        font-weight:600;
+                        font-size:0.75rem;
+                    ">
+
+                    Change
+
+                </span>
+
+
+                <span
+                    style="
+                        font-family:var(--font-display);
+                        font-weight:800;
+                        color:${
+                            Number(row.change || 0) > 0
+                                ? 'var(--secondary)'
+                                : 'var(--outline)'
+                        };
+                    ">
+
+                    ${escapeHtml(
+                        row.changeDisplay
+                    )}
+
+                </span>
+
+            </div>
+
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    gap:0.5rem;
+                    font-size:0.75rem;
+                ">
+
+                <span
+                    style="
+                        color:var(--outline);
+                        font-weight:600;
+                    ">
+
+                    GCash Ref.#
+
+                </span>
+
+
+                <span
+                    style="
+                        font-family:monospace;
+                        color:#0369a1;
+                    ">
+
+                    ${
+                        row.gcashRef
+                            ? escapeHtml(row.gcashRef)
+                            : '—'
+                    }
+
+                </span>
+
+            </div>
+
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    gap:0.5rem;
+                    font-size:0.75rem;
+                ">
+
+                <span
+                    style="
+                        color:var(--outline);
+                        font-weight:600;
+                    ">
+
+                    Delivery Time
+
+                </span>
+
+
+                ${
+                    row.deliveryTime
+
+                    ?
+
+                    `
+                    <span class="delivery-badge">
+
+                        <span
+                            class="material-symbols-outlined"
+                            style="font-size:13px;">
+                            schedule
+                        </span>
+
+                        ${escapeHtml(
+                            row.deliveryTime
+                        )}
+
+                    </span>
+                    `
+
+                    :
+
+                    `<span style="color:var(--outline);">
+                        —
+                    </span>`
+                }
+
+            </div>
+
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    padding-top:0.75rem;
+                    border-top:1px solid var(--surface-container-high);
+                    font-size:0.75rem;
+                ">
+
+                <span
+                    style="
+                        color:var(--outline);
+                        font-weight:600;
+                    ">
+
+                    Change Status:
+
+                </span>
+
+
+                ${createStatusDropdown(row)}
+
+            </div>
+
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   CARD NAVIGATION
+   ========================================================= */
+
+function prevCard() {
+
+    if (
+        activeCardIndex > 0
+    ) {
+
+        activeCardIndex--;
+
+        renderCards(
+            filteredOrders
+        );
+
+    }
+
+}
+
+
+function nextCard() {
+
+    if (
+        activeCardIndex <
+        filteredOrders.length - 1
+    ) {
+
+        activeCardIndex++;
+
+        renderCards(
+            filteredOrders
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FILTERS
+   ========================================================= */
+
+function applyFilters() {
+
+    const searchInput =
+        document.getElementById(
+            'searchInput'
+        );
+
+
+    const query =
+        searchInput
+            ? searchInput.value
+                .toLowerCase()
+                .trim()
+            : '';
+
+
+    const dateFilter =
+        document.getElementById(
+            'dateFilter'
+        );
+
+
+    /*
+     * Default to ALL.
+     *
+     * This prevents an empty table when
+     * no date filter is selected.
+     */
+
+    const dateVal =
+        dateFilter &&
+        dateFilter.value
+            ? dateFilter.value
+            : 'today';
+
+
+    filteredOrders =
+        ALL_CONSUMER_DATA.filter(
+            function(item) {
+
+                let matchDate = true;
+
+
+                if (
+                    dateVal === 'today'
+                ) {
+
+                    matchDate =
+                        item.dateCategory ===
+                        'today';
+
+                }
+
+
+                else if (
+                    dateVal === 'yesterday'
+                ) {
+
+                    matchDate =
+                        item.dateCategory ===
+                        'yesterday';
+
+                }
+
+
+                else if (
+                    dateVal === 'tomorrow'
+                ) {
+
+                    matchDate =
+                        item.dateCategory ===
+                        'tomorrow';
+
+                }
+
+
+                else if (
+                    dateVal === '7days'
+                ) {
+
+                    matchDate =
+                        item.dateCategory === 'today' ||
+                        item.dateCategory === 'yesterday' ||
+                        item.dateCategory === '7days';
+
+                }
+
+
+                else if (
+                    dateVal === 'month'
+                ) {
+
+                    matchDate =
+                        item.dateCategory === 'today' ||
+                        item.dateCategory === 'yesterday' ||
+                        item.dateCategory === '7days' ||
+                        item.dateCategory === 'month';
+
+                }
+
+
+                else if (
+                    dateVal === 'all'
+                ) {
+
+                    matchDate = true;
+
+                }
+
+
+                const searchableText = [
+
+                    item.contact,
+                    item.address,
+                    item.item,
+                    item.paymentType,
+                    item.gcashRef,
+                    item.deliveryTime,
+                    item.status,
+                    item.id,
+                    item.timestamp
+
+                ]
+                    .join(' ')
+                    .toLowerCase();
+
+
+                const matchQuery =
+                    !query ||
+                    searchableText.includes(query);
+
+
+                return (
+                    matchDate &&
+                    matchQuery
+                );
+
+            }
+        );
+
+
+    if (
+        activeCardIndex >=
+        filteredOrders.length
+    ) {
+
+        activeCardIndex = 0;
+
+    }
+
+
+    renderTable(
+        filteredOrders
+    );
+
+
+    renderCards(
+        filteredOrders
+    );
+
+
+    updateKPICounters(
+        filteredOrders
+    );
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetFilters() {
+
+    const searchInput =
+        document.getElementById(
+            'searchInput'
+        );
+
+
+    const dateFilter =
+        document.getElementById(
+            'dateFilter'
+        );
+
+
+    if (searchInput) {
+        searchInput.value = '';
+    }
+
+
+    if (dateFilter) {
+        dateFilter.value = 'today';
+    }
+
+
+    activeCardIndex = 0;
+
+
+    applyFilters();
+
+}
+
+
+/* =========================================================
+   VIEW SWITCH
+   ========================================================= */
+
+function switchView(view) {
+
+    const tableWrap =
+        document.getElementById(
+            'tableViewWrapper'
+        );
+
+
+    const cardsWrap =
+        document.getElementById(
+            'cardsViewWrapper'
+        );
+
+
+    const btnTable =
+        document.getElementById(
+            'viewBtnTable'
+        );
+
+
+    const btnCards =
+        document.getElementById(
+            'viewBtnCards'
+        );
+
+
+    if (
+        view === 'table'
+    ) {
+
+        if (tableWrap) {
+            tableWrap.classList.remove('hidden');
+        }
+
+
+        if (cardsWrap) {
+            cardsWrap.classList.add('hidden');
+        }
+
+
+        if (btnTable) {
+            btnTable.classList.add('active');
+        }
+
+
+        if (btnCards) {
+            btnCards.classList.remove('active');
+        }
+
+    }
+
+
+    else {
+
+        if (tableWrap) {
+            tableWrap.classList.add('hidden');
+        }
+
+
+        if (cardsWrap) {
+            cardsWrap.classList.remove('hidden');
+        }
+
+
+        if (btnTable) {
+            btnTable.classList.remove('active');
+        }
+
+
+        if (btnCards) {
+            btnCards.classList.add('active');
+        }
+
+
+        renderCards(
+            filteredOrders
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function setText(
+    elementId,
+    value
+) {
+
+    const element =
+        document.getElementById(
+            elementId
+        );
+
+
+    if (element) {
+
+        element.textContent =
+            value;
+
+    }
+
+}
+
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return '';
+
+    }
+
+
+    return String(value)
+        .replace(
+            /&/g,
+            '&amp;'
+        )
+        .replace(
+            /</g,
+            '&lt;'
+        )
+        .replace(
+            />/g,
+            '&gt;'
+        )
+        .replace(
+            /"/g,
+            '&quot;'
+        )
+        .replace(
+            /'/g,
+            '&#039;'
+        );
+
+}
+
+
+/* =========================================================
+   DOM READY
+   ========================================================= */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+
+        const searchInput =
+            document.getElementById(
+                'searchInput'
+            );
+
+
+        const dateFilter =
+            document.getElementById(
+                'dateFilter'
+            );
+
+
+        const resetBtn =
+            document.getElementById(
+                'resetBtn'
+            );
+
+
+        const passwordInput =
+            document.getElementById(
+                'loginPassword'
+            );
+
+
+        /*
+         * Set initial filter to TODAY.
+         */
+
+        if (dateFilter) {
+
+            dateFilter.value = 'today';
+
+        }
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                'input',
+                applyFilters
+            );
+
+        }
+
+
+        if (dateFilter) {
+
+            dateFilter.addEventListener(
+                'change',
+                applyFilters
+            );
+
+        }
+
+
+        if (resetBtn) {
+
+            resetBtn.addEventListener(
+                'click',
+                resetFilters
+            );
+
+        }
+
+
+        if (passwordInput) {
+
+            passwordInput.addEventListener(
+                'keydown',
+                function(e) {
+
+                    if (
+                        e.key === 'Enter'
+                    ) {
+
+                        e.preventDefault();
+
+                        handleLogin(e);
+
+                    }
+
+                }
+            );
+
+
+            setTimeout(
+                function() {
+
+                    passwordInput.focus();
+
+                },
+                200
+            );
+
+        }
+
+
+        /*
+         * Load data.
+         */
+
+        loadConsumerData();
+
+    }
+);
+
+
+/*
+ * Safety for scripts loaded after DOM ready.
+ *
+ * Prevent duplicate loading.
+ */
+
+</script>
+
+</body>
+
+</html>

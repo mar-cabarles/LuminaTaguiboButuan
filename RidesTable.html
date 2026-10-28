@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dispatch Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: #014326;
+        }
+
+        /* KPI Cards */
+        .kpi-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            flex: 1;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #014326;
+            text-align: center;
+        }
+
+        .kpi-card h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .kpi-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #014326;
+            margin-top: 10px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .search-box input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            width: 250px;
+        }
+
+        .view-toggles button {
+            padding: 8px 15px;
+            background: #f0e8e3;
+            color: #014326;
+            border: 1px solid #e0d4cd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .view-toggles button.active {
+            background: #014326;
+            color: white;
+            border-color: #014326;
+        }
+
+        .actions button {
+            padding: 10px 15px;
+            background: #014326;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .actions button:hover {
+            background: #012416;
+        }
+
+        /* --- DROPDOWN COLORS --- */
+        select {
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .driver-dropdown {
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #333;
+        }
+
+        .status-dropdown {
+            border: 1px solid transparent;
+        }
+
+        .status-dropdown.pending {
+            background: #ffeeba;
+            color: #856404;
+        }
+
+        .status-dropdown.dispatched {
+            background: #c3e6cb;
+            color: #155724;
+        }
+
+        .status-dropdown.paid {
+            background: #b8daff;
+            color: #004085;
+        }
+        
+        
+/* DATE FILTER */
+.date-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-filter label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #014326;
+    white-space: nowrap;
+}
+
+.date-filter select {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    color: #014326;
+    font-size: 14px;
+    min-width: 145px;
+}
+
+@media (max-width: 600px) {
+    .date-filter {
+        width: 100%;
+    }
+
+    .date-filter select {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .search-box,
+    .search-box input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+        /* --- CARD VIEW --- */
+        .rides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .ride-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #b05b15;
+            position: relative;
+        }
+
+        .ride-detail {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .ride-detail strong {
+            color: #555;
+        }
+
+        .fare {
+            font-size: 18px;
+            font-weight: bold;
+            color: #014326;
+            margin: 10px 0;
+        }
+
+        .assign-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .assign-section select {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        /* --- TABLE VIEW --- */
+        .table-container {
+            display: none;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        .rides-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+            text-align: left;
+        }
+
+        .rides-table th {
+            background: #f8efe9;
+            color: #014326;
+            padding: 12px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-bottom: 2px solid #ebdcd4;
+        }
+
+        .rides-table td {
+            padding: 12px 15px;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .rides-table tr:hover {
+            background-color: #fafafa;
+        }
+
+        .table-dropdown {
+            padding: 8px;
+            border-radius: 6px;
+            width: 140px;
+        }
+
+        /* --- LOGIN / LOCK SCREEN --- */
+        .dashboard-container.dashboard-locked {
+            filter: blur(5px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(1, 28, 16, 0.72);
+            backdrop-filter: blur(5px);
+            box-sizing: border-box;
+        }
+
+        .login-overlay.hidden-modal {
+            display: none;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 390px;
+            padding: 30px;
+            box-sizing: border-box;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+            text-align: center;
+        }
+
+        .login-icon-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 62px;
+            height: 62px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: #e5f3eb;
+            color: #014326;
+            font-size: 30px;
+        }
+
+        .login-title {
+            margin: 0 0 8px;
+            color: #014326;
+            font-size: 22px;
+        }
+
+        .login-subtitle {
+            margin: 0 0 22px;
+            color: #66736b;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .login-error {
+            display: none;
+            margin-bottom: 12px;
+            padding: 10px;
+            border-radius: 7px;
+            background: #fff0f0;
+            color: #b42318;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .login-input-wrap {
+            display: flex;
+            align-items: center;
+            border: 1px solid #cbd5cf;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .login-input-wrap input {
+            width: 100%;
+            min-width: 0;
+            padding: 13px;
+            border: 0;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .login-input-wrap button {
+            height: 44px;
+            padding: 0 12px;
+            border: 0;
+            background: #f2f6f3;
+            color: #014326;
+            cursor: pointer;
+        }
+
+        .unlock-btn {
+            width: 100%;
+            padding: 13px 16px;
+            border: 0;
+            border-radius: 8px;
+            background: #014326;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .unlock-btn:hover {
+            background: #012416;
+        }
+
+        .lock-button {
+            padding: 9px 13px;
+            background: #fff !important;
+            color: #014326 !important;
+            border: 1px solid #cbd5cf !important;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 12px; }
+            .login-card { padding: 24px 20px; }
+            .header { gap: 10px; flex-wrap: wrap; }
+        }
+
+/* HOME BUTTON */
+.home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+.home-btn:hover {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+.home-btn .material-symbols-outlined {
+    font-size: 18px;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Rides Dashboard Login -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-card">
+            <div class="login-icon-badge">🛺</div>
+            <h2 class="login-title">Rides Station Access</h2>
+            <p class="login-subtitle">Enter your station password to open the Dispatch Dashboard.</p>
+
+            <div class="login-error" id="loginError" role="alert">
+                <span id="errorText">Incorrect password. Please try again.</span>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="login-input-wrap">
+                    <input
+                        id="loginPassword"
+                        type="password"
+                        placeholder="Enter Password"
+                        autocomplete="current-password"
+                        required
+                        autofocus
+                    >
+                    <button type="button" onclick="togglePinVisibility()" title="Show or hide password" aria-label="Show or hide password">
+                        <span id="pinEyeIcon">👁</span>
+                    </button>
+                </div>
+                <button class="unlock-btn" id="unlockDashboardBtn" type="submit">UNLOCK DASHBOARD</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="dashboard-container dashboard-locked" id="mainDashboardContainer">
+        <div class="header">
+            <h2>🛺 Dispatch Dashboard</h2>
+            <a class="lock-btn"
+   href="<?= APP_URL ?>?page=index"
+   target="_top"
+   title="Back to Home"
+   style="text-decoration: none;">
+
+        <span class="home-btn">Home</span>
+</a>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-container">
+            <div class="kpi-card">
+                <h3>Total Bookings</h3>
+                <div class="value" id="kpi-total">14</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Pending Rides</h3>
+                <div class="value" id="kpi-pending" style="color: #b05b15;">5</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Total Collection Expected</h3>
+                <div class="value" id="kpi-fare">₱210.00</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            
+<div class="search-box">
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search passenger or driver..."
+    >
+</div>
+
+<div class="date-filter">
+    <label for="dateFilter">Booking Date:</label>
+    <select id="dateFilter">
+    <option value="today">Today</option>
+    <option value="yesterday">Yesterday</option>
+    <option value="all">All Dates</option>
+</select>
+</div>
+
+
+            <div class="view-toggles">
+                <button id="btn-card" class="active" onclick="switchView('card')">📱 Card View</button>
+                <button id="btn-table" onclick="switchView('table')">📋 Table View</button>
+            </div>
+            
+            <div class="actions">
+                <button onclick="refreshData()">🔄 Refresh</button>
+                <button onclick="addNewDriver()">+ Add Driver</button>
+            </div>
+        </div>
+
+        <!-- ================= CARD VIEW ================= -->
+        <div class="rides-grid" id="cardView">            
+        </div>
+
+        <!-- ================= TABLE VIEW ================= -->
+        <div class="table-container" id="tableView">
+            <table class="rides-table">
+                <thead>
+                    <tr>
+                        <th>Passenger</th>
+                        <th>Location (Ph-Blk-Lot)</th>
+                        <th>Destination</th>
+                        <th>Pax</th>
+                        <th>Pickup</th>
+                        <th>Collection</th>
+                        <th>Assign Driver</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data will be injected here -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+<script>
+/* =====================================================
+   DISPATCH DASHBOARD SCRIPT
+   Fully Integrated with Foolproof Date Filtering
+===================================================== */
+
+/* -----------------------------------------------------
+   1. STATE & CONFIGURATION
+----------------------------------------------------- */
+const STATION_PASSWORD = '1234';
+
+let drivers = [];
+let allRides = [];
+
+/* -----------------------------------------------------
+   2. UTILITIES & FORMATTING
+----------------------------------------------------- */
+const escapeHtml = (value) => 
+    String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[char]);
+
+const getSafeStatus = (status) => {
+    const s = String(status || 'Pending').toLowerCase();
+    if (s === 'dispatched') return 'Dispatched';
+    if (s === 'paid') return 'Paid';
+    return 'Pending';
+};
+
+const getStatusClass = (status) => getSafeStatus(status).toLowerCase();
+
+/* -----------------------------------------------------
+   3. DATE HANDLING & FILTERING (Foolproof Version)
+----------------------------------------------------- */
+function parseRideDate(ride) {
+    const rawDate = ride.date ?? ride.bookingDate ?? ride.timestamp;
+    if (!rawDate) return null;
+
+    const d = new Date(rawDate);
+    return (!isNaN(d.getTime())) ? d : null;
+}
+
+// THIS WAS MISSING: Compares two dates exactly
+function isSameDate(d1, d2) {
+    return d1.getFullYear() === d2.getFullYear() &&
+           d1.getMonth() === d2.getMonth() &&
+           d1.getDate() === d2.getDate();
+}
+
+// THIS WAS MISSING: Matches the date against your dropdown selection
+function matchesDateFilter(rideDate, filter) {
+    if (filter === 'all') return true;
+    if (!rideDate) return false;
+
+    const today = new Date();
+
+    if (filter === 'today') return isSameDate(rideDate, today);
+
+    if (filter === 'yesterday') {
+        const yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+        return isSameDate(rideDate, yesterday);
+    }
+
+    if (filter === 'tomorrow') {
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        return isSameDate(rideDate, tomorrow);
+    }
+
+    return true; 
+}
+
+function applyRideFilters() {
+    const filterDropdown = document.getElementById('dateFilter');
+    const filterVal = (filterDropdown ? filterDropdown.value : 'today').trim().toLowerCase();
+    
+    const searchInput = document.getElementById('searchInput');
+    const searchVal = (searchInput ? searchInput.value : '').trim().toLowerCase();
+
+    const filteredRides = allRides.filter(ride => {
+        const rideDate = parseRideDate(ride);
+        const matchesDate = matchesDateFilter(rideDate, filterVal);
+        
+        const searchableText = [
+            ride.passenger, ride.driver, ride.location, ride.destination, 
+            ride.pickup, ride.status, ride.fare, ride.pax
+        ].join(' ').toLowerCase();
+
+        return matchesDate && searchableText.includes(searchVal);
+    });
+
+    renderRideList(filteredRides);
+}
+
+/* -----------------------------------------------------
+   4. DATA FETCHING & PROCESSING
+----------------------------------------------------- */
+function refreshData() {
+    showLoadingState();
+
+    if (typeof google === 'undefined' || !google.script) {
+        showError('Google Apps Script is unavailable.');
+        return;
+    }
+
+    // Step 1: Load drivers with an error handler added!
+    google.script.run
+        .withSuccessHandler(loadedDrivers => {
+            drivers = loadedDrivers || []; // Save downloaded drivers
+            
+            // Step 2: Load the rides
+            google.script.run
+                .withSuccessHandler(renderData)
+                .withFailureHandler(showError)
+                .getActiveRides();
+        })
+        .withFailureHandler(error => {
+            // If the backend crashes, print the error on the screen to stop the infinite loading
+            showError("Backend Error: " + error.message);
+        })
+        .getDriversList();
+}
+
+function renderData(rides) {
+    // This logs the incoming data so you can verify it in the F12 Console
+    console.log("INCOMING DATA:", rides);
+
+    allRides = Array.isArray(rides) ? rides : [];
+    
+    const dateFilter = document.getElementById('dateFilter');
+    if (dateFilter && !dateFilter.value) dateFilter.value = 'today';
+
+    applyRideFilters();
+}
+
+function applyRideFilters() {
+    const filterDropdown = document.getElementById('dateFilter');
+    const filterVal = (filterDropdown ? filterDropdown.value : 'today').toLowerCase();
+    
+    const searchInput = document.getElementById('searchInput');
+    const searchVal = (searchInput ? searchInput.value : '').trim().toLowerCase();
+
+    console.log(`--- Filtering for: ${filterVal} ---`);
+
+    const filteredRides = allRides.filter(ride => {
+        const rideDate = parseRideDate(ride);
+        const matchesDate = matchesDateFilter(rideDate, filterVal);
+        
+        // Debugging log to see exactly what is happening behind the scenes for each ride
+        console.log(`Passenger: ${ride.passenger} | Raw Sheet Date: ${ride.date} | Parsed: ${rideDate?.toLocaleDateString()} | Matches ${filterVal}?: ${matchesDate}`);
+        
+        const searchableText = [
+            ride.passenger, ride.driver, ride.location, ride.destination, 
+            ride.pickup, ride.status, ride.fare, ride.pax
+        ].join(' ').toLowerCase();
+
+        return matchesDate && searchableText.includes(searchVal);
+    });
+
+    renderRideList(filteredRides);
+}
+
+/* -----------------------------------------------------
+   5. RENDERING & UI UPDATES
+----------------------------------------------------- */
+function renderRideList(rides) {
+    const cardView = document.getElementById('cardView');
+    const tableBody = document.querySelector('#tableView tbody');
+    if (!cardView || !tableBody) return;
+
+    let cardHTML = '';
+    let tableHTML = '';
+    let pendingCount = 0;
+    let totalFare = 0;
+
+    rides.forEach(ride => {
+        const rowId = ride.rowId;
+        const passenger = escapeHtml(ride.passenger || 'N/A');
+        const location = escapeHtml(ride.location || 'N/A');
+        const destination = escapeHtml(ride.destination || '');
+        const pax = escapeHtml(ride.pax || '1');
+        const pickup = escapeHtml(ride.pickup || 'N/A');
+        const driver = escapeHtml(ride.driver || '');
+        const fare = escapeHtml(ride.fare ?? '0');
+        
+        const status = getSafeStatus(ride.status);
+        const statusClass = getStatusClass(status);
+
+        if (status === 'Pending') pendingCount++;
+        
+        const fareNum = parseFloat(String(ride.fare ?? '0').replace(/[^0-9.-]/g, ''));
+        if (!isNaN(fareNum)) totalFare += fareNum;
+
+        // Build Dropdowns
+        const driverSelect = `
+            <select class="driver-dropdown" data-row-id="${rowId}" data-driver="${driver}" onchange="saveChanges(${rowId}, this)">
+                <option value="">-- Assign --</option>
+                ${[...new Set([...drivers, driver])].filter(Boolean).map(d => 
+                    `<option value="${d}" ${d === driver ? 'selected' : ''}>${d}</option>`
+                ).join('')}
+            </select>`;
+
+        const statusSelect = `
+            <select class="status-dropdown ${statusClass}" data-row-id="${rowId}" onchange="saveChanges(${rowId}, this)">
+                <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="Dispatched" ${status === 'Dispatched' ? 'selected' : ''}>Dispatched</option>
+                <option value="Paid" ${status === 'Paid' ? 'selected' : ''}>Paid</option>
+            </select>`;
+
+        // Card View Template
+        cardHTML += `
+            <div class="ride-card">
+                <div class="ride-detail"><strong>Passenger:</strong> ${passenger}</div>
+                <div class="ride-detail"><strong>Location:</strong> ${location}</div>
+                <div class="ride-detail"><strong>Destination:</strong> ${destination}</div>
+                <div class="ride-detail"><strong>Pax:</strong> ${pax} | <strong>Pickup:</strong> ${pickup}</div>
+                <div class="fare">Fare: ₱${fare}</div>
+                <div class="assign-section">${driverSelect} ${statusSelect}</div>
+            </div>`;
+
+        // Table View Template
+        tableHTML += `
+            <tr>
+                <td>${passenger}</td>
+                <td>${location}</td>
+                <td>${destination}</td>
+                <td>${pax}</td>
+                <td>${pickup}</td>
+                <td><strong>₱${fare}</strong></td>
+                <td>${driverSelect}</td>
+                <td>${statusSelect}</td>
+            </tr>`;
+    });
+
+    // Update UI Stats
+    document.getElementById('kpi-total').textContent = rides.length;
+    document.getElementById('kpi-pending').textContent = pendingCount;
+    document.getElementById('kpi-fare').textContent = '₱' + totalFare.toFixed(2);
+
+    // Render empty states if necessary
+    if (rides.length === 0) {
+        cardView.innerHTML = "<p style='grid-column:1/-1;text-align:center;'>No rides found for this filter.</p>";
+        tableBody.innerHTML = "<tr><td colspan='8' style='text-align:center;'>No rides found for this filter.</td></tr>";
+    } else {
+        cardView.innerHTML = cardHTML;
+        tableBody.innerHTML = tableHTML;
+    }
+}
+
+function showLoadingState() {
+    const cardView = document.getElementById('cardView');
+    const tableBody = document.querySelector('#tableView tbody');
+    if (cardView) cardView.innerHTML = "<h3 style='grid-column:1/-1;text-align:center;'>Loading live data...</h3>";
+    if (tableBody) tableBody.innerHTML = "<tr><td colspan='8' style='text-align:center;'>Loading live data...</td></tr>";
+}
+
+function showError(error) {
+    const msg = escapeHtml(error?.message || String(error || 'Unknown error'));
+    const cardView = document.getElementById('cardView');
+    const tableBody = document.querySelector('#tableView tbody');
+    
+    // Added safe null-checks here so the script doesn't crash!
+    if (cardView) cardView.innerHTML = `<p style="color:red;grid-column:1/-1;">Failed to load: ${msg}</p>`;
+    if (tableBody) tableBody.innerHTML = `<tr><td colspan="8" style="color:red;">Failed to load: ${msg}</td></tr>`;
+}
+
+function switchView(view) {
+    document.getElementById('cardView').style.display = view === 'card' ? 'grid' : 'none';
+    document.getElementById('tableView').style.display = view === 'table' ? 'block' : 'none';
+    document.getElementById('btn-card')?.classList.toggle('active', view === 'card');
+    document.getElementById('btn-table')?.classList.toggle('active', view === 'table');
+}
+
+/* -----------------------------------------------------
+   6. ACTIONS & SAVING
+----------------------------------------------------- */
+function saveChanges(rowId, selectElement) {
+    const container = selectElement.closest('.assign-section') || selectElement.closest('tr');
+    const driverDrop = container.querySelector('.driver-dropdown');
+    const statusDrop = container.querySelector('.status-dropdown');
+    
+    if (!driverDrop || !statusDrop) return;
+
+    const driverName = driverDrop.value;
+    let statusValue = statusDrop.value;
+
+    // Auto-dispatch if a driver is assigned while Pending
+    if (selectElement.classList.contains('driver-dropdown') && driverName && statusValue === 'Pending') {
+        statusValue = 'Dispatched';
+    }
+
+    // Update the local data array
+    const ride = allRides.find(r => Number(r.rowId) === Number(rowId));
+    if (ride) {
+        ride.driver = driverName;
+        ride.status = statusValue;
+    }
+
+    // Visually sync both Table and Card dropdowns simultaneously
+    document.querySelectorAll(`[data-row-id="${rowId}"]`).forEach(el => {
+        if (el.classList.contains('driver-dropdown')) {
+            el.value = driverName;
+            el.dataset.driver = driverName;
+        }
+        if (el.classList.contains('status-dropdown')) {
+            el.value = statusValue;
+            el.className = `status-dropdown ${getStatusClass(statusValue)}`;
+            if(el.classList.contains('table-dropdown')) el.classList.add('table-dropdown');
+        }
+    });
+
+    // Save to server
+    if (typeof google !== 'undefined' && google.script) {
+        google.script.run
+            .withFailureHandler(err => {
+                alert('Save failed: ' + (err.message || 'Unknown error'));
+                refreshData();
+            })
+            .updateRideDetails(rowId, driverName, statusValue);
+    } else {
+        console.warn('Simulated Save: Server unavailable.');
+    }
+}
+
+function addNewDriver() {
+    const name = prompt("Enter new driver's name:")?.trim();
+    if (!name) return;
+
+    if (drivers.some(d => d.toLowerCase() === name.toLowerCase())) {
+        return alert('Driver already exists.');
+    }
+
+    // Add to local interface immediately
+    drivers.push(name);
+    applyRideFilters(); 
+
+    // Save to Google Sheets permanently
+    if (typeof google !== 'undefined' && google.script) {
+        google.script.run
+            .withSuccessHandler(() => alert(`${name} added permanently.`))
+            .withFailureHandler(err => alert('Failed to save driver: ' + err.message))
+            .saveNewDriverToSheet(name);
+    }
+}
+
+/* -----------------------------------------------------
+   7. AUTHENTICATION & LOCK
+----------------------------------------------------- */
+function handleLogin(e) {
+    if (e) e.preventDefault();
+    const input = document.getElementById('loginPassword');
+    
+    if (input.value.trim() !== STATION_PASSWORD) {
+        document.getElementById('loginError')?.classList.add('show');
+        input.value = '';
+        input.focus();
+        return;
+    }
+
+    document.getElementById('loginError')?.classList.remove('show');
+    document.getElementById('loginOverlay')?.classList.add('hidden-modal');
+    document.getElementById('mainDashboardContainer')?.classList.remove('dashboard-locked');
+    
+    input.value = '';
+    input.type = 'password';
+    const eyeIcon = document.getElementById('pinEyeIcon');
+    if (eyeIcon) eyeIcon.textContent = '👁';
+
+    refreshData();
+}
+
+function togglePinVisibility() {
+    const input = document.getElementById('loginPassword');
+    const isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+    const eyeIcon = document.getElementById('pinEyeIcon');
+    if(eyeIcon) eyeIcon.textContent = isPass ? '🙈' : '👁';
+}
+
+function lockStation() {
+    allRides = []; // Clear sensitive data
+    
+    document.getElementById('cardView')?.replaceChildren();
+    document.querySelector('#tableView tbody')?.replaceChildren();
+    ['kpi-total', 'kpi-pending', 'kpi-fare'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '—';
+    });
+
+    document.getElementById('loginError')?.classList.remove('show');
+    document.getElementById('loginOverlay')?.classList.remove('hidden-modal');
+    document.getElementById('mainDashboardContainer')?.classList.add('dashboard-locked');
+
+    const input = document.getElementById('loginPassword');
+    if (input) {
+        input.value = '';
+        input.type = 'password';
+        setTimeout(() => input.focus(), 150);
+    }
+}
+/* -----------------------------------------------------
+   8. INITIALIZATION
+----------------------------------------------------- */
+function initializeDashboard() {
+    const dateFilter = document.getElementById('dateFilter');
+    const searchInput = document.getElementById('searchInput');
+
+    if (dateFilter) {
+        if (!dateFilter.value) dateFilter.value = 'today';
+        dateFilter.addEventListener('change', applyRideFilters);
+    }
+    if (searchInput) searchInput.addEventListener('input', applyRideFilters);
+}
+
+// THIS WAS MISSING! It starts the dashboard events
+document.addEventListener('DOMContentLoaded', initializeDashboard, { once: true });
+
+// Force cursor into password box (Overrides Google Workspace iframe restrictions)
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const passwordBox = document.getElementById('loginPassword');
+        if (passwordBox) {
+            passwordBox.focus();
+            passwordBox.select();
+        }
+    }, 500); 
+});
+</script>
+
+</body>
+</html>

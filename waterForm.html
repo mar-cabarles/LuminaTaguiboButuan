@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        name="viewport">
+    <meta content="mobile_form" name="shell-type">
+    <title>Drinking Water Order Form - Community Market Hub</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #003e1e;
+            --primary-container: #1a5632;
+            --on-primary: #ffffff;
+            --on-primary-container: #8dca9c;
+            --primary-fixed: #b2f1c1;
+            --on-primary-fixed: #00210e;
+
+            --secondary: #904d00;
+            --secondary-container: #fe932c;
+            --on-secondary: #ffffff;
+            --on-secondary-container: #663500;
+            --secondary-fixed: #ffdcc3;
+            --on-secondary-fixed: #2f1500;
+
+            --tertiary: #003c36;
+            --tertiary-container: #00554e;
+            --surface: #fff8f6;
+            --surface-container-lowest: #ffffff;
+            --surface-container-low: #fbf2f0;
+            --surface-container: #f5ecea;
+            --surface-container-high: #efe6e4;
+            --surface-container-highest: #e9e1df;
+            --surface-dim: #e1d8d6;
+            --surface-tint: #2f6a44;
+
+            --on-surface: #1e1b1a;
+            --on-surface-variant: #404941;
+            --outline: #717971;
+            --outline-variant: #c0c9bf;
+            --error: #ba1a1a;
+            --error-container: #ffdad6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100dvh;
+            background-color: var(--surface);
+            color: var(--on-surface);
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.925rem;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
+        .font-manrope {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 16px);
+        }
+
+        .pt-safe {
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 40;
+            background: rgba(255, 248, 246, 0.95);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(192, 201, 191, 0.4);
+        }
+
+        .header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        /* Container */
+        .form-wrapper {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 1rem 1rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* Cards / Sections */
+        .form-card {
+            background: var(--surface-container-lowest);
+            border-radius: 1rem;
+            padding: 1.15rem 1rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--surface-container-high);
+        }
+
+        .section-title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-bottom: 0.9rem;
+        }
+
+        /* Inputs */
+        .input-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .text-input,
+        .select-input,
+        .textarea-input {
+            width: 100%;
+            background: var(--surface-container-low);
+            border: 1px solid var(--outline-variant);
+            border-radius: 0.65rem;
+            padding: 0.65rem 0.85rem;
+            font-family: inherit;
+            font-size: 0.875rem;
+            color: var(--on-surface);
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .text-input:focus,
+        .select-input:focus,
+        .textarea-input:focus {
+            border-color: var(--primary);
+            background: var(--surface-container-lowest);
+        }
+
+        .note-hint {
+            font-size: 0.75rem;
+            color: var(--outline);
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        /* Stepper item */
+        .stepper-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed var(--surface-container-highest);
+        }
+
+        .stepper-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0.25rem;
+        }
+
+        .stepper-ctrl {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: var(--surface-container);
+            padding: 0.25rem 0.35rem;
+            border-radius: 9999px;
+        }
+
+        .step-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface-container-lowest);
+            border: 1px solid var(--outline-variant);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--on-surface);
+            transition: background 0.15s;
+        }
+
+        .step-btn:active {
+            background: var(--surface-container-highest);
+        }
+
+        .step-val {
+            min-width: 28px;
+            text-align: center;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* Selectable Radio Cards */
+        .option-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .choice-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1.5px solid var(--outline-variant);
+            background: var(--surface-container-lowest);
+            border-radius: 0.75rem;
+            padding: 0.75rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .choice-card input[type="radio"] {
+            display: none;
+        }
+
+        .choice-card.selected {
+            border-color: var(--primary);
+            background: rgba(26, 86, 50, 0.05);
+        }
+
+        .choice-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            background: var(--secondary-fixed);
+            color: var(--on-secondary-fixed);
+            white-space: nowrap;
+        }
+
+        /* Sticky bottom bar */
+        .bottom-cta-bar {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 248, 246, 0.96);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
+            padding: 0.75rem 1rem;
+            z-index: 45;
+        }
+
+        .cta-inner {
+            max-width: 680px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: var(--on-primary);
+            border: none;
+            padding: 0.75rem 1.4rem;
+            border-radius: 9999px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 62, 30, 0.25);
+            transition: opacity 0.2s;
+        }
+
+        .primary-btn:active {
+            opacity: 0.85;
+        }
+
+        /* Modal Backdrop & Sheets */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 27, 26, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 60;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-sheet {
+            width: 100%;
+            max-width: 520px;
+            background: var(--surface-container-lowest);
+            border-radius: 1.25rem 1.25rem 0 0;
+            padding: 1.25rem 1.25rem 2rem;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
+            animation: slideUp 0.25s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.45rem 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--surface-container);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Header with Back Navigation -->
+    <header class="pt-safe">
+        <div class="header-bar">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <a aria-label="Back to Home" class="font-manrope" href="<?= APP_URL ?>?page=index" target="_top"
+                    style="display: inline-flex; align-items: center; justify-content: center; padding: 0.45rem 1rem; border-radius: 9999px; background: var(--surface-container); border: 1.5px solid var(--outline-variant); text-decoration: none; color: var(--primary); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.04em; box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 3px; transition: 0.2s;"
+                    title="Back to Home">
+                    HOME
+                </a>
+                <div>
+                    <span class="font-manrope"
+                        style="font-size: 0.72rem; font-weight: 700; color: var(--secondary); text-transform: uppercase;">Community
+                        Market Hub</span>
+                    <h1 class="font-manrope"
+                        style="font-size: 1.05rem; font-weight: 800; color: var(--primary); line-height: 1.2;">💧
+                        Drinking Water Order</h1>
+                </div>
+            </div>
+            <a href="operations-and-fulfillment.html"
+                style="width: 36px; height: 36px; border-radius: 50%; background: rgba(26, 86, 50, 0.1); color: var(--primary-container); display: flex; align-items: center; justify-content: center; text-decoration: none;"
+                title="Water Logbook">
+                <span class="material-symbols-outlined" style="font-size: 20px;">local_shipping</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Form Content -->
+    <div class="form-wrapper">
+
+        <!-- 1. DELIVERY DETAILS -->
+        <div class="form-card">
+            <div class="section-title">
+                <span class="material-symbols-outlined" style="font-size: 20px;">person_pin_circle</span>
+                <span class="">1. Delivery Details</span>
+            </div>
+            <!-- Contact Info -->
+            <div style="margin-bottom: 0.85rem;">
+                <label class="input-label" for="contactInfo">When no one is around: I will call, text or pm you. <span class=""
+                        style="color: var(--error);">*</span></label>
+                <input class="text-input" id="contactInfo" placeholder="e.g., 0917 123 4567 or Messenger"
+                    type="text" value="">
+            </div>
+            <!-- Phase, Block, Lot (3 Column Grid) -->
+            <div>
+                <label class="input-label">Delivery Address</label>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                    <div>
+                        <input class="text-input" id="locPhase" placeholder="e.g., Ph 2" type="text" value="">
+                    </div>
+                    <div>
+                        <input class="text-input" id="locBlock" placeholder="e.g., Blk 12" type="text" value="">
+                    </div>
+                    <div>
+                        <input class="text-input" id="locLot" placeholder="e.g., Lot 5" type="text" value="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. BOTTLES & REFILLS -->
+        <div class="form-card">
+            <div class="section-title">
+                <span class="material-symbols-outlined" style="font-size: 20px;">water_drop</span>
+                <span class="">2. Water Refill Details</span>
+            </div>
+            <!-- Refill Stepper -->
+            <div class="stepper-row">
+                <div>
+                    <div class="font-manrope" style="font-weight: 700; font-size: 0.9rem; color: var(--on-surface);">Tubig Pa Refill</div>
+                    <div class="" style="font-size: 0.75rem; color: var(--outline);">₱30.00 each</div>
+                </div>
+                <div class="stepper-ctrl">
+                    <button class="step-btn" onclick="updateQty('refill', -1)" type="button">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">remove</span>
+                    </button>
+                    <span class="step-val" id="refillQtyDisplay">1</span>
+                    <button class="step-btn" onclick="updateQty('refill', 1)" type="button">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                    </button>
+                </div>
+            </div>
+            <!-- New Bottle Stepper -->
+            <div class="stepper-row">
+                <div>
+                    <div class="font-manrope" style="font-weight: 700; font-size: 0.9rem; color: var(--on-surface);">Mopalit bag-o na 5 Gallon with water</div>
+                    <div class="" style="font-size: 0.75rem; color: var(--outline);">₱200.00 each</div>
+                </div>
+                <div class="stepper-ctrl">
+                    <button class="step-btn" onclick="updateQty('bottle', -1)" type="button">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">remove</span>
+                    </button>
+                    <span class="step-val" id="bottleQtyDisplay">0</span>
+                    <button class="step-btn" onclick="updateQty('bottle', 1)" type="button">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Total Amount Due Live Badge -->
+            <div class=""
+                style="margin-top: 0.9rem; background: var(--surface-container); border-radius: 0.75rem; padding: 0.75rem 0.85rem; display: flex; align-items: center; justify-content: space-between;">
+                <span class="font-manrope"
+                    style="font-weight: 700; font-size: 0.9rem; color: var(--on-surface);">Total Due:</span><span
+                    class="font-manrope" id="subtotalDisplay"
+                    style="font-weight: 800; font-size: 1.15rem; color: var(--primary);">₱30.00</span>
+            </div>
+        </div>
+
+        <!-- 3. SPECIAL INSTRUCTIONS / REMARKS -->
+        <div class="form-card">
+            <div class="section-title">
+                <span class="material-symbols-outlined" style="font-size: 20px;">notes</span>
+                <span class="">3. Special Instructions / Remarks <span class=""
+                        style="font-size: 0.72rem; font-weight: 500; color: var(--outline); text-transform: none;">(Optional)</span></span>
+            </div>
+            <div>
+                <label class="input-label" for="orderRemarks">Notes for Rider / Station</label>
+                <textarea class="textarea-input" id="orderRemarks"
+                    placeholder="Your Delivery Request." rows="2"></textarea>
+            </div>
+        </div>
+
+        <!-- 4. PAYMENT DETAILS -->
+        <div class="form-card">
+            <div class="section-title">
+                <span class="material-symbols-outlined" style="font-size: 20px;">payments</span>
+                <span class="">4. Payment Details</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+                <!-- Payment Mode Selectors -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                    <label class="choice-card selected" id="paymode-cash-card">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input checked="" name="paymentMode" onchange="handlePaymentModeChange('cash')" type="radio"
+                                value="Cash">
+                            <span class="material-symbols-outlined" style="color: var(--primary);">price_check</span>
+                            <span class="font-manrope" style="font-size: 0.85rem; font-weight: 700;">Cash</span>
+                        </div>
+                    </label>
+                    <label class="choice-card" id="paymode-gcash-card">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input name="paymentMode" onchange="handlePaymentModeChange('gcash')" type="radio"
+                                value="GCash">
+                            <span class="material-symbols-outlined" style="color: #007dfe;">qr_code_2</span>
+                            <span class="font-manrope" style="font-size: 0.85rem; font-weight: 700;">GCash</span>
+                        </div>
+                    </label>
+                </div>
+                <!-- Cash Details Container -->
+                <div id="cashDetailsBox"
+                    style="background: var(--surface-container-low); border-radius: 0.75rem; padding: 0.75rem; display: block;">
+                    <div style="display: flex; flex-direction: column; gap: 0.55rem;">
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+                            <input name="cashAmountType" onchange="handleCashTypeChange(false)" type="radio"
+                                value="Exact amount" checked="">
+                            <span class="">Exact amount</span>
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+                            <input id="needChangeRadio" name="cashAmountType" onchange="handleCashTypeChange(true)"
+                                type="radio" value="Need change">
+                            <span class="">Need change</span>
+                        </label>
+                    </div>
+                    <!-- Need Change Inputs -->
+                    <div id="cashOnHandWrapper"
+                        style="display: none; margin-top: 0.75rem; padding-top: 0.65rem; border-top: 1px dashed var(--outline-variant);">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; align-items: center;">
+                            <div>
+                                <label class="input-label" for="cashOnHandInput">Cash on Hand (₱)</label>
+                                <input class="text-input" id="cashOnHandInput" min="0" oninput="calculateChange()"
+                                    placeholder="e.g., 200" step="any" type="number" value="">
+                            </div>
+                            <div>
+                                <label class="input-label" for="changeAmountDisplay">Calculated Change</label>
+                                <div class="font-manrope" id="changeAmountDisplay"
+                                    style="background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 0.65rem; padding: 0.65rem 0.85rem; font-weight: 800; color: var(--outline); font-size: 0.95rem; min-height: 42px; display: flex; align-items: center;">
+                                    ₱0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- GCash Details Container -->
+                <div id="gcashDetailsBox"
+                    style="display: none; background: rgba(0, 125, 254, 0.05); border: 1px solid rgba(0, 125, 254, 0.2); border-radius: 0.75rem; padding: 0.75rem;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <div class="" style="font-size: 0.8rem; font-weight: 700; color: #0056b3;">GCash Account Info:
+                        </div>
+                        <span class=""
+                            style="font-size: 0.7rem; background: #007dfe; color: #fff; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 700;">Verified</span>
+                    </div>
+                    <div class="font-manrope" style="font-size: 0.95rem; font-weight: 800; color: var(--on-surface);">
+                        M.O.C. • 0917 552 7512</div>
+                    <p class="" style="font-size: 0.72rem; color: var(--on-surface-variant); margin: 0.2rem 0 0.65rem;">
+                        Send payment and input the 13-digit transaction reference below.</p>
+                    <label class="input-label" for="gcashRefInput">Reference #</label>
+                    <input class="text-input" id="gcashRefInput" placeholder="e.g., Ref # 1002 9384 1928" type="text"
+                        value="">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sticky Bottom Review Bar -->
+    <div class="bottom-cta-bar pb-safe">
+        <div class="cta-inner"><button class="primary-btn" onclick="handleReviewOrderClick()"
+                style="width: 100%; max-width: 420px; margin: 0px auto; text-align: center; justify-content: center; padding: 0.85rem 2rem; font-size: 0.95rem; letter-spacing: 0.01em;"
+                type="button"><span class="font-manrope" style="font-weight: 700;">Review Order</span></button></div>
+    </div>
+
+    <!-- ORDER SUMMARY MODAL -->
+    <div class="modal-overlay" id="summaryModal">
+        <div class="modal-sheet">
+            <div
+                style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; border-bottom: 1px solid var(--surface-container-high); padding-bottom: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <div
+                        style="width: 38px; height: 38px; border-radius: 50%; background: rgba(0, 62, 30, 0.08); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                        <span class="material-symbols-outlined" style="font-size: 22px;">receipt_long</span>
+                    </div>
+                    <div>
+                        <h2 class="font-manrope"
+                            style="font-size: 1.15rem; font-weight: 800; color: var(--primary); line-height: 1.2;">Order
+                            Review</h2>
+                        <p class="" style="font-size: 0.75rem; color: var(--outline);">Please verify your details before
+                            submitting</p>
+                    </div>
+                </div><button aria-label="Close" onclick="closeOrderSummaryModal()"
+                    style="background: var(--surface-container); border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--outline);"
+                    type="button"><span class="material-symbols-outlined" style="font-size: 18px;">close</span></button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.25rem;">
+                <div
+                    style="background: var(--surface-container-low); border: 1px solid var(--surface-container-high); border-radius: 0.85rem; padding: 0.85rem;">
+                    <div class="font-manrope"
+                        style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.04em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">person_pin_circle</span>
+                        Delivery &amp; Contact
+                    </div>
+                    <div class="summary-item"><span class="" style="color: var(--outline);">Contact Info:</span><span
+                            class="font-manrope" id="sumContact"
+                            style="font-weight: 700; color: var(--on-surface); text-align: right;">-</span></div>
+                    <div class="summary-item" style="border-bottom: none;"><span class=""
+                            style="color: var(--outline);">Village Details:</span><span class="font-manrope"
+                            id="sumLocation" style="font-weight: 600; color: var(--on-surface);">-</span></div>
+                </div>
+                <div
+                    style="background: var(--surface-container-low); border: 1px solid var(--surface-container-high); border-radius: 0.85rem; padding: 0.85rem;">
+                    <div class="font-manrope"
+                        style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.04em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">water_drop</span> Items &amp;
+                        Fulfillment
+                    </div>
+                    <div class="summary-item"><span class="" style="color: var(--outline);">Refills:</span><span
+                            class="font-manrope" id="sumRefills" style="font-weight: 700;">0x (₱0.00)</span></div>
+                    <div class="summary-item"><span class="" style="color: var(--outline);">New Bottles:</span><span
+                            class="font-manrope" id="sumBottles" style="font-weight: 700;">0x (₱0.00)</span></div>
+                    <div class="summary-item" id="sumRemarksRow" style="display: none;"><span class=""
+                            style="color: var(--outline);">Instructions:</span><span class="font-manrope"
+                            id="sumRemarks"
+                            style="font-weight: 600; text-align: right; max-width: 60%; word-break: break-word;">-</span>
+                    </div>
+                    <div class="summary-item"><span class="" style="color: var(--outline);">Payment Method:</span><span
+                            class="font-manrope" id="sumPayment" style="font-weight: 700;">Cash</span></div>
+                    <div class="summary-item"
+                        style="border-bottom: none; padding-top: 0.65rem; margin-top: 0.25rem; border-top: 1px dashed var(--outline-variant);">
+                        <span class="font-manrope"
+                            style="font-weight: 800; font-size: 0.95rem; color: var(--primary);">Total Amount
+                            Due:</span><span class="font-manrope" id="sumTotal"
+                            style="font-weight: 800; font-size: 1.25rem; color: var(--primary);">₱0.00</span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.75rem;"><button onclick="closeOrderSummaryModal()"
+                    style="flex: 1; padding: 0.8rem 1rem; border-radius: 9999px; background: var(--surface-container); border: 1.5px solid var(--outline-variant); font-family: Manrope, sans-serif; font-weight: 700; font-size: 0.875rem; cursor: pointer; color: var(--on-surface); display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; transition: background 0.15s;"
+                    type="button"><span class="material-symbols-outlined" style="font-size: 17px;">edit</span><span
+                        class="">Update</span></button><button class="primary-btn" onclick="submitFinalOrder()"
+                    style="flex: 1.35; padding: 0.8rem 1.25rem; font-size: 0.875rem;" type="button"><span
+                        class="material-symbols-outlined" style="font-size: 18px;">check_circle</span><span
+                        class="">Submit Order</span></button></div>
+        </div>
+    </div>
+
+    <!-- SUCCESS ALERT MODAL -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-sheet" style="text-align: center; padding-top: 1.75rem;">
+            <div
+                style="width: 64px; height: 64px; border-radius: 50%; background: rgb(215, 245, 219); color: rgb(0, 62, 30); display: flex; align-items: center; justify-content: center; margin: 0.5rem auto 1.15rem; box-shadow: rgba(0, 62, 30, 0.15) 0px 6px 18px;">
+                <span class="material-symbols-outlined" style="font-size: 36px; font-weight: 700;">check</span>
+            </div>
+            <h2 class="font-manrope"
+                style="font-size: 1.3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.4rem;">Order
+                Submitted Successfully!</h2>
+            <p class=""
+                style="font-size: 0.875rem; color: var(--on-surface-variant); max-width: 330px; margin: 0px auto 1.25rem; line-height: 1.5;">
+                Thank you for your order! Your water replenishment request has been forwarded to Barangay Station #1.
+                Our rider will contact you upon dispatch.</p>
+            <div
+                style="background: var(--surface-container-low); border: 1px solid var(--surface-container-high); border-radius: 0.85rem; padding: 0.85rem; margin-bottom: 1.5rem; text-align: left; font-size: 0.825rem;">
+                <div
+                    style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; padding-bottom: 0.35rem; border-bottom: 1px dashed var(--outline-variant);">
+                    <span class="" style="color: var(--outline);">Tracking Ref:</span><span class="font-manrope"
+                        id="successOrderRef"
+                        style="font-weight: 800; color: var(--primary); font-size: 0.9rem;">WTR-8821</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;"><span class=""
+                        style="color: var(--outline);">Status:</span><span class=""
+                        style="color: #1a5632; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;"><span
+                            style="width: 7px; height: 7px; border-radius: 50%; background: #1a5632; display: inline-block;"></span>
+                        Confirmed &amp; Queued</span></div>
+            </div><button class="primary-btn" onclick="acknowledgeSuccess()"
+                style="width: 100%; padding: 0.85rem 1.5rem; font-size: 0.95rem;" type="button"><span
+                    class="">OK</span></button>
+        </div>
+    </div>
+    
+    <!-- Vanilla Interactive Logic -->
+    <script>
+        /* =========================================================
+           WATER ORDER FORM
+           Community Market Hub
+           ========================================================= */
+
+        const state = {
+            refillQty: 1,
+            bottleQty: 0,
+            priceRefill: 30,
+            priceBottle: 200,
+
+            paymentMode: 'Cash',
+            cashAmountType: 'Exact amount',
+            cashOnHand: 0,
+
+            gcashRef: ''
+        };
+
+        /* =========================================================
+           CALCULATE TOTAL
+           ========================================================= */
+
+        function recalculateTotal() {
+            const itemsTotal = (state.refillQty * state.priceRefill) + (state.bottleQty * state.priceBottle);
+            const grandTotal = itemsTotal;
+
+            // Total
+            const subtotalEl = document.getElementById('subtotalDisplay');
+            if (subtotalEl) {
+                subtotalEl.textContent = `₱${grandTotal.toFixed(2)}`;
+            }
+
+            calculateChange(grandTotal);
+            return grandTotal;
+        }
+
+        /* =========================================================
+           QUANTITY STEPPERS
+           ========================================================= */
+
+        function updateQty(type, delta) {
+            if (type === 'refill') {
+                state.refillQty = Math.max(0, state.refillQty + delta);
+                document.getElementById('refillQtyDisplay').textContent = state.refillQty;
+            }
+
+            if (type === 'bottle') {
+                state.bottleQty = Math.max(0, state.bottleQty + delta);
+                document.getElementById('bottleQtyDisplay').textContent = state.bottleQty;
+            }
+
+            recalculateTotal();
+        }
+
+        /* =========================================================
+           PAYMENT MODE
+           ========================================================= */
+
+        function handlePaymentModeChange(mode) {
+            state.paymentMode = mode === 'cash' ? 'Cash' : 'GCash';
+
+            const cashCard = document.getElementById('paymode-cash-card');
+            const gcashCard = document.getElementById('paymode-gcash-card');
+            const cashDetails = document.getElementById('cashDetailsBox');
+            const gcashDetails = document.getElementById('gcashDetailsBox');
+
+            if (mode === 'cash') {
+                cashCard.classList.add('selected');
+                gcashCard.classList.remove('selected');
+                cashDetails.style.display = 'block';
+                gcashDetails.style.display = 'none';
+                calculateChange();
+            } else {
+                cashCard.classList.remove('selected');
+                gcashCard.classList.add('selected');
+                cashDetails.style.display = 'none';
+                gcashDetails.style.display = 'block';
+            }
+        }
+
+        /* =========================================================
+           CASH TYPE
+           ========================================================= */
+
+        function handleCashTypeChange(isNeedChange) {
+            const wrapper = document.getElementById('cashOnHandWrapper');
+
+            if (isNeedChange) {
+                state.cashAmountType = 'Need change';
+                wrapper.style.display = 'block';
+                calculateChange();
+            } else {
+                state.cashAmountType = 'Exact amount';
+                wrapper.style.display = 'none';
+                state.cashOnHand = 0;
+            }
+        }
+
+        /* =========================================================
+           CALCULATE CHANGE
+           ========================================================= */
+
+        function calculateChange(currentTotal) {
+            const cashInput = document.getElementById('cashOnHandInput');
+            const changeDisplay = document.getElementById('changeAmountDisplay');
+
+            if (!changeDisplay) return;
+
+            if (state.paymentMode !== 'Cash') {
+                changeDisplay.textContent = '₱0.00';
+                changeDisplay.style.color = 'var(--outline)';
+                return;
+            }
+
+            if (state.cashAmountType === 'Exact amount') {
+                changeDisplay.textContent = 'Exact';
+                changeDisplay.style.color = 'var(--outline)';
+                return;
+            }
+
+            const total = currentTotal !== undefined ? currentTotal : ((state.refillQty * state.priceRefill) + (state.bottleQty * state.priceBottle));
+            const rawVal = cashInput ? cashInput.value.trim() : '';
+
+            if (rawVal === '') {
+                changeDisplay.textContent = '₱0.00';
+                changeDisplay.style.color = 'var(--outline)';
+                state.cashOnHand = 0;
+                return;
+            }
+
+            const onHand = parseFloat(rawVal) || 0;
+            state.cashOnHand = onHand;
+
+            if (onHand >= total) {
+                const difference = onHand - total;
+                changeDisplay.textContent = `₱${difference.toFixed(2)}`;
+                changeDisplay.style.color = 'var(--primary)';
+            } else {
+                changeDisplay.textContent = 'Insufficient amount';
+                changeDisplay.style.color = 'var(--error)';
+            }
+        }
+
+        /* =========================================================
+           CASH INPUT EVENTS
+           ========================================================= */
+
+        window.addEventListener('DOMContentLoaded', function () {
+            const cashInput = document.getElementById('cashOnHandInput');
+            if (cashInput) {
+                cashInput.addEventListener('input', function () { calculateChange(); });
+                cashInput.addEventListener('change', function () { calculateChange(); });
+            }
+            recalculateTotal();
+        });
+
+        /* =========================================================
+           REVIEW ORDER
+           ========================================================= */
+
+        function handleReviewOrderClick() {
+            const contact = document.getElementById('contactInfo').value.trim();
+            const phase = document.getElementById('locPhase').value.trim();
+            const block = document.getElementById('locBlock').value.trim();
+            const lot = document.getElementById('locLot').value.trim();
+            const remarks = document.getElementById('orderRemarks') ? document.getElementById('orderRemarks').value.trim() : '';
+
+            /* -----------------------------
+               VALIDATION
+            ----------------------------- */
+            if (!contact) {
+                alert('Please enter your contact information (Phone, Viber, or Messenger).');
+                document.getElementById('contactInfo').focus();
+                return;
+            }
+
+            if (state.refillQty === 0 && state.bottleQty === 0) {
+                alert('Please select at least 1 refill or 1 bottle.');
+                return;
+            }
+
+            /* -----------------------------
+               ADDRESS
+            ----------------------------- */
+            document.getElementById('sumContact').textContent = contact;
+
+            const locParts = [];
+            if (phase) locParts.push(`Ph ${phase}`);
+            if (block) locParts.push(`Blk ${block}`);
+            if (lot) locParts.push(`Lot ${lot}`);
+            
+            document.getElementById('sumLocation').textContent = locParts.length ? locParts.join(', ') : 'Not specified';
+
+            /* -----------------------------
+               ITEMS
+            ----------------------------- */
+            document.getElementById('sumRefills').textContent = `${state.refillQty}x (₱${(state.refillQty * 30).toFixed(2)})`;
+            document.getElementById('sumBottles').textContent = `${state.bottleQty}x (₱${(state.bottleQty * 200).toFixed(2)})`;
+
+            /* -----------------------------
+               REMARKS
+            ----------------------------- */
+            const remarksRow = document.getElementById('sumRemarksRow');
+            const sumRemarks = document.getElementById('sumRemarks');
+
+            if (remarks) {
+                sumRemarks.textContent = remarks;
+                remarksRow.style.display = 'flex';
+            } else {
+                remarksRow.style.display = 'none';
+            }
+
+            /* -----------------------------
+               PAYMENT
+            ----------------------------- */
+            const changeDisplay = document.getElementById('changeAmountDisplay');
+            if (state.paymentMode === 'Cash') {
+                if (state.cashAmountType === 'Need change') {
+                    const changeText = changeDisplay ? changeDisplay.textContent : '₱0.00';
+                    document.getElementById('sumPayment').textContent = `Cash (On Hand: ₱${state.cashOnHand.toFixed(2)}, Chg: ${changeText})`;
+                } else {
+                    document.getElementById('sumPayment').textContent = 'Cash (Exact amount)';
+                }
+            } else {
+                const ref = document.getElementById('gcashRefInput').value.trim();
+                document.getElementById('sumPayment').textContent = `GCash (Ref: ${ref || 'To be sent'})`;
+            }
+
+            /* -----------------------------
+               TOTAL
+            ----------------------------- */
+            const grandTotal = recalculateTotal();
+            document.getElementById('sumTotal').textContent = `₱${grandTotal.toFixed(2)}`;
+
+            /* -----------------------------
+               OPEN MODAL
+            ----------------------------- */
+            document.getElementById('summaryModal').classList.add('active');
+        }
+
+        window.openOrderSummaryModal = handleReviewOrderClick;
+
+        /* =========================================================
+           CLOSE REVIEW MODAL
+           ========================================================= */
+
+        function closeOrderSummaryModal() {
+            document.getElementById('summaryModal').classList.remove('active');
+        }
+
+        /* =========================================================
+           SUBMIT FINAL ORDER
+           ========================================================= */
+
+        function submitFinalOrder() {
+            /* -----------------------------
+               GET VALUES FROM ORIGINAL HTML
+            ----------------------------- */
+            const contactInfo = document.getElementById('contactInfo').value.trim();
+            const phase = document.getElementById('locPhase').value.trim();
+            const block = document.getElementById('locBlock').value.trim();
+            const lot = document.getElementById('locLot').value.trim();
+            
+            const remarks = document.getElementById('orderRemarks') ? document.getElementById('orderRemarks').value.trim() : '';
+            const gcashReference = document.getElementById('gcashRefInput') ? document.getElementById('gcashRefInput').value.trim() : '';
+
+            /* -----------------------------
+               CALCULATE TOTAL
+            ----------------------------- */
+            const totalAmountDue = (state.refillQty * state.priceRefill) + (state.bottleQty * state.priceBottle);
+
+            /* -----------------------------
+               CALCULATE AMOUNT GIVEN
+            ----------------------------- */
+            let amountGiven = 0;
+            let changeAmount = 0;
+
+            if (state.paymentMode === 'Cash') {
+                if (state.cashAmountType === 'Need change') {
+                    amountGiven = Number(state.cashOnHand) || 0;
+                    changeAmount = Math.max(0, amountGiven - totalAmountDue);
+                } else {
+                    amountGiven = totalAmountDue;
+                    changeAmount = 0;
+                }
+            } else {
+                amountGiven = totalAmountDue;
+                changeAmount = 0;
+            }
+
+            /* -----------------------------
+               BUILD FULL ADDRESS
+            ----------------------------- */
+            const addressParts = [];
+            if (phase) addressParts.push(`Ph ${phase}`);
+            if (block) addressParts.push(`Blk ${block}`);
+            if (lot) addressParts.push(`Lot ${lot}`);
+            const fullAddress = addressParts.join(', ');
+
+            /* -----------------------------
+               BUILD ORDER DATA
+            ----------------------------- */
+            const orderData = {
+                contactInfo: contactInfo,
+                address: fullAddress,
+                refillQty: state.refillQty,
+                bottleQty: state.bottleQty,
+                amountDue: totalAmountDue,
+                paymentType: state.paymentMode,
+                amountGiven: amountGiven,
+                change: changeAmount,
+                gcashReference: state.paymentMode === 'GCash' ? gcashReference : '',
+                status: 'Pending',
+                remarks: remarks
+            };
+
+            console.log('Submitting Water Order:', orderData);
+
+            /* -----------------------------
+               DISABLE SUBMIT BUTTON
+            ----------------------------- */
+            const submitButton = document.querySelector('#summaryModal .primary-btn');
+
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.6';
+                submitButton.style.pointerEvents = 'none';
+            }
+
+            closeOrderSummaryModal();
+
+            /* -----------------------------
+               SAVE TO GOOGLE SHEETS
+            ----------------------------- */
+            google.script.run
+                .withSuccessHandler(function (result) {
+                    console.log('Water order saved successfully:', result);
+
+                    let trackingRef = 'WTR-' + Math.floor(1000 + Math.random() * 9000);
+                    if (result && result.orderRef) {
+                        trackingRef = result.orderRef;
+                    }
+
+                    document.getElementById('successOrderRef').textContent = trackingRef;
+                    document.getElementById('successModal').classList.add('active');
+
+                    resetWaterOrderForm();
+                })
+                .withFailureHandler(function (error) {
+                    console.error('Water order save error:', error);
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.style.opacity = '1';
+                        submitButton.style.pointerEvents = 'auto';
+                    }
+                    alert('Unable to save the order.\n\n' + (error && error.message ? error.message : error));
+                })
+                .saveWaterOrder(orderData);
+        }
+
+        /* =========================================================
+           RESET FORM
+           ========================================================= */
+
+        function resetWaterOrderForm() {
+            /* Quantities */
+            state.refillQty = 1;
+            state.bottleQty = 0;
+            document.getElementById('refillQtyDisplay').textContent = '1';
+            document.getElementById('bottleQtyDisplay').textContent = '0';
+
+            /* Remarks */
+            const remarks = document.getElementById('orderRemarks');
+            if (remarks) remarks.value = '';
+
+            /* Payment */
+            state.paymentMode = 'Cash';
+            state.cashAmountType = 'Exact amount';
+            state.cashOnHand = 0;
+            state.gcashRef = '';
+
+            const cashRadio = document.querySelector('input[name="paymentMode"][value="Cash"]');
+            if (cashRadio) cashRadio.checked = true;
+
+            const gcashRadio = document.querySelector('input[name="paymentMode"][value="GCash"]');
+            if (gcashRadio) gcashRadio.checked = false;
+
+            const exactRadio = document.querySelector('input[name="cashAmountType"][value="Exact amount"]');
+            if (exactRadio) exactRadio.checked = true;
+
+            const needChangeRadio = document.querySelector('input[name="cashAmountType"][value="Need change"]');
+            if (needChangeRadio) needChangeRadio.checked = false;
+
+            const cashInput = document.getElementById('cashOnHandInput');
+            if (cashInput) cashInput.value = '';
+
+            const gcashInput = document.getElementById('gcashRefInput');
+            if (gcashInput) gcashInput.value = '';
+
+            handlePaymentModeChange('cash');
+            handleCashTypeChange(false);
+
+            /* Contact */
+            const contact = document.getElementById('contactInfo');
+            if (contact) contact.value = '';
+
+            /* Location */
+            const phase = document.getElementById('locPhase');
+            const block = document.getElementById('locBlock');
+            const lot = document.getElementById('locLot');
+
+            if (phase) phase.value = '';
+            if (block) block.value = '';
+            if (lot) lot.value = '';
+
+            recalculateTotal();
+        }
+
+        /* =========================================================
+           SUCCESS MODAL
+           ========================================================= */
+
+        function acknowledgeSuccess() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        /* =========================================================
+           INITIALIZE
+           ========================================================= */
+
+        document.addEventListener('DOMContentLoaded', function () {
+            recalculateTotal();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+
+<html lang="en" style="">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        name="viewport" />
+    <meta content="mobile_tab" name="shell-type" />
+    <title>Community Market Hub</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #003e1e;
+            --primary-container: #1a5632;
+            --on-primary: #ffffff;
+            --on-primary-container: #8dca9c;
+            --primary-fixed: #b2f1c1;
+            --on-primary-fixed: #00210e;
+
+            --secondary: #904d00;
+            --secondary-container: #fe932c;
+            --on-secondary: #ffffff;
+            --on-secondary-container: #663500;
+            --secondary-fixed: #ffdcc3;
+            --on-secondary-fixed: #2f1500;
+
+            --tertiary: #003c36;
+            --tertiary-container: #00554e;
+            --tertiary-fixed: #89f5e7;
+            --on-tertiary: #ffffff;
+
+            --surface: #fff8f6;
+            --surface-container-lowest: #ffffff;
+            --surface-container-low: #fbf2f0;
+            --surface-container: #f5ecea;
+            --surface-container-high: #efe6e4;
+            --surface-container-highest: #e9e1df;
+            --surface-dim: #e1d8d6;
+            --surface-tint: #2f6a44;
+
+            --on-surface: #1e1b1a;
+            --on-surface-variant: #404941;
+            --outline: #717971;
+            --outline-variant: #c0c9bf;
+            --inverse-surface: #342f2e;
+            --inverse-on-surface: #f8efed;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            width: 100%;
+            min-height: max(884px, 100dvh);
+            background-color: var(--surface);
+            color: var(--on-surface);
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            overscroll-behavior: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        .pt-safe {
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Typography helpers */
+        .font-title,
+        .font-headline-sm,
+        .font-headline-md,
+        .font-label-sm,
+        .font-label-md {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .text-title {
+            font-size: 1.125rem;
+            line-height: 1.5rem;
+            font-weight: 600;
+        }
+
+        .text-headline-sm {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .text-body-sm {
+            font-size: 0.875rem;
+            line-height: 1.4rem;
+        }
+
+        .text-label-sm {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .text-label-md {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            letter-spacing: 0.01em;
+            font-weight: 600;
+        }
+
+        /* Drawer Styles */
+        #drawer-toggle {
+            display: none;
+        }
+
+        #drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: rgba(52, 47, 46, 0.4);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #drawer-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 51;
+            width: 320px;
+            max-width: 85vw;
+            background: var(--surface-container-lowest);
+            box-shadow: 0 8px 24px -4px rgba(41, 37, 36, 0.16);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        #drawer-toggle:checked~#drawer-menu {
+            transform: translateX(0);
+        }
+
+        #drawer-toggle:checked~#drawer-backdrop {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Mobile Accordion Nav */
+        .drawer-accordion-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0.875rem;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--on-surface);
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s;
+        }
+
+        .drawer-accordion-btn:hover {
+            background: var(--surface-container-low);
+        }
+
+        .drawer-accordion-btn .chevron-icon {
+            transition: transform 0.25s ease;
+            color: var(--outline);
+        }
+
+        .drawer-accordion-btn.expanded .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        .drawer-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
+            padding-left: 2.25rem;
+            gap: 0.25rem;
+        }
+
+        .drawer-accordion-content.expanded {
+            max-height: 300px;
+            padding-bottom: 0.5rem;
+        }
+
+        .drawer-accordion-content a {
+            font-size: 0.825rem;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            padding: 0.4rem 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .drawer-accordion-content a:hover {
+            background: var(--surface-container);
+            color: var(--primary);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 40;
+            background: rgba(255, 248, 246, 0.96);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-content {
+            padding: 0.35rem 0.85rem 0.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        @media (min-width: 768px) {
+            .header-content {
+                padding: 0.5rem 2rem 0.6rem 2rem;
+            }
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 34px;
+            padding-left: 1.85rem;
+            padding-right: 2rem;
+            background: transparent;
+            border: none;
+            font-size: 0.825rem;
+            color: var(--on-surface);
+            outline: none;
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 0.25rem;
+            transform: translateY(-50%);
+            color: var(--outline);
+            pointer-events: none;
+            font-size: 18px;
+        }
+
+        .search-clear-btn {
+            position: absolute;
+            top: 50%;
+            right: 0.5rem;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            background: var(--surface-container-highest);
+            color: var(--on-surface-variant);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .search-clear-btn:hover {
+            background: var(--outline-variant);
+            color: var(--on-surface);
+        }
+
+        .search-clear-btn.visible {
+            display: flex;
+        }
+
+        /* Main Container */
+        main {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 96px 0.75rem 68px;
+        }
+
+        @media (min-width: 768px) {
+            main {
+                padding-left: 2rem;
+                padding-right: 2rem;
+                padding-top: 106px;
+            }
+        }
+
+        /* Promo Banner */
+        .promo-banner {
+            display: block;
+            border-radius: 14px;
+            padding: 0.65rem 0.875rem;
+            background: var(--surface-container);
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.25s ease;
+            margin-bottom: 0.75rem;
+        }
+
+        .promo-banner:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            background: var(--surface-container-high);
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--secondary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Catalog Responsive Grid */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.65rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 540px) {
+            .catalog-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.65rem;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .catalog-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.75rem;
+            }
+        }
+
+        /* Clean Catalog Card */
+        .catalog-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--surface-container-lowest);
+            border-radius: 0.875rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+        }
+
+        .catalog-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .catalog-card.hidden {
+            display: none !important;
+        }
+
+        /* Clean Card Media Header */
+        .card-media {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background: var(--surface-container);
+        }
+
+        .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .catalog-card:hover .card-media img {
+            transform: scale(1.04);
+        }
+
+        /* Coming Soon muted media filter */
+        .card-media.grayscale img {
+            filter: grayscale(85%) contrast(85%);
+            opacity: 0.8;
+        }
+
+        /* Card Details */
+        .card-body {
+            padding: 0.55rem 0.6rem 0.65rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .card-subtitle {
+            font-size: 0.72rem;
+            color: var(--outline);
+            margin-bottom: 0.15rem;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--on-surface);
+            line-height: 1.25;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.2s ease;
+        }
+
+        .catalog-card:hover .card-title {
+            color: var(--primary);
+        }
+
+        .card-desc {
+            font-size: 0.72rem;
+            color: var(--on-surface-variant);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 0.2rem;
+        }
+
+        /* Partner / Sponsor Placeholder style */
+        .partner-tile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 0.75rem;
+            text-align: center;
+            background: var(--surface-container-high);
+        }
+
+        /* Empty search state box */
+        .no-results-box {
+            display: none;
+            grid-column: 1 / -1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.25rem 1.25rem;
+            background: var(--surface-container-lowest);
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            margin: 0.5rem 0;
+        }
+
+        .no-results-box.show {
+            display: flex;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 40;
+            background: rgba(255, 248, 246, 0.95);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 54px;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 52px;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .bottom-nav a.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Carousel Container fixed to exactly 477x83 pixels */
+        .promo-carousel-container {
+            width: 100%;
+            max-width: 477px;
+            height: 83px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background: var(--surface, #ffffff);
+            border: 1px solid var(--outline-variant, #e1e3e1);
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        /* Track that holds all the slides side-by-side */
+        .promo-carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        /* Individual Slide Layout */
+        .promo-carousel-slide {
+            flex: 0 0 100%;
+            min-width: 100%;
+            height: 100%;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            box-sizing: border-box;
+        }
+
+        .promo-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .promo-content {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            margin-left: 0.75rem;
+            justify-content: center;
+        }
+
+        .promo-header {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 2px;
+        }
+
+        .promo-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .promo-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--on-surface, #1f1f1f);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+        }
+
+        .promo-desc {
+            color: var(--on-surface-variant, #444746);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.775rem;
+            margin: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Drawer Menu toggle & overlay -->
+    <input id="drawer-toggle" type="checkbox" />
+    <div id="drawer-backdrop" onclick="document.getElementById('drawer-toggle').checked=false"></div>
+    <!-- Off-canvas Navigation Drawer -->
+    <aside class="pt-safe pb-safe" id="drawer-menu">
+        <div>
+            <div
+                style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 1.25rem 1rem 1.25rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="font-title text-title" style="color: var(--primary);">Community Hub</span>
+                </div>
+                <label for="drawer-toggle"
+                    style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; color: var(--on-surface-variant);">
+                    <span class="material-symbols-outlined">close</span>
+                </label>
+            </div>
+            <div style="padding: 0.25rem 1.25rem 0.5rem 1.25rem;">
+                <span class="font-label-sm text-label-sm"
+                    style="color: var(--on-surface-variant); text-transform: uppercase;">Marketplace Navigation</span>
+            </div>
+            <nav style="display: flex; flex-direction: column; padding: 0.25rem 0.75rem; gap: 0.25rem;">
+                <!-- News & Promotions Drawer Accordion -->
+                <div>
+                    <button class="drawer-accordion-btn" onclick="toggleDrawerAccordion(this, 'drawer-news-content')"
+                        type="button">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span class="material-symbols-outlined" style="color: var(--secondary);">campaign</span>
+                            <span class="">News &amp; Promotions</span>
+                        </div>
+                        <span class="material-symbols-outlined chevron-icon">expand_more</span>
+                    </button>
+                    <div class="drawer-accordion-content" id="drawer-news-content">
+                        <a href="<?= APP_URL ?>?page=Inquiry" target="_top">
+                            <span class="material-symbols-outlined"
+                                style="font-size: 16px; color: var(--secondary);">ads_click</span>
+                            <span class="">Ads</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Consumables Drawer Accordion -->
+                <div>
+                    <button class="drawer-accordion-btn"
+                        onclick="toggleDrawerAccordion(this, 'drawer-consumables-content')" type="button">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span class="material-symbols-outlined"
+                                style="color: var(--primary-container);">shopping_basket</span>
+                            <span class="">Consumables</span>
+                        </div>
+                        <span class="material-symbols-outlined chevron-icon">expand_more</span>
+                    </button>
+                    <div class="drawer-accordion-content" id="drawer-consumables-content">
+    <!-- WATERFORM: Same page, removed duplicate target -->
+    <a href="<?= APP_URL ?>?page=waterForm" target="_top">
+        <span class="">💧 Drinking Water Station</span>
+    </a>
+
+    <!-- EGG INQUIRY: Corrected href & target -->
+    <a href="<?= APP_URL ?>?page=Inquiry&item=egg" target="_top">
+        <span>🥚 Organic White Egg</span>
+    </a>
+
+    <!-- HONEY INQUIRY: Corrected href & target -->
+    <a href="<?= APP_URL ?>?page=Inquiry&item=honey" target="_top">
+        <span>🍯 Marga’s Forest Honey</span>
+    </a>
+</div>
+                </div>
+                <!-- Operations Drawer Accordion -->
+                <div>
+                    <button class="drawer-accordion-btn" onclick="toggleDrawerAccordion(this, 'drawer-ops-content')"
+                        type="button">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span class="material-symbols-outlined"
+                                style="color: var(--surface-tint);">inventory_2</span>
+                            <span class="">Operations &amp; Logbooks</span>
+                        </div>
+                        <span class="material-symbols-outlined chevron-icon">expand_more</span>
+                    </button>
+                    <div class="drawer-accordion-content" id="drawer-ops-content">
+
+                        <a href="<?= APP_URL ?>?page=waterTable#water" target="_top">
+                            <span>💧 Water Data</span>
+                        </a>
+
+                        <a href="<?= APP_URL ?>?page=consumerTable#consumer" target="_top">
+                            <span>🧺 Consumer Data</span>
+                        </a>
+
+                        <a href="<?= APP_URL ?>?page=RidesTable#logistics" target="_top">
+                            <span>🛺 Rides Booking</span>
+                        </a>
+
+                    </div>
+                </div>
+                <a href="<?= APP_URL ?>?page=Inquiry" target="_top"
+                    style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0.875rem; border-radius: 8px; text-decoration: none; color: var(--on-surface);">
+                    <span class="material-symbols-outlined" style="color: var(--outline);">help_center</span>
+                    <span class="font-label-md text-label-md">Inquiry &amp; Support</span>
+                </a>
+            </nav>
+        </div>
+        <div style="padding: 1.25rem; background: var(--surface-container-low);">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div
+                    style="width: 34px; height: 34px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: var(--on-primary);">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">person</span>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <span class="font-label-md text-label-md" style="color: var(--on-surface);">Barangay Station
+                        #1</span>
+                    <span class="font-label-sm text-label-sm" style="color: var(--outline);">Verified Resident
+                        Portal</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <!-- Sticky Top Header -->
+    <header class="pt-safe">
+        <div class="header-content">
+            <!-- Ensure the row is full width -->
+            <div class="header-row" style="display: flex; align-items: center; width: 100%;">
+
+                <!-- Menu Button (Stays on the left) -->
+                <label for="drawer-toggle"
+                    style="height: 36px; display: flex; align-items: center; justify-content: center; gap: 0.25rem; cursor: pointer; border-radius: 9999px; color: var(--on-surface); padding: 0px 0.5rem 0px 0.25rem; background: var(--surface-container-low); z-index: 10;">
+                    <span class="material-symbols-outlined" style="font-size: 22px;">menu</span>
+                    <span class="font-label-sm"
+                        style="font-weight: 800; font-size: 1rem; letter-spacing: 0.05em; color: var(--on-surface);">MENU</span>
+                </label>
+
+                <!-- Title (Pushed all the way to the right) -->
+                <div style="margin-left: auto; width: max-content;">
+                    <span class="font-title text-title"
+                        style="color: var(--primary); font-weight: 700; letter-spacing: -0.01em; font-size: 1.2rem;">
+                        COMMUNITY MARKET HUB
+                    </span>
+                </div>
+
+            </div>
+        </div>
+        <!-- Search bar with category select prefix -->
+        <div class="search-box"
+            style="display: flex; align-items: center; background: var(--surface-container); border-radius: 9999px; border: 1px solid transparent; transition: background 0.2s, border-color 0.2s; padding: 1px 4px 1px 8px; height: 36px;">
+            <div class="category-select-wrapper"
+                style="display: inline-flex; align-items: center; position: relative; flex-shrink: 0;">
+                <span class="material-symbols-outlined"
+                    style="font-size: 18px; color: var(--primary); margin-right: 2px; pointer-events: none;">tune</span>
+                <select aria-label="Filter by category" id="headerCategorySelect"
+                    style="appearance: none; -webkit-appearance: none; background: transparent; border: none; font-family: 'Manrope', sans-serif; font-size: 0.775rem; font-weight: 700; color: var(--on-surface); padding-right: 1.25rem; padding-left: 0.2rem; cursor: pointer; outline: none; height: 34px;">
+                    <option selected="" value="all">All Services</option>
+                    <option value="consumables">Consumables</option>
+                    <option value="logistics">Logistics</option>
+                    <option value="home-tech">Home &amp; Tech</option>
+                </select>
+                <span class="material-symbols-outlined"
+                    style="position: absolute; right: 0; pointer-events: none; font-size: 16px; color: var(--outline);">expand_more</span>
+            </div>
+            <div
+                style="width: 1px; height: 18px; background: var(--outline-variant); margin: 0 0.4rem; flex-shrink: 0;">
+            </div>
+            <div style="position: relative; flex: 1; display: flex; align-items: center;">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input autocomplete="off" id="searchInput" placeholder="Search consumables, rides..." type="search" />
+                <button aria-label="Clear search input" class="search-clear-btn" id="searchClearBtn"
+                    title="Clear search" type="button">
+                    <span class="material-symbols-outlined" style="font-size: 14px;">close</span>
+                </button>
+            </div>
+        </div>
+        </div>
+    </header>
+    <!-- Main View -->
+    <main>
+        <!-- Promo / News Banner -->
+        <div class="promo-carousel-container"
+            style="width: 100vw; max-width: 100vw; position: relative; left: 50%; transform: translateX(-50%); border: none !important; border-radius: 0 !important; background: transparent !important; height: auto !important; min-height: 82px; overflow: hidden; margin-bottom: 1.5rem;">
+            <div class="promo-carousel-track" id="promoCarouselTrack"
+                style="display: flex; width: 100%; height: auto; align-items: stretch; transition: transform 0.8s ease-in-out;">
+
+                <!-- SLIDE 1: WATER DELIVERY -->
+                <div class="promo-carousel-slide"
+                    style="flex: 0 0 100%; width: 100%; height: auto; box-sizing: border-box;">
+                    <a href="<?= APP_URL ?>?page=waterForm" target="_top"
+                        style="text-decoration: none; display: flex; align-items: center; width: 100%; background: #1a5632; color: #ffffff; padding: 1.25rem 1rem; min-height: 100%; box-sizing: border-box;">
+                        <div
+                            style="width: 100%; max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-start; gap: 1rem;">
+                            <span class="material-symbols-outlined"
+                                style="font-size: 2.8rem; color: #fe932c;">water_drop</span>
+                            <div>
+                                <h3 class="font-manrope"
+                                    style="font-size: 1.15rem; font-weight: 800; margin: 0; line-height: 1.2;">
+                                    I-click lang, kami na'y mo-hatod ug tubig ma inom sa inyo pultahan.
+                                </h3>
+                                <p style="font-size: 0.85rem; margin: 0.2rem 0 0; color: #b2f1c1; line-height: 1.4;">
+                                    We deliver straight to your door for only ₱30! No need to wait for delivery bao-bao
+                                    to pass by.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- SLIDE 2: RIDE DISPATCH -->
+                <div class="promo-carousel-slide"
+                    style="flex: 0 0 100%; width: 100%; height: auto; box-sizing: border-box;">
+                    <a href="<?= APP_URL ?>?page=Inquiry" target="_top"
+                        style="text-decoration: none; display: flex; align-items: center; width: 100%; background: #904d00; color: #ffffff; padding: 1.25rem 1rem; min-height: 100%; box-sizing: border-box;">
+                        <div
+                            style="width: 100%; max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-start; gap: 1rem;">
+                            <span class="material-symbols-outlined"
+                                style="font-size: 2.8rem; color: #ffdcc3;">local_taxi</span>
+                            <div>
+                                <h3 class="font-manrope"
+                                    style="font-size: 1.15rem; font-weight: 800; margin: 0; line-height: 1.2;">
+                                    Init maglakaw mangita ug masakyan?
+                                </h3>
+                                <p style="font-size: 0.85rem; margin: 0.2rem 0 0; color: #ffdcc3; line-height: 1.4;">
+                                    Book a Bao-bao or Tricycle to Ampayon, CSU, or Market right from your block.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- SLIDE 2: WATER BILL PAYMENT -->
+                <div class="promo-carousel-slide"
+                    style="flex: 0 0 100%; width: 100%; height: auto; box-sizing: border-box;">
+                    <a href="<?= APP_URL ?>?page=waterForm" target="_top"
+                        style="text-decoration: none; display: flex; align-items: center; width: 100%; background: #004d40; color: #ffffff; padding: 1.25rem 1rem; min-height: 100%; box-sizing: border-box;">
+                        <div
+                            style="width: 100%; max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-start; gap: 1rem;">
+                            <span class="material-symbols-outlined"
+                                style="font-size: 2.8rem; color: #80cbc4;">receipt_long</span>
+                            <div>
+                                <h3 class="font-manrope"
+                                    style="font-size: 1.15rem; font-weight: 800; margin: 0; line-height: 1.2;">
+                                    Kapoy maglinya para lang magbayad ug bill?
+                                </h3>
+                                <p style="font-size: 0.85rem; margin: 0.2rem 0 0; color: #b2dfdb; line-height: 1.4;">
+                                    Sabay ta bayad water bill kay mo adto ra man gihapon ko pag bayad sa akong bill.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- SLIDE 3: FRESH SEAFOOD / MEAT (COMING SOON) -->
+                <div class="promo-carousel-slide"
+                    style="flex: 0 0 100%; width: 100%; height: auto; box-sizing: border-box;">
+                    <a href="<?= APP_URL ?>?page=Inquiry" target="_top"
+                        style="text-decoration: none; display: flex; align-items: center; width: 100%; background: #00210e; color: #ffffff; padding: 1.25rem 1rem; min-height: 100%; box-sizing: border-box;">
+                        <div
+                            style="width: 100%; max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-start; gap: 1rem;">
+                            <span class="material-symbols-outlined"
+                                style="font-size: 2.8rem; color: #8dca9c;">set_meal</span>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
+                                    <span
+                                        style="background: #fe932c; color: #663500; font-size: 0.65rem; font-weight: 800; padding: 0.15rem 0.4rem; border-radius: 4px; text-transform: uppercase;">Coming
+                                        Soon</span>
+                                    <h3 class="font-manrope"
+                                        style="font-size: 1.15rem; font-weight: 800; margin: 0; line-height: 1.2;">Sabay
+                                        Ta Order: Preskong Isda</h3>
+                                </div>
+                                <p style="font-size: 0.85rem; margin: 0; color: #b2f1c1; line-height: 1.4;">
+                                    Direct from the boat Bariles & Yellowfin Tuna! Mas presko ug mas mura kaysa
+                                    palengke.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- SLIDE 4: SCHOOL POOLING (COMING SOON) -->
+                <div class="promo-carousel-slide"
+                    style="flex: 0 0 100%; width: 100%; height: auto; box-sizing: border-box;">
+                    <a href="<?= APP_URL ?>?page=Inquiry" target="_top"
+                        style="text-decoration: none; display: flex; align-items: center; width: 100%; background: #663500; color: #ffffff; padding: 1.25rem 1rem; min-height: 100%; box-sizing: border-box;">
+                        <div
+                            style="width: 100%; max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-start; gap: 1rem;">
+                            <span class="material-symbols-outlined"
+                                style="font-size: 2.8rem; color: #ffb77d;">school</span>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
+                                    <span
+                                        style="background: #ffb77d; color: #2f1500; font-size: 0.65rem; font-weight: 800; padding: 0.15rem 0.4rem; border-radius: 4px; text-transform: uppercase;">Coming
+                                        Soon</span>
+                                    <h3 class="font-manrope"
+                                        style="font-size: 1.15rem; font-weight: 800; margin: 0; line-height: 1.2;">Sabay
+                                        Ta Sakay: School Pooling</h3>
+                                </div>
+                                <p style="font-size: 0.85rem; margin: 0; color: #ffdcc3; line-height: 1.4;">
+                                    Stop paying for expensive special rides. Share a daily ride to CSU, NEMA, and
+                                    Central.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Automation Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const track = document.getElementById('promoCarouselTrack');
+                const slides = track.children;
+                let currentIndex = 0;
+                const totalSlides = slides.length;
+
+                // Slide every 5 seconds
+                setInterval(function () {
+                    currentIndex++;
+                    if (currentIndex >= totalSlides) {
+                        currentIndex = 0;
+                    }
+                    track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+                }, 40000);
+            });
+        </script>
+        <!-- Grid Header Context -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.45rem;">
+            <div>
+                <span class="font-label-sm text-label-sm"
+                    style="color: var(--outline); text-transform: uppercase; font-size: 0.7rem;">Hub Marketplace</span>
+                <h3 class="font-headline-sm text-headline-sm" style="color: var(--on-surface); font-size: 1.05rem;">
+                    Neighborhood Directory</h3>
+            </div>
+            <div
+                style="display: flex; align-items: center; gap: 0.35rem; background: var(--surface-container-low); padding: 0.2rem 0.55rem; border-radius: 9999px;">
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--surface-tint);"></span>
+                <span class="font-label-sm text-label-sm" id="stallCountIndicator"
+                    style="color: var(--on-surface); font-size: 0.72rem;">15 Stalls Listed</span>
+            </div>
+        </div>
+        <!-- Clean Catalog Grid -->
+        <div class="catalog-grid" id="catalogGrid">
+            <!-- Card 1: Drinking Water (Consumables) -->
+            <a class="catalog-card" data-category="consumables"
+                data-keywords="mineral alkaline drinking water station refill jug village supply"
+                href="<?= APP_URL ?>?page=waterForm" target="_top">
+                <div class="card-media">
+                    <img alt="Drinking Water Refill Station"
+                        src="https://www.dropbox.com/scl/fi/hii0kptw2d23ce5xokhlb/REFILL.jpg?rlkey=pzab4tmvzxec19cbqhwnbxie3&st=jbuok6r9&raw=1" />
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Mo deliver kami!</span>
+                    <h4 class="card-title">Drinking Water</h4>
+                    <p class="card-desc">Pa Refill Na!</p>
+                </div>
+            </a>
+
+            <!-- Card 5: Bao-bao / Tricycle (Logistics) -->
+            <a class="catalog-card" data-category="logistics"
+                data-keywords="tricycle ride bao-bao transport dispatch pasada logistics express delivery hauler"
+                href="<?= APP_URL ?>?page=Rides" target="_top">
+
+                <div class="card-media">
+                    <img alt="Tricycle transport service"
+                        src="https://www.dropbox.com/scl/fi/9vk0h4hpbz1boxn8zeu8g/ride.jpg?rlkey=arqdqowrr1cwxcv37utsp5ck0&st=k4hjp1qb&raw=1">
+                </div>
+
+                <div class="card-body">
+                    <span class="card-subtitle">Na ngita mo ma sakyan?</span>
+                    <h4 class="card-title">Bao-bao / Tricycle</h4>
+                    <p class="card-desc">Pa book na!</p>
+                </div>
+
+            </a>
+            <!-- Card 9: Document Printing (Home & Tech) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="printing hub stationery rush photo plans scan copy a4 tech"
+                href="<?= APP_URL ?>?page=Inquiry" target="_top">
+
+                <div class="card-media">
+                    <img alt="Stationery and Printing Services"
+                        src="https://www.dropbox.com/scl/fi/abve4tcafi382z7l5ujqy/print.jpg?rlkey=sph6mdnwqeyxbpemsl7wp14wx&st=w2x2g93p&raw=1">
+                </div>
+                
+                <div class="card-body">
+                    <span class="card-subtitle">Long and Short Printing</span>
+                    <h4 class="card-title">Printing Hub</h4>
+                    <p class="card-desc">Document print and rush photo</p>
+                </div>
+            </a>
+
+            <!-- Card 10: Drone & Video (Home & Tech) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="drone aerial video mapping survey filming events real estate tech"
+                href="<?= APP_URL ?>?page=Inquiry" target="_top">
+                <div class="card-media">
+                    <img alt="Drone Coverage and Video Filming"
+                        src="https://www.dropbox.com/scl/fi/394fortqbq99x19d27n45/drone.jpg?rlkey=ch635cygd0x037hgxgtde9wx1&st=z7buq00w&raw=1">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Aerial Media</span>
+                    <h4 class="card-title">Drone &amp; Video</h4>
+                    <p class="card-desc">Events &amp; real estate filming</p>
+                </div>
+            </a>
+            <!-- Card 2: Organic White Egg (Consumables) -->
+            <a class="catalog-card" data-category="consumables"
+                data-keywords="organic fresh table egg farm direct morning harvest tray poultry"
+                href="<?= APP_URL ?>?page=consumerForm" target="_top" style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">                  
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="Organic White Eggs Tray"
+                        src="https://www.dropbox.com/scl/fi/bc2u3z7b9k4z0iuw4k930/eggs.jpg?rlkey=slgyxxx3a8mgtfiq4r0phjd4e&st=d4hzgy4k&raw=1" />
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Direct From The Farm</span>
+                    <h4 class="card-title">Organic White Egg</h4>
+                    <p class="card-desc">Order Na!</p>
+                </div>
+            </a>
+            <!-- Card 3: Marga’s Honey (Consumables) -->
+            <a class="catalog-card" data-category="consumables"
+                data-keywords="pure wild forest honey raw unpasteurized organic jar sweet bee"
+                href="<?= APP_URL ?>?page=consumerForm" target="_top" style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">                  
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="Pure Wild Forest Honey Jar"
+                        src="https://www.dropbox.com/scl/fi/mkh98lyi1ldxi20h64psj/honey.jpg?rlkey=wtkqvfvbnn7h5hmpfb0zx6nx4&st=97db5p3r&raw=1" />
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle" style="color: var(--secondary); font-weight: 600;">Pure Honey</span>
+                    <h4 class="card-title">Marga’s Honey</h4>
+                    <p class="card-desc">Lapad & Longneck</p>
+                </div>
+            </a>
+
+            <!-- Card 4: Fresh Meats Bundle (Consumables) -->
+            <a class="catalog-card" data-category="consumables"
+                data-keywords="fresh meats wet market pork chicken fish butcher food" href="<?= APP_URL ?>?page=index"
+                target="_top" style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="Wet Market Meats Bundle"
+                        src="https://www.dropbox.com/scl/fi/trw4zmvq1l9r4sqqdk6vp/FRESH-MEATS.jpg?rlkey=y3rxkb9zf4vl5784wvi05un3k&st=m004gtd6&raw=1">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Wet Market Bundles</span>
+                    <h4 class="card-title">Fresh Meats</h4>
+                    <p class="card-desc">Pork, fish, &amp; chicken</p>
+                </div>
+            </a>
+
+            <!-- Card 6: School Pooling (Logistics) -->
+            <a class="catalog-card" data-category="logistics"
+                data-keywords="school pooling van service rides student commute shuttle logistics"
+                href="<?= APP_URL ?>?page=index" target="_top"
+                style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="School pooling van service"
+                        src="https://www.dropbox.com/scl/fi/w3kzlvtzilk4oj9tvxmqu/school-pooling.jpg?rlkey=fdc2lo9rxs6j2hge26rib7jy5&st=k7wrtu1p&raw=1">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Shared Ride</span>
+                    <h4 class="card-title">School Pooling</h4>
+                    <p class="card-desc">Back &amp; forth student rides</p>
+                </div>
+            </a>
+
+            <!-- Card 8: Partner With Us / Sponsor Spot (Home & Tech / Services) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="partner sponsor ad reservation merchant billboard business promotion directory"
+                href="<?= APP_URL ?>?page=index" target="_top">
+                <div class="card-media">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: var(--secondary-container); color: var(--on-secondary-container); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.06em; padding: 3px 9px; border-radius: 9999px; text-transform: uppercase;"
+                        class="">Slot Open</div>
+                    <div class="partner-tile">
+                        <div
+                            style="width: 44px; height: 44px; border-radius: 50%; background: var(--tertiary-container); color: var(--tertiary-fixed); display: flex; align-items: center; justify-content: center; margin-bottom: 0.4rem;">
+                            <span class="material-symbols-outlined" style="font-size: 22px;">storefront</span>
+                        </div>
+                        <span class="font-headline-sm" style="font-size: 0.95rem; color: var(--on-surface);">AD SPACE
+                            FOR YOU</span>
+                        <span class="text-label-sm"
+                            style="color: var(--on-surface-variant); margin-top: 0.15rem; font-size: 0.68rem;">Reserve
+                            Your Spot Now</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Neighborhood Billboard</span>
+                    <h4 class="card-title">Your Ad Here</h4>
+                    <p class="card-desc">Reserve local merchant spot</p>
+                </div>
+            </a>
+            <!-- Card 8: Partner With Us / Sponsor Spot (Home & Tech / Services) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="partner sponsor ad reservation merchant billboard business promotion directory"
+                href="<?= APP_URL ?>?page=index" target="_top">
+                <div class="card-media">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: var(--secondary-container); color: var(--on-secondary-container); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.06em; padding: 3px 9px; border-radius: 9999px; text-transform: uppercase;"
+                        class="">Slot Open</div>
+                    <div class="partner-tile">
+                        <div
+                            style="width: 44px; height: 44px; border-radius: 50%; background: var(--tertiary-container); color: var(--tertiary-fixed); display: flex; align-items: center; justify-content: center; margin-bottom: 0.4rem;">
+                            <span class="material-symbols-outlined" style="font-size: 22px;">storefront</span>
+                        </div>
+                        <span class="font-headline-sm" style="font-size: 0.95rem; color: var(--on-surface);">AD SPACE
+                            FOR YOU</span>
+                        <span class="text-label-sm"
+                            style="color: var(--on-surface-variant); margin-top: 0.15rem; font-size: 0.68rem;">Reserve
+                            Your Spot Now</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Neighborhood Billboard</span>
+                    <h4 class="card-title">Your Ad Here</h4>
+                    <p class="card-desc">Reserve local merchant spot</p>
+                </div>
+            </a>
+            <!-- Card 7: PasaBuy S&R (Logistics) -->
+            <a class="catalog-card" data-category="logistics"
+                data-keywords="pasabuy bulk grocery wholesale buying courier runner logistics"
+                href="<?= APP_URL ?>?page=index" target="_top"
+                style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="PasaBuy Wholesale Delivery"
+                        src="https://www.dropbox.com/scl/fi/4f0w61pnim28zec5ua6v9/S-R.jpg?rlkey=6tepv78kg1txfz77djruzfymz&st=7zll5hkv&raw=1">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Bulk Grocery</span>
+                    <h4 class="card-title">PasaBuy S&amp;R</h4>
+                    <p class="card-desc">Wholesale buying dispatch</p>
+                </div>
+            </a>
+
+            <!-- Card 11: Architecture Plans (Home & Tech) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="architecture plans CAD drawings blue print permit building house home design"
+                href="<?= APP_URL ?>?page=index" target="_top"
+                style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="Architectural drawings drafting"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCmSvoVOu2TlLyUlMYp8LvtKN9EB2FIWCMEIXz6cvhXB15-RikAnj0VWpb_oExKaFPKIbaKY1B7gj5jnScvZeZpXYUUXL8cf6ZrN7VjTftapB2pkHuYBrcLT5wiEdlO1w_h_X4v3vNa-YtMpUysRPchAeB-DypWyuEWz3pFYFMqL4uZOiA8cLGX37wHIup0jIMfng72ruDKoGVKoIsmEk_uezu4CZNiFgulrT4UVgmfntf6FWy9t8g">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Permit Ready CAD</span>
+                    <h4 class="card-title">Architecture Plans</h4>
+                    <p class="card-desc">Working drawings &amp; permits</p>
+                </div>
+            </a>
+            <!-- Card 12: Portrait Art (Home & Tech / Creative) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="portrait art charcoal sketch handmade gift drawing painting keepsake"
+                href="<?= APP_URL ?>?page=index" target="_top"
+                style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="Portrait Art Sketches"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4oVylB4JLur9tgh_QcM5iLdYAmR4r3g3pslOI_YcaRZQn5u5Msxx5mcLfnlDfTxAbCOZrLpPlcz0HRCtzjV_qPUvGQPjfWVaSfrkDsmnY36XBhoi2hkA2HRpn2fB22BbdJIGpbGfoXxJnKvXqBh3I-GcArItK-w4zlSYQkeuDaspP4arOv97MqzK9y7PdtpU9KIybQ6dbd2Sqzx9Zoj5TsPsEsEB-8WwRyU6xY3klF5Y0PuqkQp-f">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Handmade Keepsake</span>
+                    <h4 class="card-title">Portrait Art</h4>
+                    <p class="card-desc">Charcoal &amp; custom gifts</p>
+                </div>
+            </a>
+            <!-- Card 13: Web Design (Home & Tech) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="web design website digital solutions development online storefront tech"
+                href="<?= APP_URL ?>?page=index" target="_top"
+                style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="Responsive Web Design Services"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB44Wkz_UxGICn_fF7UypHLfkTJkcAIF7WaelFJpqWPS2ryBHRix2F2QvSEjPu-vqhGB3T8au0URXK7MapEA80kVMlRHYARWGgW0W3b2dgEDbU4JcyuXpoEbDivgLsY6G5XfybNA-8yztlXd8NWsbJX5tDzIKDCHa7Q_AeUxj0pEEuVMxBJ0xUp91v0-aPlW8z-pL24QgZwWqbO-jGYuhySF8NFTOlKl_9JNDXJ7vhCcUBplJ7mWZ6K">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Digital Solutions</span>
+                    <h4 class="card-title">Web Design</h4>
+                    <p class="card-desc">Local shop storefronts</p>
+                </div>
+            </a>
+            <!-- Card 14: Structural Permit (Home & Tech) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="structural permit engineering sign seal civil building municipal tech"
+                href="<?= APP_URL ?>?page=index" target="_top"
+                style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="Structural and Engineering Permits"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkSv7-qsxVXILAoMixBC2Ocmq3oa9bEjCT6W6HOCv8V4GiAapQNgLHQUNe18yHcTOxiQeiqO3H_PmDtvARlq1L3_HS0-mYYRR9HX8GMRQpvuEtVRU9Z-FKTD92YVyTYVsjanE9IN8mSeAIp09s-gJSHM7j4E8PW9fChuTUcAI6jRuyVQAAbKXkzZwXeBvat3aD-6tCiX79QWTZ18mA9O-JCv2RAJDPmf0geQjuDIUPusZpT5OonlOQ">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Civil &amp; Municipal</span>
+                    <h4 class="card-title">Structural Permit</h4>
+                    <p class="card-desc">Sign &amp; seal certifications</p>
+                </div>
+            </a>
+            <!-- Card 15: Online Math Tutor (Home & Tech) -->
+            <a class="catalog-card" data-category="home-tech"
+                data-keywords="online math tutor coaching education tutorial lesson senior high elem tech"
+                href="<?= APP_URL ?>?page=index" target="_top"
+                style="opacity: 0.85; cursor: not-allowed; pointer-events: none;">
+                <div class="card-media grayscale">
+                    <div style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(30, 27, 26, 0.78); color: rgb(255, 255, 255); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 9999px; backdrop-filter: blur(4px); text-transform: uppercase;"
+                        class="">Coming Soon</div>
+                    <img alt="Online Math Tutoring Session"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwbUZ_Z-zBBDjNKTSYMbO9GtFlqkPTYNF7AROtDOKFnKTpVwKst0WP6LrABgfu3PqHXI5CG2u80e8Xr9aUfjs_GXP_ErRfTaKIrsJjaV5AOWeB90nCOkcr7lw4y4XflImPRd4r4MI2ymrmP5gUt_T7kEHGT7DW8-iEedu0R-adpkP2dIiI_hB5weXEDx0NLp5Hbx25TrL-6y8dK2L2Qx_6Ly9Fxs8VvRlYZFANLbkTRWq29cSeoPuf">
+                </div>
+                <div class="card-body">
+                    <span class="card-subtitle">Academic Coaching</span>
+                    <h4 class="card-title">Online Math Tutor</h4>
+                    <p class="card-desc">Elem to Senior High 1-on-1</p>
+                </div>
+            </a>
+            <!-- Clean Empty State Container when 0 matches found -->
+            <div class="no-results-box" id="noResultsState">
+                <div
+                    style="width: 48px; height: 48px; border-radius: 50%; background: var(--surface-container); display: flex; align-items: center; justify-content: center; color: var(--outline); margin-bottom: 0.65rem;">
+                    <span class="material-symbols-outlined" style="font-size: 26px;">search_off</span>
+                </div>
+                <h4 class="font-headline-sm" style="font-size: 1rem; color: var(--on-surface); margin-bottom: 0.25rem;">
+                    No matching stalls found</h4>
+                <p class="text-body-sm"
+                    style="color: var(--on-surface-variant); font-size: 0.8rem; max-width: 280px; margin-bottom: 0.85rem;">
+                    Try adjusting your search terms or reset the category filter to view all listings.
+                </p>
+                <button id="clearSearchStateBtn"
+                    style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 1rem; border-radius: 9999px; background: var(--primary); color: var(--on-primary); border: none; font-family: 'Manrope', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer;"
+                    type="button">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">restart_alt</span>
+                    <span class="">Reset All Filters</span>
+                </button>
+            </div>
+        </div>
+        <!-- Clean Empty State Container when 0 matches found -->
+        <div class="no-results-box" id="noResultsState">
+            <div
+                style="width: 48px; height: 48px; border-radius: 50%; background: var(--surface-container); display: flex; align-items: center; justify-content: center; color: var(--outline); margin-bottom: 0.65rem;">
+                <span class="material-symbols-outlined" style="font-size: 26px;">search_off</span>
+            </div>
+            <h4 class="font-headline-sm" style="font-size: 1rem; color: var(--on-surface); margin-bottom: 0.25rem;">
+                No matching stalls found</h4>
+            <p class="text-body-sm"
+                style="color: var(--on-surface-variant); font-size: 0.8rem; max-width: 280px; margin-bottom: 0.85rem;">
+                Try adjusting your search terms or reset the category filter to view all listings.
+            </p>
+            <button id="clearSearchStateBtn"
+                style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 1rem; border-radius: 9999px; background: var(--primary); color: var(--on-primary); border: none; font-family: 'Manrope', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer;"
+                type="button">
+                <span class="material-symbols-outlined" style="font-size: 16px;">restart_alt</span>
+                <span class="">Reset All Filters</span>
+            </button>
+        </div>
+        </div>
+    </main>
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav pb-safe">
+        <a class="active" data-path="marketplace-dashboard" href="<?= APP_URL ?>?page=consumerForm">
+            <span class="material-symbols-outlined">storefront</span>
+            <span class="font-label-sm text-label-sm">Market</span>
+        </a>
+        <a data-path="consumables-catalog" href="<?= APP_URL ?>?page=consumerForm">
+            <span class="material-symbols-outlined">egg_alt</span>
+            <span class="font-label-sm text-label-sm">Goods</span>
+        </a>
+        <a data-path="operations-and-fulfillment" href="<?=APP_URL ?>?page=consumerForm">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span class="font-label-sm text-label-sm">Orders</span>
+        </a>
+        <a data-path="community-Inquiry" href="<?=APP_URL ?>?page=Inquiry">
+            <span class="material-symbols-outlined">contact_support</span>
+            <span class="font-label-sm text-label-sm">Support</span>
+        </a>
+    </nav>
+    <!-- Real-time Multi-factor Search & Dropdown Vanilla JS -->
+    <script>
+        (function () {
+            const searchInput = document.getElementById('searchInput');
+            const headerCategorySelect = document.getElementById('headerCategorySelect');
+            const searchClearBtn = document.getElementById('searchClearBtn');
+            const clearSearchStateBtn = document.getElementById('clearSearchStateBtn');
+            const noResultsState = document.getElementById('noResultsState');
+            const stallCountIndicator = document.getElementById('stallCountIndicator');
+            const catalogCards = document.querySelectorAll('#catalogGrid .catalog-card');
+
+            function applyFilters() {
+                const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+                const selectedCategory = headerCategorySelect ? headerCategorySelect.value.trim().toLowerCase() : 'all';
+
+                // Toggle clear search button visibility
+                if (searchClearBtn) {
+                    if (query.length > 0) {
+                        searchClearBtn.classList.add('visible');
+                    } else {
+                        searchClearBtn.classList.remove('visible');
+                    }
+                }
+
+                let visibleCount = 0;
+
+                catalogCards.forEach(card => {
+                    const cardCategory = (card.getAttribute('data-category') || '').trim().toLowerCase();
+                    const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+                    const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+                    const subtitle = (card.querySelector('.card-subtitle')?.textContent || '').toLowerCase();
+                    const desc = (card.querySelector('.card-desc')?.textContent || '').toLowerCase();
+
+                    // 1. Check category match
+                    let categoryMatches = false;
+                    if (selectedCategory === 'all' || selectedCategory === '') {
+                        categoryMatches = true;
+                    } else if (selectedCategory === 'consumables' && cardCategory === 'consumables') {
+                        categoryMatches = true;
+                    } else if (selectedCategory === 'logistics' && cardCategory === 'logistics') {
+                        categoryMatches = true;
+                    } else if ((selectedCategory === 'home-tech' || selectedCategory === 'services' || selectedCategory === 'home & tech') &&
+                        (cardCategory === 'home-tech' || cardCategory === 'services')) {
+                        categoryMatches = true;
+                    }
+
+                    // 2. Check search query match across all card content and keywords
+                    let searchMatches = false;
+                    if (!query) {
+                        searchMatches = true;
+                    } else {
+                        const cardText = title + ' ' + subtitle + ' ' + desc + ' ' + keywords + ' ' + cardCategory;
+                        searchMatches = cardText.includes(query);
+                    }
+
+                    // 3. Card is visible only if BOTH criteria match
+                    if (categoryMatches && searchMatches) {
+                        card.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                // Update stall count badge indicator
+                if (stallCountIndicator) {
+                    if (query.length > 0) {
+                        stallCountIndicator.textContent = visibleCount === 1 ? '1 Stall found' : `${visibleCount} Stalls found`;
+                    } else if (selectedCategory === 'consumables') {
+                        stallCountIndicator.textContent = `${visibleCount} Consumables Active`;
+                    } else if (selectedCategory === 'logistics') {
+                        stallCountIndicator.textContent = `${visibleCount} Logistics & Rides`;
+                    } else if (selectedCategory === 'home-tech' || selectedCategory === 'services') {
+                        stallCountIndicator.textContent = `${visibleCount} Home & Tech Listed`;
+                    } else {
+                        stallCountIndicator.textContent = `${visibleCount} Stalls Listed`;
+                    }
+                }
+
+                // Empty state visibility
+                if (noResultsState) {
+                    if (visibleCount === 0) {
+                        noResultsState.classList.add('show');
+                    } else {
+                        noResultsState.classList.remove('show');
+                    }
+                }
+            }
+
+            // Attach listeners to Search Input
+            if (searchInput) {
+                searchInput.addEventListener('input', applyFilters);
+                searchInput.addEventListener('keyup', applyFilters);
+                searchInput.addEventListener('change', applyFilters);
+            }
+
+            // Attach real-time listeners to Category Select dropdown
+            if (headerCategorySelect) {
+                headerCategorySelect.addEventListener('change', applyFilters);
+                headerCategorySelect.addEventListener('input', applyFilters);
+            }
+
+            // Clear search input button click
+            if (searchClearBtn) {
+                searchClearBtn.addEventListener('click', () => {
+                    if (searchInput) {
+                        searchInput.value = '';
+                        searchInput.focus();
+                    }
+                    applyFilters();
+                });
+            }
+
+            // Reset button in the empty state
+            if (clearSearchStateBtn) {
+                clearSearchStateBtn.addEventListener('click', () => {
+                    if (searchInput) searchInput.value = '';
+                    if (headerCategorySelect) headerCategorySelect.value = 'all';
+                    applyFilters();
+                });
+            }
+
+            // Drawer Accordions
+            window.toggleDrawerAccordion = function (button, contentId) {
+                const content = document.getElementById(contentId);
+                if (!content) return;
+                const isExpanded = content.classList.contains('expanded');
+                button.classList.toggle('expanded', !isExpanded);
+                content.classList.toggle('expanded', !isExpanded);
+            };
+
+            // Initial pass on ready
+            applyFilters();
+        })();
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const track = document.getElementById('promoCarouselTrack');
+            const slides = track.children;
+            const totalOriginalSlides = slides.length;
+
+            if (totalOriginalSlides > 1) {
+                // 1. Clone the first slide and append to the end of the track
+                const firstClone = slides[0].cloneNode(true);
+                track.appendChild(firstClone);
+
+                let currentIndex = 0;
+                const transitionDuration = 500; // Match your CSS transition time (in ms)
+
+                // Ensure track transition style is set
+                track.style.transition = `transform ${transitionDuration}ms ease-in-out`;
+
+                setInterval(() => {
+                    currentIndex++;
+
+                    // Enable smooth sliding transition
+                    track.style.transition = `transform ${transitionDuration}ms ease-in-out`;
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+                    // When arriving at the cloned first slide:
+                    if (currentIndex === totalOriginalSlides) {
+                        setTimeout(() => {
+                            // Disable transition so jump back to start is invisible
+                            track.style.transition = "none";
+                            currentIndex = 0;
+                            track.style.transform = `translateX(0%)`;
+                        }, transitionDuration); // Wait for slide animation to complete first
+                    }
+                }, 6000); // 6 seconds per slide
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a Ride</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fcf8f5;
+            margin: 0;
+            padding: 20px;
+            color: #014326;
+        }
+
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .branding {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            color: #014326;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0e8e3;
+            color: #014326;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 18px;
+            border: 1px solid #e0d4cd;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: #e5d9d2;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #e5d9d2;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #014326;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            box-sizing: border-box;
+            border: 1px solid #ebdcd4;
+            border-radius: 8px;
+            background-color: #f8efe9;
+            font-size: 15px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #014326;
+        }
+
+        .submit-btn {
+            background-color: #003823;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #012416;
+        }
+
+        .submit-btn:disabled {
+            background-color: #5a7569;
+            cursor: not-allowed;
+        }
+
+        #loading-container {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #014326;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #success-msg {
+            color: #014326;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <div class="header-container">
+            <div class="branding">
+                <h2 class="title">🛺 Request a Ride</h2>
+            </div>
+            <a href="<?= APP_URL ?>?page=index" target="_top" class="home-btn">HOME</a>
+        </div>
+
+        <div class="card" id="form-card">
+            <form id="rideForm">
+                <div class="form-group">
+                    <label for="contact">We will call or message you when the rider is on the way. *</label>
+                    <input type="text" id="contact" placeholder="e.g., 0917 123 4567 or Messenger" required>
+                </div>
+
+                <div class="row">
+                    <div class="col form-group">
+                        <label for="phase"></label>
+                        <input type="text" id="phase" required placeholder="e.g., Ph 1">
+                    </div>
+                    <div class="col form-group">
+                        <label for="block"></label>
+                        <input type="text" id="block" required placeholder="e.g., Blk 2">
+                    </div>
+                    <div class="col form-group">
+                        <label for="lot"></label>
+                        <input type="text" id="lot" required placeholder="e.g., Lot 3">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="destination">Destination *</label>
+                    <input type="text" id="destination" required placeholder="ex. Ampayon | Market | CSU front gate etc.">
+                </div>
+
+                <div class="row">
+                    <div class="col form-group">
+                        <label for="passengers">Number of Passengers *</label>
+                        <input type="number" id="passengers" min="1" value="1" required>
+                    </div>
+                    <div class="col form-group">
+                        <label for="pickupTime">Pickup Time</label>
+                        <input type="text" id="pickupTime" placeholder="Leave blank if waiting now">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cargoNotes">Cargo Notes</label>
+                    <textarea id="cargoNotes" rows="2" placeholder="Any groceries or heavy items?"></textarea>
+                </div>
+
+                <button type="submit" id="submitBtn" class="submit-btn">Book Ride</button>
+            </form>
+        </div>
+
+        <div id="loading-container">
+            <div class="spinner"></div>
+            <h3 style="color: #014326;">Looking for a driver...</h3>
+            <p style="font-size: 13px; color: #555;">Please wait while we log your ride request.</p>
+        </div>
+
+        <div id="success-msg">Your ride has been booked! A driver is on the way.</div>
+    </div>
+
+    <script>
+        const form = document.getElementById('rideForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formCard = document.getElementById('form-card');
+        const loadingContainer = document.getElementById('loading-container');
+        const successMsg = document.getElementById('success-msg');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const rideData = {
+                contact: document.getElementById('contact').value.trim(),
+                phase: document.getElementById('phase').value.trim(),
+                block: document.getElementById('block').value.trim(),
+                lot: document.getElementById('lot').value.trim(),
+                destination: document.getElementById('destination').value.trim(),
+                passengers: document.getElementById('passengers').value,
+                pickupTime: document.getElementById('pickupTime').value.trim() || 'waiting already',
+                cargoNotes: document.getElementById('cargoNotes').value.trim()
+            };
+
+            // UI feedback
+            formCard.style.display = 'none';
+            loadingContainer.style.display = 'block';
+
+            google.script.run
+                .withSuccessHandler(result => {
+                    loadingContainer.style.display = 'none';
+
+                    if (result && result.success) {
+                        successMsg.textContent = `Looking for your ride. Reference: ${result.orderRef}`;
+                        successMsg.style.display = 'block';
+                        form.reset();
+                        document.getElementById('passengers').value = '1';
+
+                        setTimeout(() => {
+                            successMsg.style.display = 'none';
+                            formCard.style.display = 'block';
+                        }, 5000);
+                    } else {
+                        alert('Error: ' + (result.message || 'Could not save ride request.'));
+                        formCard.style.display = 'block';
+                    }
+                })
+                .withFailureHandler(error => {
+                    loadingContainer.style.display = 'none';
+                    formCard.style.display = 'block';
+                    alert('Server error: ' + error.message);
+                })
+                .saveRideOrder(rideData);
+        });
+    </script>
+</body>
+
+</html>

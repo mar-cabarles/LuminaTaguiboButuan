@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        name="viewport" />
+    <title>Drinking Water Management &amp; Monitoring - Community Market Hub</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #003e1e;
+            --primary-container: #1a5632;
+            --primary-fixed: #b2f1c1;
+            --primary-fixed-dim: #97d5a6;
+            --on-primary: #ffffff;
+            --secondary: #904d00;
+            --secondary-container: #fe932c;
+            --secondary-fixed: #ffdcc3;
+            --surface: #fff8f6;
+            --surface-container-lowest: #ffffff;
+            --surface-container-low: #fbf2f0;
+            --surface-container: #f5ecea;
+            --surface-container-high: #efe6e4;
+            --surface-container-highest: #e9e1df;
+            --outline: #717971;
+            --outline-variant: #c0c9bf;
+            --on-surface: #1e1b1a;
+            --on-surface-variant: #404941;
+            --error: #ba1a1a;
+            --error-container: #ffdad6;
+            --font-display: 'Manrope', sans-serif;
+            --font-body: 'Be Vietnam Pro', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--surface);
+            color: var(--on-surface);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* Modal Authentication */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background-color: rgba(30, 27, 26, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .login-overlay.hidden-modal {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 24rem;
+            background: #ffffff;
+            border-radius: 1rem;
+            border: 1px solid var(--surface-container-high);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            padding: 1.75rem;
+            text-align: center;
+        }
+
+        .login-icon-badge {
+            width: 3.25rem;
+            height: 3.25rem;
+            border-radius: 1rem;
+            background: rgba(26, 86, 50, 0.1);
+            border: 1px solid var(--primary-fixed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            margin: 0 auto 1rem;
+        }
+
+        .login-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .login-error {
+            display: none;
+            padding: 0.625rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            background-color: #ffe4e6;
+            border: 1px solid #fecdd3;
+            color: #9f1239;
+            font-size: 0.75rem;
+            font-weight: 500;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: left;
+        }
+
+        .login-error.show {
+            display: flex;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .input-icon-left {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--outline);
+            font-size: 1.125rem;
+            pointer-events: none;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 0.65rem 2.5rem 0.65rem 2.6rem;
+            font-size: 0.825rem;
+            background-color: var(--surface-container-low);
+            border: 1px solid var(--outline-variant);
+            border-radius: 0.75rem;
+            color: var(--on-surface);
+            font-family: monospace;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .password-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-fixed);
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--outline);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem;
+        }
+
+        .password-toggle-btn:hover {
+            color: var(--primary);
+        }
+
+        .unlock-btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            background-color: var(--primary);
+            color: #ffffff;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 62, 30, 0.2);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .unlock-btn:hover {
+            background-color: var(--primary-container);
+        }
+
+        .unlock-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Dashboard Blur Lock State */
+        .dashboard-locked {
+            filter: blur(8px);
+            user-select: none;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Layout */
+        .dashboard-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: filter 0.3s ease;
+        }
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background-color: rgba(255, 248, 246, 0.96);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(192, 201, 191, 0.5);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0.625rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .home-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem 0.85rem;
+            border-radius: 9999px;
+            background: var(--surface-container);
+            border: 1px solid var(--outline-variant);
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            transition: background 0.2s;
+        }
+
+        .home-pill:hover {
+            background: var(--surface-container-high);
+        }
+
+        .brand-cluster {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        .brand-icon-wrap {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            background: rgba(26, 86, 50, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .brand-eyebrow {
+            font-family: var(--font-display);
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: block;
+            line-height: 1.1;
+        }
+
+        .brand-title {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        .pulse-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background: #10b981;
+            display: inline-block;
+        }
+
+        .lock-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.4rem 0.75rem;
+            background: var(--surface-container);
+            color: var(--secondary);
+            border: 1px solid var(--outline-variant);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .lock-btn:hover {
+            background: var(--surface-container-high);
+        }
+
+        /* Main Area */
+        .main-container {
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            flex: 1;
+        }
+
+        /* Operations & Receivables Summary Card */
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid var(--surface-container-high);
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .summary-header {
+            padding: 0.85rem 1.25rem;
+            border-bottom: 1px solid var(--surface-container-high);
+            background: rgba(251, 242, 240, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .summary-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 0.875rem;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .summary-subtitle {
+            font-size: 0.6875rem;
+            color: var(--outline);
+        }
+
+        .summary-tag {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.6875rem;
+            color: var(--primary);
+        }
+
+        .summary-grid {
+            padding: 1rem 1.25rem;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.kpi-box {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .kpi-paid {
+            border: 1px solid var(--outline-variant);
+            background: rgba(240, 253, 244, 0.45);
+        }
+
+        .kpi-paid .kpi-label {
+            color: #166534;
+        }
+
+        .kpi-paid .kpi-val {
+            color: var(--primary-container);
+        }
+
+        .kpi-pending {
+            border: 1px solid #fde68a;
+            background: rgba(255, 251, 235, 0.45);
+        }
+
+        .kpi-pending .kpi-label {
+            color: var(--secondary);
+        }
+
+        .kpi-pending .kpi-val {
+            color: var(--secondary);
+        }
+
+        .kpi-gcash {
+            border: 1px solid #bae6fd;
+            background: rgba(240, 249, 255, 0.45);
+        }
+
+        .kpi-gcash .kpi-label {
+            color: #0369a1;
+        }
+
+        .kpi-gcash .kpi-val {
+            color: #0369a1;
+        }
+
+        .kpi-cancelled {
+            border: 1px solid #fecdd3;
+            background: rgba(255, 241, 242, 0.45);
+        }
+
+        .kpi-cancelled .kpi-label {
+            color: #9f1239;
+        }
+
+        .kpi-cancelled .kpi-val {
+            color: #9f1239;
+        }
+
+        .kpi-neutral {
+            border: 1px solid var(--outline-variant);
+            background: var(--surface-container-low);
+        }
+
+        .kpi-neutral .kpi-label {
+            color: var(--on-surface);
+        }
+
+        .kpi-neutral .kpi-val {
+            color: var(--on-surface);
+        }
+
+        .kpi-neutral .kpi-val.highlight-sec {
+            color: var(--secondary);
+        }
+
+        .kpi-neutral .kpi-val.highlight-pri {
+            color: var(--primary);
+        }
+
+        .kpi-revenue-box {
+            border: 1px solid var(--primary-fixed-dim);
+            background: rgba(178, 241, 193, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .kpi-revenue-box .kpi-rev-val {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
+            width: 100%;
+        }
+
+        .kpi-label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .kpi-val {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 800;
+        }
+
+        /* Controls Section */
+        .controls-card {
+            background: #ffffff;
+            border: 1px solid var(--surface-container-high);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.625rem;
+            flex: 1;
+        }
+
+        .search-box-wrap {
+            position: relative;
+            min-width: 220px;
+            max-width: 420px;
+            flex: 1;
+        }
+
+        .search-box-wrap .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--outline);
+            font-size: 1.125rem;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.45rem 0.75rem 0.45rem 2.25rem;
+            font-size: 0.75rem;
+            background: var(--surface-container-low);
+            border: 1px solid var(--outline-variant);
+            border-radius: 0.5rem;
+            color: var(--on-surface);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+
+        .date-select-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--surface-container-low);
+            border: 1px solid var(--outline-variant);
+            border-radius: 0.5rem;
+            padding: 0.35rem 0.65rem;
+            min-width: 160px;
+        }
+
+        .date-select-wrap select {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--on-surface);
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .reset-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.4rem 0.75rem;
+            background: var(--surface-container);
+            color: var(--secondary);
+            border: 1px solid var(--outline-variant);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: var(--surface-container-high);
+        }
+
+        .view-switcher-group {
+            display: inline-flex;
+            padding: 0.25rem;
+            background: var(--surface-container);
+            border: 1px solid var(--outline-variant);
+            border-radius: 0.5rem;
+            gap: 0.25rem;
+        }
+
+        .view-btn {
+            padding: 0.25rem 0.625rem;
+            font-size: 0.75rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            border-radius: 0.375rem;
+            border: none;
+            background: transparent;
+            color: var(--outline);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .view-btn.active {
+            background: #ffffff;
+            color: var(--primary);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Registry Table */
+        .table-card {
+            background: #ffffff;
+            border: 1px solid var(--surface-container-high);
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .table-card.hidden {
+            display: none;
+        }
+
+        .table-header-bar {
+            padding: 0.75rem 1rem;
+            background: var(--surface-container-low);
+            border-bottom: 1px solid var(--surface-container-high);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--primary);
+        }
+
+        .record-badge {
+            font-size: 0.6875rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            padding: 0.2rem 0.65rem;
+            border-radius: 9999px;
+            background: var(--primary-fixed);
+            color: var(--primary);
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .table-scroll::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .table-scroll::-webkit-scrollbar-track {
+            background: #f1e9e7;
+        }
+
+        .table-scroll::-webkit-scrollbar-thumb {
+            background: #c3cdc2;
+            border-radius: 4px;
+        }
+
+        .registry-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .registry-table th {
+            padding: 0.75rem 0.875rem;
+            background: var(--surface-container);
+            border-bottom: 1px solid var(--outline-variant);
+            color: var(--on-surface-variant);
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.656rem;
+            letter-spacing: 0.05em;
+            user-select: none;
+        }
+
+        .registry-table td {
+            padding: 0.625rem 0.875rem;
+            border-bottom: 1px solid var(--surface-container-high);
+            color: var(--on-surface);
+            vertical-align: middle;
+        }
+
+        .registry-table tbody tr:hover {
+            background-color: var(--surface-container-low);
+        }
+
+        /* 9 Columns specific styles - natural free scrolling */
+        .registry-table th,
+        .registry-table td {
+            position: static !important;
+            box-shadow: none !important;
+        }
+
+        .col-contact {
+            min-width: 180px;
+        }
+
+        .col-address {
+            min-width: 210px;
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .col-refill {
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .col-amt-given {
+            min-width: 110px;
+            text-align: right;
+        }
+
+        .col-change {
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .col-amt-due {
+            min-width: 110px;
+            text-align: right;
+        }
+
+        .col-status {
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .refill-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            background: var(--surface-container);
+            padding: 0.25rem 0.625rem;
+            border-radius: 0.375rem;
+            border: 1px solid var(--outline-variant);
+            font-size: 0.75rem;
+        }
+
+        .refill-count-pri {
+            color: var(--primary);
+        }
+
+        .refill-count-sub {
+            color: var(--outline);
+            font-size: 0.625rem;
+            font-weight: 400;
+        }
+
+        .refill-count-sec {
+            color: var(--secondary);
+        }
+
+        .contact-name {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .contact-sub {
+            display: block;
+            font-size: 0.625rem;
+            color: var(--outline);
+            font-family: monospace;
+        }
+
+        .amount-due-text {
+            font-family: var(--font-display);
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .change-text-positive {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .change-text-zero {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--outline);
+        }
+
+        .status-select {
+            font-size: 0.6875rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            outline: none;
+            border: 1px solid;
+        }
+
+        .status-select.status-paid {
+            background-color: var(--primary-fixed);
+            color: var(--primary);
+            border-color: var(--primary-fixed-dim);
+        }
+
+        .status-select.status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+            border-color: #fde68a;
+        }
+
+        .status-select.status-gcash {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            border-color: #bae6fd;
+        }
+
+        .status-select.status-cancelled {
+            background-color: #ffe4e6;
+            color: #9f1239;
+            border-color: #fecdd3;
+        }
+
+        /* Badges */
+
+        .badge-cond-good {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .badge-cond-clean {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .badge-cond-stained {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fed7aa;
+        }
+
+        .badge-cond-inspect {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .badge-cond-standard {
+            background: #f5f3ff;
+            color: #5b21b6;
+            border: 1px solid #ddd6fe;
+        }
+
+        /* Cards View Wrapper */
+        .cards-view-wrapper {
+            max-width: 36rem;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .cards-view-wrapper.hidden {
+            display: none;
+        }
+
+        .card-view-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .card-item {
+            background: #ffffff;
+            border-radius: 1rem;
+            border: 1px solid var(--surface-container-high);
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .card-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--surface-container-high);
+        }
+
+        .card-badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.65rem;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+
+        .card-badge-status.paid {
+            background: #b2f1c1;
+            color: #003e1e;
+            border: 1px solid #97d5a6;
+        }
+
+        .card-badge-status.pending {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .card-badge-status.gcash {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+        }
+
+        .card-badge-status.cancelled {
+            background: #ffe4e6;
+            color: #9f1239;
+            border: 1px solid #fecdd3;
+        }
+
+        .card-data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            background: var(--surface-container-low);
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 640px) {
+            .summary-grid {
+    padding: 1rem 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+            .header-content {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .main-container {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Standalone Login Modal Overlay -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-card">
+            <div class="login-icon-badge">
+                <span class="material-symbols-outlined" style="font-size: 28px;">water_drop</span>
+            </div>
+            <h2 class="login-title">Drinking Water Station Access</h2>
+            <div class="login-error" id="loginError">
+                <span class="material-symbols-outlined" style="font-size: 16px;">error</span>
+                <span id="errorText">Incorrect password. Please enter '1234' to unlock.</span>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event); return false;">
+                <div class="input-wrapper">
+                    <span class="material-symbols-outlined input-icon-left">key</span>
+                    <input autocomplete="current-password" class="password-input" id="loginPassword"
+                        placeholder="Enter Password" type="password" />
+                    <button class="password-toggle-btn" onclick="togglePinVisibility()" title="Toggle visibility"
+                        type="button">
+                        <span class="material-symbols-outlined" id="pinEyeIcon"
+                            style="font-size: 18px;">visibility</span>
+                    </button>
+                </div>
+                <button class="unlock-btn" id="unlockDashboardBtn" type="submit">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">lock_open</span>
+                    <span>UNLOCK DASHBOARD</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- Main App Container (blurred while locked) -->
+    <div class="dashboard-container dashboard-locked" id="mainDashboardContainer">
+        <!-- Top Header Bar -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <a class="home-pill" href="<?= APP_URL ?>?page=index" target="_top" title="Back to Home">HOME</a>
+                    <div class="brand-cluster">
+                        <div class="brand-icon-wrap">
+                            <span class="material-symbols-outlined" style="font-size: 19px;">water_drop</span>
+                        </div>
+                        <div>
+                            <span class="brand-eyebrow">COMMUNITY MARKET HUB</span>
+                            <h1 class="brand-title">Drinking Water Table</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="lock-btn" onclick="lockStation()" title="Lock terminal or log out" type="button">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
+                        <span>Lock / Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content Area -->
+        <main class="main-container">
+            <!-- Operations & Receivables Summary -->
+            <section class="summary-card">
+                <div class="summary-header">
+                    <div>
+                        <h3 class="summary-title">Operations &amp; Receivables Summary</h3>
+                        <p class="summary-subtitle">Fulfillment Status | Workflow</p>
+                    </div>
+                    <span class="summary-tag">Drinking Water Hub Monitored</span>
+                </div>
+                <div class="summary-grid">
+                    <!-- Row 1 -->
+                    <div class="kpi-box kpi-paid">
+                        <span class="kpi-label">Paid</span>
+                        <span class="kpi-val" id="kpiPaid">3</span>
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div class="kpi-box kpi-gcash">
+                        <span class="kpi-label">GCash - Pending</span>
+                        <span class="kpi-val" id="kpiGcashPending">2</span>
+                    </div>
+                    <div class="kpi-box kpi-cancelled">
+                        <span class="kpi-label">Cancelled</span>
+                        <span class="kpi-val" id="kpiCancelled">1</span>
+                    </div>
+                    <!-- Row 3 -->
+                    <div class="kpi-box kpi-neutral">
+                        <span class="kpi-label">Total Orders</span>
+                        <span class="kpi-val highlight-pri" id="kpiTotalOrders">8</span>
+                    </div>
+                    <!-- For Delivery KPI -->
+<div class="kpi-box kpi-neutral">
+    <span class="kpi-label">For Delivery</span>
+    <span class="kpi-val" id="kpiForDelivery">0</span>
+</div>
+                    <!-- Row 4 -->
+                    <div class="kpi-box kpi-neutral">
+                        <span class="kpi-label">Need Change</span>
+                        <span class="kpi-val" id="kpiNeedChange">4</span>
+                    </div>
+                    <div class="kpi-box kpi-revenue-box">
+                      <span class="kpi-label">Collected</span>
+                        <span class="kpi-rev-val" id="kpiRevenue"></span>
+                    </div>
+                </div>
+            </section>
+            <!-- Controls: Filters, Search, Views -->
+            <section class="controls-card">
+                <div class="filters-group">
+                    <div class="search-box-wrap">
+                        <span class="material-symbols-outlined search-icon">search</span>
+                        <input autocomplete="off" class="search-input" id="searchInput"
+                            placeholder="Search contact, address, instructions, status..." type="text" />
+                    </div>
+                    <div class="date-select-wrap">
+                        <span class="material-symbols-outlined"
+                            style="font-size: 16px; color: var(--outline);">calendar_today</span>
+                        <select id="dateFilter">
+                            <option selected="" value="today">Today</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="tomorrow">Tomorrow</option>
+                            <option value="7days">Last 7 Days</option>
+                            <option value="month">This Month</option>
+                            <option value="all">All Dates</option>
+                        </select>
+                    </div>
+                    <button class="reset-btn" id="resetBtn" title="Reset all filters" type="button">
+                        <span class="material-symbols-outlined" style="font-size: 15px;">restart_alt</span>
+                        <span>Reset</span>
+                    </button>
+                </div>
+                <div class="view-switcher-group">
+                    <button class="view-btn active" id="viewBtnTable" onclick="switchView('table')" type="button">
+                        <span class="material-symbols-outlined" style="font-size: 15px;">table_rows</span>
+                        <span>Table</span>
+                    </button>
+                    <button class="view-btn" id="viewBtnCards" onclick="switchView('cards')" type="button">
+                        <span class="material-symbols-outlined" style="font-size: 15px;">grid_view</span>
+                        <span>Cards</span>
+                    </button>
+                </div>
+            </section>
+            <!-- View 1: 9-Column Registry Table (Free Natural Scroll, No Sticky Obstructions) -->
+            <div class="table-card" id="tableViewWrapper">
+    <div class="table-header-bar">
+        <div class="table-header-title">
+            <span class="material-symbols-outlined" style="font-size: 18px;">water_full</span>
+            <span>Drinking Water Operations Monitoring Registry</span>
+        </div>
+
+        <span class="record-badge" id="recordCountBadge">
+            Showing 0 of 0 orders
+        </span>
+    </div>
+
+    <div class="table-scroll">
+
+        <table class="registry-table" id="waterTable">
+
+            <thead>
+    <tr>
+        <th class="col-contact">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
+                <span>Contact Info</span>
+                
+                <!-- EMBEDDED SORTING DROPDOWN -->
+                <select id="sortFilter" onchange="applyFilters()" style="
+                    background: transparent;
+                    border: 1px solid var(--outline-variant, #cbd5e1);
+                    border-radius: 0.25rem;
+                    font-size: 0.7rem;
+                    padding: 0.15rem 0.25rem;
+                    color: var(--on-surface-variant, #475569);
+                    cursor: pointer;
+                    outline: none;
+                ">
+                    <option value="id" selected>Sort: Route ID</option>
+                    <option value="contact">Sort: Name (A-Z)</option>
+                    <option value="date">Sort: Date (Newest)</option>
+                </select>
+            </div>
+        </th>
+        <th class="col-address">Address</th>
+        <th class="col-refill"># of Refill | # of Bottle</th>
+        <th class="col-amt-given">Amount Given</th>
+        <th class="col-change">Change</th>
+        <th class="col-amt-due">Amount Due</th>
+        <th class="col-status">Status</th>
+    </tr>
+</thead>
+
+            <tbody id="waterTableBody">
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+            <!-- View 2: Cards View with Pagination -->
+            <div class="cards-view-wrapper hidden" id="cardsViewWrapper">
+
+    <div class="card-view-nav">
+
+        <span id="cardSearchHint">
+            Card 1 of 0
+        </span>
+
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+
+            <span id="cardPaginationIndicator">
+                Showing 1 of 0
+            </span>
+
+            <div
+                style="display: inline-flex; border: 1px solid var(--outline-variant); border-radius: 0.375rem; overflow: hidden; background: #fff;">
+
+                <button
+                    id="btnPrevCard"
+                    onclick="prevCard()"
+                    type="button"
+                    style="padding: 0.25rem 0.5rem; border: none; background: none; cursor: pointer; color: var(--primary);">
+
+                    <span class="material-symbols-outlined">
+                        chevron_left
+                    </span>
+
+                </button>
+
+                <button
+                    id="btnNextCard"
+                    onclick="nextCard()"
+                    type="button"
+                    style="padding: 0.25rem 0.5rem; border: none; border-left: 1px solid var(--outline-variant); background: none; cursor: pointer; color: var(--primary);">
+
+                    <span class="material-symbols-outlined">
+                        chevron_right
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="singleCardSlot">
+    </div>
+
+</div>
+        </main>
+    </div>
+        
+<script>
+/* =========================================================
+   LIVE WATER DATA
+   ========================================================= */
+let ALL_ORDERS_DATA = [];
+let filteredOrders = [];
+let activeCardIndex = 0;
+
+/* =========================================================
+   LOGIN & LOCK HANDLING
+   ========================================================= */
+function handleLogin(event) {
+    if (event) event.preventDefault();
+
+    const passwordInput = document.getElementById('loginPassword');
+    const errorBox = document.getElementById('loginError');
+    const overlay = document.getElementById('loginOverlay');
+    const dashboard = document.getElementById('mainDashboardContainer');
+
+    if (!passwordInput) return;
+    const val = passwordInput.value.trim();
+
+    if (val === '1234') {
+        if (errorBox) errorBox.classList.remove('show');
+        if (overlay) overlay.classList.add('hidden-modal');
+        if (dashboard) dashboard.classList.remove('dashboard-locked');
+        passwordInput.value = '';
+        loadWaterData();
+    } else {
+        if (errorBox) errorBox.classList.add('show');
+        passwordInput.focus();
+    }
+}
+
+function togglePinVisibility() {
+    const input = document.getElementById('loginPassword');
+    const icon = document.getElementById('pinEyeIcon');
+    if (!input) return;
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) icon.textContent = 'visibility_off';
+    } else {
+        input.type = 'password';
+        if (icon) icon.textContent = 'visibility';
+    }
+}
+
+function lockStation() {
+    const overlay = document.getElementById('loginOverlay');
+    const dashboard = document.getElementById('mainDashboardContainer');
+    const errorBox = document.getElementById('loginError');
+    const input = document.getElementById('loginPassword');
+
+    if (errorBox) errorBox.classList.remove('show');
+    if (input) input.value = '';
+    if (overlay) overlay.classList.remove('hidden-modal');
+    if (dashboard) dashboard.classList.add('dashboard-locked');
+    if (input) setTimeout(function() { input.focus(); }, 150);
+}
+
+/* =========================================================
+   LOAD WATER DATA FROM GOOGLE SHEETS
+   ========================================================= */
+function loadWaterData() {
+    const tbody = document.getElementById('waterTableBody');
+    const cardSlot = document.getElementById('singleCardSlot');
+
+    if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:3rem 1rem; color:var(--outline);"><span class="material-symbols-outlined" style="font-size:36px; display:block; margin-bottom:0.5rem;">progress_activity</span>Loading Water Data...</td></tr>`;
+    }
+
+    if (cardSlot) {
+        cardSlot.innerHTML = `<div style="background:#ffffff; border-radius:1rem; padding:2rem; text-align:center; color:var(--outline);">Loading Water Data...</div>`;
+    }
+
+    google.script.run
+        .withSuccessHandler(function(data) {
+            console.log('Water Data received:', data);
+            if (!Array.isArray(data)) data = [];
+
+            ALL_ORDERS_DATA = data.map(function(row) {
+                const amountDue = parseFloat(row.amount || 0);
+                const amountGiven = parseFloat(row.paymentGiven || 0);
+                const change = parseFloat(row.change || 0);
+
+                let amountGivenDisplay = String(row.paymentType || '').toLowerCase().includes('gcash') 
+                    ? 'GCash' 
+                    : '₱' + amountGiven.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                let changeDisplay = change > 0 
+                    ? '₱' + change.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) 
+                    : '₱0.00 / Exact';
+
+                const orderId = 'WTR-' + String(row.rowId).padStart(4, '0');
+                const dateInfo = createDateInfo(row.timestamp);
+
+                return {
+                    rowId: row.rowId,
+                    id: orderId,
+                    contact: String(row.customer || ''),
+                    address: String(row.address || ''),
+                    refillCount: Number(row.refill || 0),
+                    bottleCount: Number(row.bottle || 0),
+                    amountGivenDisplay: amountGivenDisplay,
+                    amountGiven: amountGiven,
+                    changeDisplay: changeDisplay,
+                    change: change,
+                    bottleCondition: String(row.bottleCondition || ''),
+                    amountDue: amountDue,
+                    instructions: String(row.instructions || ''),
+                    status: normalizeStatus(row.status),
+rawStatus: String(row.status || ''),
+dateCategory: dateInfo.category,
+                    dateTag: dateInfo.tag,
+                    timestamp: row.timestamp || '',
+                    paymentType: row.paymentType || '',
+                    gcashRef: row.gcashRef || '',
+                    sortId: row.uniqueId // Grabs Column O from code.gs
+                };
+            });
+
+            activeCardIndex = 0;
+            applyFilters();
+        })
+        .withFailureHandler(function(error) {
+            console.error('getWaterData error:', error);
+            ALL_ORDERS_DATA = [];
+            filteredOrders = [];
+
+            if (tbody) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:3rem 1rem; color:#b91c1c;"><span class="material-symbols-outlined" style="font-size:36px; display:block; margin-bottom:0.5rem;">error</span><strong>Error loading Water Data</strong><p style="font-size:0.75rem; margin-top:0.5rem;">${escapeHtml(error.message || String(error))}</p></td></tr>`;
+            }
+            updateKPICounters([]);
+        })
+        .getWaterData();
+}
+
+
+/* =========================================================
+   CREATE DATE INFORMATION — DATE ONLY, NO TIME
+   ========================================================= */
+function createDateInfo(timestamp) {
+    if (!timestamp) {
+        return { category: 'all', tag: '' };
+    }
+
+    const orderDate = new Date(timestamp);
+
+    if (isNaN(orderDate.getTime())) {
+        return { category: 'all', tag: String(timestamp) };
+    }
+
+    const now = new Date();
+
+    const today = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+    );
+
+    const dateOnly = new Date(
+        orderDate.getFullYear(),
+        orderDate.getMonth(),
+        orderDate.getDate()
+    );
+
+    const difference = Math.round(
+        (today - dateOnly) / (1000 * 60 * 60 * 24)
+    );
+
+    // Display dates only, never times.
+    if (difference === 0) {
+        return {
+            category: 'today',
+            tag: orderDate.toLocaleDateString('en-PH')
+        };
+    }
+
+    if (difference === 1) {
+        return {
+            category: 'yesterday',
+            tag: orderDate.toLocaleDateString('en-PH')
+        };
+    }
+
+    if (difference < 7 && difference > 1) {
+        return {
+            category: '7days',
+            tag: orderDate.toLocaleDateString('en-PH')
+        };
+    }
+
+    if (difference < 30 && difference >= 7) {
+        return {
+            category: 'month',
+            tag: orderDate.toLocaleDateString('en-PH')
+        };
+    }
+
+    if (difference < 0) {
+        return {
+            category: difference === -1 ? 'tomorrow' : 'all',
+            tag: orderDate.toLocaleDateString('en-PH')
+        };
+    }
+
+    return {
+        category: 'month',
+        tag: orderDate.toLocaleDateString('en-PH')
+    };
+}
+
+
+/* =========================================================
+   NORMALIZE STATUS (Fixed mapping for missing items)
+   ========================================================= */
+function normalizeStatus(status) {
+    const value = String(status || '').trim().toLowerCase();
+    const aliases = {
+        'pending': 'for delivery - pending',
+        'paid': 'for delivery - paid',
+        'gcash - pending': 'for delivery - pending',
+        'cancelled': 'cancelled',
+        'canceled': 'cancelled',
+        'refill': 'for collection',
+        'collection': 'for collection',
+        'for delivery': 'for delivery - pending', // FIX: Captures the missing delivery item!
+        'delivered': 'delivered - pending',
+        'delivered - pending': 'delivered - pending',
+        'delivered - paid': 'delivered - paid',
+        'collected': 'for collection',
+        'collected - paid': 'delivered - paid'
+    };
+    if (aliases[value]) return aliases[value];
+    const validStatuses = [
+        'for collection',
+        'for delivery - pending',
+        'for delivery - paid',
+        'delivered - pending',
+        'delivered - paid',
+        'cancelled'
+    ];
+    return validStatuses.includes(value) ? value : 'for collection';
+}
+
+
+function getStatusClass(status) {
+    const value = normalizeStatus(status);
+
+    switch (value) {
+        case 'delivered - paid':
+        case 'for delivery - paid':
+            return 'status-paid';
+
+        case 'delivered - pending':
+        case 'for delivery - pending':
+        case 'for collection':
+            return 'status-pending';
+
+        case 'cancelled':
+            return 'status-cancelled';
+
+        default:
+            return 'status-pending';
+    }
+}
+
+
+/* =========================================================
+   CONDITION BADGES
+   ========================================================= */
+function getConditionBadge(cond) {
+    cond = String(cond || '');
+    if (cond === 'Good') {
+        return `<span class="badge-cond badge-cond-good"><span class="material-symbols-outlined" style="font-size:13px;">verified</span> Good</span>`;
+    } else if (cond.toLowerCase().includes('clean')) {
+        return `<span class="badge-cond badge-cond-clean"><span class="material-symbols-outlined" style="font-size:13px;">check</span> ${escapeHtml(cond)}</span>`;
+    } else if (cond.toLowerCase().includes('stained')) {
+        return `<span class="badge-cond badge-cond-stained"><span class="material-symbols-outlined" style="font-size:13px;">warning</span> ${escapeHtml(cond)}</span>`;
+    } else if (cond.toLowerCase().includes('inspection')) {
+        return `<span class="badge-cond badge-cond-inspect"><span class="material-symbols-outlined" style="font-size:13px;">error_outline</span> ${escapeHtml(cond)}</span>`;
+    } else {
+        return `<span class="badge-cond badge-cond-standard"><span class="material-symbols-outlined" style="font-size:13px;">inventory_2</span> ${escapeHtml(cond || 'Not specified')}</span>`;
+    }
+}
+
+
+/* =========================================================
+   TABLE VIEW RENDERER
+   7 COLUMNS: Contact, Address, Refill/Bottle,
+   Amount Given, Change, Amount Due, Status
+   ========================================================= */
+function renderTable(data) {
+    const tbody = document.getElementById('waterTableBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7"
+                    style="text-align:center; padding:3rem 1rem; color:var(--outline);">
+                    <span class="material-symbols-outlined"
+                        style="font-size:36px; display:block; margin-bottom:0.5rem; color:var(--outline-variant);">
+                        search_off
+                    </span>
+                    <strong style="color:var(--on-surface-variant); font-size:0.875rem;">
+                        No matching orders found
+                    </strong>
+                </td>
+            </tr>`;
+        return;
+    }
+
+    data.forEach(function(row) {
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+            <td class="col-contact">
+                <span class="contact-name">${escapeHtml(row.sortId)}. ${escapeHtml(row.contact)}</span>
+                <span class="contact-sub">${escapeHtml(row.dateTag)}</span>
+            </td>
+
+            <td class="col-address" title="${escapeHtml(row.address)}">
+                ${escapeHtml(row.address)}
+            </td>
+
+            <td class="col-refill">
+                <span class="refill-pill">
+                    <span class="refill-count-pri">${Number(row.refillCount || 0)}</span>
+                    <span class="refill-count-sub">refill</span>
+                    <span style="color:var(--outline-variant);">|</span>
+                    <span class="${Number(row.bottleCount || 0) > 0 ? 'refill-count-sec' : 'refill-count-sub'}">
+                        ${Number(row.bottleCount || 0)}
+                    </span>
+                    <span class="refill-count-sub">bottle</span>
+                </span>
+            </td>
+
+            <td class="col-amt-given" style="font-family:var(--font-display); font-weight:500;">
+                ${
+                    String(row.paymentType || '').toLowerCase().includes('gcash')
+                    ? `<span style="color:#0284c7; font-weight:700; display:inline-flex; align-items:center; gap:2px;">
+                           <span class="material-symbols-outlined" style="font-size:13px;">qr_code_2</span>
+                           GCash
+                       </span>`
+                    : escapeHtml(row.amountGivenDisplay)
+                }
+            </td>
+
+            <td class="col-change ${Number(row.change || 0) > 0 ? 'change-text-positive' : 'change-text-zero'}">
+                ${escapeHtml(row.changeDisplay)}
+            </td>
+
+            <td class="col-amt-due amount-due-text">
+                ₱${Number(row.amountDue || 0).toLocaleString('en-PH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}
+            </td>
+
+            <td class="col-status">
+                ${createStatusDropdown(row)}
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+
+/* =========================================================
+   STATUS DROPDOWN & UPDATER
+   ========================================================= */
+function createStatusDropdown(row) {
+    
+const statuses = [
+    'for collection',
+    'for delivery - pending',
+    'for delivery - paid',
+    'delivered - pending',
+    'delivered - paid',
+    'cancelled'
+];
+
+    const currentStatus = normalizeStatus(row.status);
+    let html = `<select class="status-select ${getStatusClass(currentStatus)}" onchange="updateRowStatus(${Number(row.rowId)}, this.value)">`;
+    
+    statuses.forEach(function(status) {
+        const selected = currentStatus === status ? 'selected' : '';
+        html += `<option value="${escapeHtml(status)}" ${selected}>${escapeHtml(status)}</option>`;
+    });
+    html += `</select>`;
+    return html;
+}
+
+function updateRowStatus(rowId, newStatus) {
+    const normalizedStatus = String(newStatus || '')
+        .trim()
+        .toLowerCase();
+
+    const validStatuses = [
+        'for collection',
+        'for delivery - pending',
+        'for delivery - paid',
+        'delivered - pending',
+        'delivered - paid',
+        'cancelled'
+    ];
+
+    if (!validStatuses.includes(normalizedStatus)) {
+        alert('Invalid status: ' + normalizedStatus);
+        return;
+    }
+
+    google.script.run
+        .withSuccessHandler(function() {
+            loadWaterData();
+        })
+        .withFailureHandler(function(error) {
+            alert(
+                'Failed to update status:\n\n' +
+                (error && error.message
+                    ? error.message
+                    : String(error))
+            );
+            loadWaterData();
+        })
+        .updateWaterStatus(Number(rowId), normalizedStatus);
+}
+
+
+
+/* =========================================================
+   CARDS VIEW RENDERER
+   Displays:
+   1. Contact Info and Order ID
+   2. Address
+   3. Refill and Bottle Counts
+   4. Amount Due
+   5. Amount Given / Payment Type
+   6. Change
+   7. Status Dropdown
+   ========================================================= */
+
+function renderCards(data) {
+    const slot = document.getElementById('singleCardSlot');
+    const hint = document.getElementById('cardSearchHint');
+    const indicator = document.getElementById('cardPaginationIndicator');
+    const prevBtn = document.getElementById('btnPrevCard');
+    const nextBtn = document.getElementById('btnNextCard');
+
+    if (!slot) return;
+
+    data = Array.isArray(data) ? data : [];
+
+    // Handle empty results
+    if (data.length === 0) {
+        activeCardIndex = 0;
+
+        slot.innerHTML = `
+            <div style="
+                background:#ffffff;
+                border-radius:1rem;
+                border:1px solid var(--surface-container-high);
+                padding:2rem;
+                text-align:center;
+                color:var(--outline);
+            ">
+                <span class="material-symbols-outlined"
+                    style="font-size:36px; display:block; margin-bottom:0.5rem; color:var(--outline-variant);">
+                    search_off
+                </span>
+                <p style="font-family:var(--font-display); font-weight:700; color:var(--on-surface-variant);">
+                    No orders match the current filter.
+                </p>
+            </div>
+        `;
+
+        if (hint) hint.textContent = 'No matching cards';
+        if (indicator) indicator.textContent = '0 orders';
+        if (prevBtn) prevBtn.disabled = true;
+        if (nextBtn) nextBtn.disabled = true;
+
+        return;
+    }
+
+    // Keep the active index within the available range
+    if (activeCardIndex >= data.length) {
+        activeCardIndex = data.length - 1;
+    }
+
+    if (activeCardIndex < 0) {
+        activeCardIndex = 0;
+    }
+
+    const row = data[activeCardIndex];
+
+    // Pagination information
+    if (hint) {
+        hint.textContent = `Card ${activeCardIndex + 1} of ${data.length}`;
+    }
+
+    if (indicator) {
+        indicator.textContent = `Showing ${activeCardIndex + 1} of ${data.length}`;
+    }
+
+    if (prevBtn) {
+        prevBtn.disabled = activeCardIndex === 0;
+    }
+
+    if (nextBtn) {
+        nextBtn.disabled = activeCardIndex === data.length - 1;
+    }
+
+    // Status display
+    const displayStatus = normalizeStatus(row.status);
+    const statusClass = getStatusClass(displayStatus);
+
+    // Payment type display
+    const paymentType = String(row.paymentType || '').trim();
+    const isGCash = paymentType.toLowerCase().includes('gcash');
+
+    const amountGivenHtml = isGCash
+        ? `<span style="color:#0284c7; font-weight:700; display:inline-flex; align-items:center; gap:4px;">
+               <span class="material-symbols-outlined" style="font-size:15px;">qr_code_2</span>
+               GCash
+           </span>`
+        : escapeHtml(row.amountGivenDisplay || '₱0.00');
+
+    const amountDue = Number(row.amountDue || 0);
+    const change = Number(row.change || 0);
+
+    slot.innerHTML = `
+        <div class="card-item">
+
+            <!-- ORDER HEADER -->
+            <div class="card-item-header">
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <span style="
+                        width:1.75rem;
+                        height:1.75rem;
+                        border-radius:9999px;
+                        background:rgba(26,86,50,0.1);
+                        color:var(--primary);
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-weight:800;
+                        font-size:0.75rem;
+                    ">
+                        ${activeCardIndex + 1}
+                    </span>
+
+                    <div>
+                        <span style="
+                            font-size:0.65rem;
+                            color:var(--outline);
+                            font-family:monospace;
+                            display:block;
+                        ">
+                            ${escapeHtml(row.dateTag)}
+                        </span>
+
+                        <span style="
+                            font-family:var(--font-display);
+                            font-weight:700;
+                            font-size:0.8rem;
+                            color:var(--primary);
+                        ">
+                            ${escapeHtml(row.contact)}
+                        </span>
+                    </div>
+                </div>
+
+                <span class="card-badge-status ${statusClass}">
+                    ${escapeHtml(displayStatus)}
+                </span>
+            </div>
+
+            <!-- ADDRESS -->
+            <div style="
+                display:flex;
+                align-items:flex-start;
+                gap:0.35rem;
+                font-size:0.75rem;
+            ">
+                <span class="material-symbols-outlined"
+                    style="font-size:16px; color:var(--secondary);">
+                    location_on
+                </span>
+
+                <span style="font-weight:500; color:var(--on-surface);">
+                    ${escapeHtml(row.address)}
+                </span>
+            </div>
+
+            <!-- REFILL, BOTTLE, AND AMOUNT DUE -->
+            <div class="card-data-grid">
+
+                <div>
+                    <span style="
+                        display:block;
+                        font-size:0.65rem;
+                        text-transform:uppercase;
+                        font-weight:700;
+                        color:var(--outline);
+                    ">
+                        Refill / Bottle
+                    </span>
+
+                    <span style="
+                        font-family:var(--font-display);
+                        font-weight:800;
+                        color:var(--primary);
+                        font-size:0.875rem;
+                    ">
+                        ${Number(row.refillCount || 0)} Refill /
+                        ${Number(row.bottleCount || 0)} Bottle
+                    </span>
+                </div>
+
+                <div style="text-align:right;">
+                    <span style="
+                        display:block;
+                        font-size:0.65rem;
+                        text-transform:uppercase;
+                        font-weight:700;
+                        color:var(--outline);
+                    ">
+                        Amount Due
+                    </span>
+
+                    <span style="
+                        font-family:var(--font-display);
+                        font-weight:800;
+                        color:var(--primary);
+                        font-size:1rem;
+                    ">
+                        ₱${amountDue.toLocaleString('en-PH', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- PAYMENT DETAILS -->
+            <div class="card-data-grid" style="background:var(--surface-container);">
+
+                <div>
+                    <span style="
+                        display:block;
+                        font-size:0.65rem;
+                        font-weight:700;
+                        color:var(--outline);
+                    ">
+                        Amount Given / Payment
+                    </span>
+
+                    <span style="
+                        font-family:var(--font-display);
+                        font-weight:700;
+                        color:var(--on-surface);
+                    ">
+                        ${amountGivenHtml}
+                    </span>
+                </div>
+
+                <div style="text-align:right;">
+                    <span style="
+                        display:block;
+                        font-size:0.65rem;
+                        font-weight:700;
+                        color:var(--outline);
+                    ">
+                        Change
+                    </span>
+
+                    <span style="
+                        font-family:var(--font-display);
+                        font-weight:800;
+                        color:${change > 0 ? 'var(--secondary)' : 'var(--outline)'};
+                    ">
+                        ${escapeHtml(row.changeDisplay || '₱0.00')}
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- STATUS DROPDOWN -->
+            <div style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                gap:0.75rem;
+                padding-top:0.75rem;
+                border-top:1px solid var(--surface-container-high);
+                font-size:0.75rem;
+            ">
+                <span style="color:var(--outline); font-weight:600;">
+                    Update Status:
+                </span>
+
+                ${createStatusDropdown(row)}
+            </div>
+
+        </div>
+    `;
+}
+
+
+function prevCard() { if (activeCardIndex > 0) { activeCardIndex--; renderCards(filteredOrders); } }
+function nextCard() { if (activeCardIndex < filteredOrders.length - 1) { activeCardIndex++; renderCards(filteredOrders); } }
+
+/* =========================================================
+   SEARCH, FILTERS, AND DYNAMIC SORTING
+   ========================================================= */
+function applyFilters() {
+    const queryInput = document.getElementById('searchInput');
+    const query = queryInput ? queryInput.value.toLowerCase().trim() : '';
+    
+    const dateSelect = document.getElementById('dateFilter');
+    const dateVal = dateSelect ? dateSelect.value : 'today';
+
+    // Grab the new sorting dropdown from the table header
+    const sortSelect = document.getElementById('sortFilter');
+    const sortVal = sortSelect ? sortSelect.value : 'id'; 
+
+    // 1. FILTER FOR KPIs (Unchanged)
+    const dateFilteredOrders = ALL_ORDERS_DATA.filter(function(item) {
+        const currentStatus = item.status; 
+        const isActive = (currentStatus !== 'delivered - paid' && currentStatus !== 'cancelled');
+        
+        if (dateVal === 'today') return (item.dateCategory === 'today') || isActive;
+        if (dateVal === 'yesterday') return item.dateCategory === 'yesterday';
+        if (dateVal === 'tomorrow') return item.dateCategory === 'tomorrow';
+        if (dateVal === '7days') return ['today', 'yesterday', '7days'].includes(item.dateCategory);
+        if (dateVal === 'month') return ['today', 'yesterday', '7days', 'month'].includes(item.dateCategory);
+        return true; 
+    });
+
+    updateKPICounters(dateFilteredOrders, dateVal);
+
+    // 2. FILTER FOR TABLE (Global Search)
+    if (query !== '') {
+        filteredOrders = ALL_ORDERS_DATA.filter(function(item) {
+            return String(item.contact || '').toLowerCase().includes(query) ||
+                String(item.address || '').toLowerCase().includes(query) ||
+                String(item.instructions || '').toLowerCase().includes(query) ||
+                String(item.status || '').toLowerCase().includes(query) ||
+                String(item.id || '').toLowerCase().includes(query);
+        });
+    } else {
+        filteredOrders = [...dateFilteredOrders];
+    }
+
+    // 3. DYNAMIC SORTING
+    filteredOrders.sort(function(a, b) {
+        if (sortVal === 'contact') {
+            // Sort alphabetically by Contact Name
+            return String(a.contact).localeCompare(String(b.contact));
+        } 
+        else if (sortVal === 'date') {
+            // Sort by Date (Newest first)
+            const dateA = new Date(a.timestamp).getTime() || 0;
+            const dateB = new Date(b.timestamp).getTime() || 0;
+            return dateB - dateA;
+        } 
+        else {
+            // Default: Sort by Route ID (Column O)
+            let idA = Number(a.sortId) || 999999;
+            let idB = Number(b.sortId) || 999999;
+            return idA - idB; 
+        }
+    });
+
+    if (activeCardIndex >= filteredOrders.length) activeCardIndex = 0;
+
+    renderTable(filteredOrders);
+    renderCards(filteredOrders);
+
+    const countBadge = document.getElementById('recordCountBadge');
+    if (countBadge) countBadge.textContent = `Showing ${filteredOrders.length} of ${ALL_ORDERS_DATA.length} orders`;
+}
+
+function resetFilters() {
+    const searchInput = document.getElementById('searchInput');
+    const dateFilter = document.getElementById('dateFilter');
+    const sortFilter = document.getElementById('sortFilter'); 
+
+    if (searchInput) searchInput.value = '';
+    if (dateFilter) dateFilter.value = 'today';
+    if (sortFilter) sortFilter.value = 'id'; // Reset to Route ID
+
+    activeCardIndex = 0;
+    applyFilters();
+}
+
+/* =========================================================
+   KPI COUNTERS (Synchronized with Date Dropdown)
+   ========================================================= */
+function updateKPICounters(dataset, dateVal) {
+    dataset = Array.isArray(dataset) ? dataset : [];
+
+    let deliveryPaid = 0;
+    let cancelled = 0;
+    let needChangeCount = 0;
+    let totalRevenue = 0;
+    let forDelivery = 0; 
+    let newOrdersOnly = 0; 
+    let gcashPending = 0;
+
+    dataset.forEach(function(item) {
+        const status = item.status;
+
+        // Check if the order strictly belongs to the selected date (Ignores carry-overs)
+        let isStrictDateMatch = false;
+        if (dateVal === 'today' && item.dateCategory === 'today') isStrictDateMatch = true;
+        else if (dateVal === 'yesterday' && item.dateCategory === 'yesterday') isStrictDateMatch = true;
+        else if (dateVal === 'tomorrow' && item.dateCategory === 'tomorrow') isStrictDateMatch = true;
+        else if (dateVal === '7days' && ['today', 'yesterday', '7days'].includes(item.dateCategory)) isStrictDateMatch = true;
+        else if (dateVal === 'month' && ['today', 'yesterday', '7days', 'month'].includes(item.dateCategory)) isStrictDateMatch = true;
+        else if (dateVal === 'all') isStrictDateMatch = true;
+
+        if (status === 'for delivery - paid' || status === 'delivered - paid') {
+            // STRICT MATCH: Only counts as "Paid" and adds to "Revenue" if ordered on the selected date
+            if (isStrictDateMatch) {
+                deliveryPaid++;
+                totalRevenue += Number(item.amountDue || 0);
+            }
+        }
+        
+        if (status === 'cancelled') {
+            if (isStrictDateMatch) cancelled++;
+        }
+        
+        // Active driver route indicators (Need Change & For Delivery) will still count carry-overs
+        if (Number(item.change || 0) > 0) needChangeCount++;
+        
+        if (status === 'for delivery - pending' || status === 'for delivery - paid' || status === 'delivered - pending') {
+            forDelivery++;
+        }
+
+        if (isStrictDateMatch) {
+            newOrdersOnly++;
+        }
+
+        // Strict match for GCash Pending as well so it drops to 0 when no orders exist today
+        if (isStrictDateMatch && String(item.gcashRef || '').trim() !== '') {
+            gcashPending++;
+        }
+    });
+
+    setText('kpiPaid', deliveryPaid);
+    setText('kpiGcashPending', gcashPending);
+    setText('kpiCancelled', cancelled);
+    setText('kpiForDelivery', forDelivery);
+    setText('kpiTotalOrders', newOrdersOnly); 
+    setText('kpiNeedChange', needChangeCount);
+    setText('kpiRevenue', '₱' + totalRevenue.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+}
+
+function resetFilters() {
+    const searchInput = document.getElementById('searchInput');
+    const dateFilter = document.getElementById('dateFilter');
+    if (searchInput) searchInput.value = '';
+    if (dateFilter) dateFilter.value = 'today';
+    activeCardIndex = 0;
+    applyFilters();
+}
+
+function switchView(view) {
+    const tableWrap = document.getElementById('tableViewWrapper');
+    const cardsWrap = document.getElementById('cardsViewWrapper');
+    const btnTable = document.getElementById('viewBtnTable');
+    const btnCards = document.getElementById('viewBtnCards');
+
+    if (view === 'table') {
+        if (tableWrap) tableWrap.classList.remove('hidden');
+        if (cardsWrap) cardsWrap.classList.add('hidden');
+        if (btnTable) btnTable.classList.add('active');
+        if (btnCards) btnCards.classList.remove('active');
+    } else {
+        if (tableWrap) tableWrap.classList.add('hidden');
+        if (cardsWrap) cardsWrap.classList.remove('hidden');
+        if (btnTable) btnTable.classList.remove('active');
+        if (btnCards) btnCards.classList.add('active');
+        renderCards(filteredOrders);
+    }
+}
+
+function setText(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element) element.textContent = value;
+}
+
+function escapeHtml(value) {
+    if (value === null || value === undefined) return '';
+    return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+/* =========================================================
+   DOM READY
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const dateFilter = document.getElementById('dateFilter');
+    const resetBtn = document.getElementById('resetBtn');
+    const passwordInput = document.getElementById('loginPassword');
+
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (dateFilter) dateFilter.addEventListener('change', applyFilters);
+    if (resetBtn) resetBtn.addEventListener('click', resetFilters);
+
+    if (passwordInput) {
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleLogin(e);
+            }
+        });
+        setTimeout(function() { passwordInput.focus(); }, 200);
+    }
+
+    loadWaterData();
+});
+
+if (document.readyState !== 'loading') {
+    loadWaterData();
+}
+</script>
+
+</body>
+
+</html>

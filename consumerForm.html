@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        name="viewport">
+    <meta content="mobile_form" name="shell-type">
+    <title>Consumer Order Form - Community Market Hub</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #003e1e;
+            --primary-container: #1a5632;
+            --on-primary: #ffffff;
+            --on-primary-container: #8dca9c;
+            --primary-fixed: #b2f1c1;
+            --on-primary-fixed: #00210e;
+            --primary-fixed-dim: #97d5a6;
+
+            --secondary: #904d00;
+            --secondary-container: #fe932c;
+            --on-secondary: #ffffff;
+            --on-secondary-container: #663500;
+            --secondary-fixed: #ffdcc3;
+            --on-secondary-fixed: #2f1500;
+            --secondary-fixed-dim: #ffb77d;
+
+            --surface: #fff8f6;
+            --surface-container-lowest: #ffffff;
+            --surface-container-low: #fbf2f0;
+            --surface-container: #f5ecea;
+            --surface-container-high: #efe6e4;
+            --surface-container-highest: #e9e1df;
+            --surface-dim: #e1d8d6;
+            --surface-tint: #2f6a44;
+
+            --on-surface: #1e1b1a;
+            --on-surface-variant: #404941;
+            --outline: #717971;
+            --outline-variant: #c0c9bf;
+            --error: #ba1a1a;
+            --error-container: #ffdad6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100dvh;
+            background-color: var(--surface);
+            color: var(--on-surface);
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.925rem;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
+        .font-manrope {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 16px);
+        }
+
+        .pt-safe {
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 40;
+            background: rgba(255, 248, 246, 0.96);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(192, 201, 191, 0.4);
+        }
+
+        .header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        /* Container */
+        .form-wrapper {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 1rem 1rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+        }
+
+        /* Cards / Sections */
+        .form-card {
+            background: var(--surface-container-lowest);
+            border-radius: 1rem;
+            padding: 1.15rem 1rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--surface-container-high);
+        }
+
+        .section-title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-bottom: 0.85rem;
+        }
+
+        /* Inputs */
+        .input-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .text-input,
+        .textarea-input {
+            width: 100%;
+            background: var(--surface-container-low);
+            border: 1px solid var(--outline-variant);
+            border-radius: 0.65rem;
+            padding: 0.65rem 0.85rem;
+            font-family: inherit;
+            font-size: 0.875rem;
+            color: var(--on-surface);
+            outline: none;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+
+        .text-input:focus,
+        .textarea-input:focus {
+            border-color: var(--primary);
+            background: var(--surface-container-lowest);
+            box-shadow: 0 0 0 3px rgba(26, 86, 50, 0.12);
+        }
+
+        .note-hint {
+            font-size: 0.74rem;
+            color: var(--outline);
+            margin-top: 0.3rem;
+        }
+
+        /* Selectable Radio & Checkbox Cards */
+        .choice-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1.5px solid var(--outline-variant);
+            background: var(--surface-container-lowest);
+            border-radius: 0.75rem;
+            padding: 0.75rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .choice-card input[type="radio"] {
+            display: none;
+        }
+
+        .choice-card.selected {
+            border-color: var(--primary);
+            background: rgba(26, 86, 50, 0.06);
+        }
+
+        .choice-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 9999px;
+            background: var(--secondary-fixed);
+            color: var(--on-secondary-fixed);
+            white-space: nowrap;
+        }
+
+        /* Consumables Items Styling */
+        .consumable-item-group {
+            margin-bottom: 0.65rem;
+            border-radius: 0.85rem;
+            border: 1px solid var(--surface-container-high);
+            overflow: hidden;
+            background: var(--surface-container-lowest);
+            transition: border-color 0.2s;
+        }
+
+        .consumable-item-group.active {
+            border-color: var(--primary-container);
+            box-shadow: 0 2px 8px rgba(0, 62, 30, 0.06);
+        }
+
+        .item-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0.9rem;
+            cursor: pointer;
+            background: var(--surface-container-lowest);
+            user-select: none;
+            transition: background 0.15s;
+        }
+
+        .item-header-row:hover {
+            background: var(--surface-container-low);
+        }
+
+        .item-checkbox-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .custom-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid var(--outline);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: var(--surface-container-lowest);
+            flex-shrink: 0;
+            color: transparent;
+        }
+
+        .custom-check.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .options-panel {
+            background: var(--surface-container-low);
+            padding: 0.8rem 0.95rem;
+            border-top: 1px dashed var(--outline-variant);
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            animation: fadeInDown 0.2s ease-out;
+        }
+
+        .variant-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.35rem 0;
+        }
+
+        .stepper-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: var(--surface-container-lowest);
+            border: 1px solid var(--outline-variant);
+            padding: 0.2rem 0.3rem;
+            border-radius: 9999px;
+        }
+
+        .step-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: var(--surface-container);
+            color: var(--on-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        .step-btn:active {
+            transform: scale(0.92);
+            background: var(--surface-container-highest);
+        }
+
+        .step-btn:hover {
+            background: var(--primary-fixed);
+            color: var(--on-primary-fixed);
+        }
+
+        .qty-val {
+            min-width: 26px;
+            text-align: center;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Bottom Action Bar */
+        .bottom-cta-bar {
+            position: relative;
+            width: 100%;
+            padding: 0.5rem 1rem 2rem;
+            background: transparent;
+        }
+
+        .cta-inner {
+            max-width: 680px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: var(--on-primary);
+            border: none;
+            padding: 0.85rem 1.6rem;
+            border-radius: 9999px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 62, 30, 0.25);
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .primary-btn:active {
+            opacity: 0.9;
+            transform: scale(0.99);
+        }
+
+        /* Modal Backdrop & Sheets */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 27, 26, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 60;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-sheet {
+            width: 100%;
+            max-width: 520px;
+            background: var(--surface-container-lowest);
+            border-radius: 1.25rem 1.25rem 0 0;
+            padding: 1.25rem 1.25rem 2rem;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
+            animation: slideUp 0.25s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.45rem 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--surface-container);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Header with Back Navigation -->
+    <header class="pt-safe">
+        <div class="header-bar">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <a aria-label="Back to Home" class="font-manrope" href="<?= APP_URL ?>?page=index" target="_top"
+                    style="display: inline-flex; align-items: center; justify-content: center; padding: 0.45rem 1rem; border-radius: 9999px; background: var(--surface-container); border: 1.5px solid var(--outline-variant); text-decoration: none; color: var(--primary); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.04em; box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 3px;"
+                    title="Back to Home">
+                    HOME
+                </a>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div
+                        style="width: 32px; height: 32px; border-radius: 50%; background: rgba(26, 86, 50, 0.12); color: var(--primary); display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined" style="font-size: 19px;">shopping_basket</span>
+                    </div>
+                    <div>
+                        <span class="font-manrope"
+                            style="font-size: 0.72rem; font-weight: 700; color: var(--secondary); text-transform: uppercase;">Community
+                            Market Hub</span>
+                        <h1 class="font-manrope"
+                            style="font-size: 1.05rem; font-weight: 800; color: var(--primary); line-height: 1.2;">
+                            Consumer Order Form</h1>
+                    </div>
+                </div>
+            </div>
+            <a href="index.html"
+                style="width: 36px; height: 36px; border-radius: 50%; background: rgba(26, 86, 50, 0.1); color: var(--primary-container); display: flex; align-items: center; justify-content: center; text-decoration: none;"
+                title="Market Catalog">
+                <span class="material-symbols-outlined" style="font-size: 20px;">storefront</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Form Content -->
+    <div class="form-wrapper">      
+
+        <!-- 1. DELIVERY DETAILS -->
+        <div class="form-card">
+            <div class="section-title">
+                <span class="material-symbols-outlined" style="font-size: 20px;">person_pin_circle</span>
+                <span>1. Delivery Details</span>
+            </div>
+            <!-- Contact Info -->
+            <div style="margin-bottom: 0.85rem;">
+                <label class="input-label" for="contactInfo">When no one is around: I will call, text or pm you. <span
+                        style="color: var(--error);">*</span></label>
+                <input class="text-input" id="contactInfo" placeholder="e.g., 0917 123 4567 Messenger"
+                    type="text" value="">
+            </div>
+            <!-- Address (Hidden) -->
+            <div style="display: none; margin-bottom: 0.85rem;">
+                <label class="input-label" for="address">Address <span
+                        style="font-size: 0.72rem; font-weight: 500; color: var(--outline); text-transform: none;">(Optional)</span></label>
+                <textarea class="textarea-input" id="address" placeholder="e.g., House #, Street Name, Landmark"
+                    rows="2"></textarea>
+            </div>
+            <!-- Phase, Block, Lot (3 Column Grid) -->
+            <div>
+                <label class="input-label">Delivery Address</label>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                    <div>
+                        <input class="text-input" id="locPhase" placeholder="e.g., Ph 2" type="text" value="">
+                    </div>
+                    <div>
+                        <input class="text-input" id="locBlock" placeholder="e.g., Blk 12" type="text" value="">
+                    </div>
+                    <div>
+                        <input class="text-input" id="locLot" placeholder="e.g., Lot 5" type="text" value="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. CONSUMABLE LIST -->
+        <div class="form-card">
+            <div class="section-title">
+                <span class="material-symbols-outlined" style="font-size: 20px;">inventory_2</span>
+                <span>2. Consumable List</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--on-surface-variant); margin-bottom: 0.85rem;">
+                Select items below to reveal sizes, packaging options, and order quantities:
+            </p>
+
+            <!-- Dynamic or Fallback Items List -->
+            <div id="consumablesList">
+                <!-- Fallback/Pre-rendered items so it works standalone -->
+            </div>
+
+            <!-- Subtotals in Consumable card -->
+            <div
+                style="background: var(--surface-container); border-radius: 0.75rem; padding: 0.75rem 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.85rem;">
+                <div
+                    style="display: flex; align-items: center; justify-content: space-between;">
+                    <span class="font-manrope"
+                        style="font-weight: 700; font-size: 0.9rem; color: var(--on-surface);">Amount Due | Overall
+                        Total:</span>
+                    <span class="font-manrope" id="subtotalDisplay"
+                        style="font-weight: 800; font-size: 1.15rem; color: var(--primary);">₱0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. DELIVERY OPTIONS -->
+        <div class="form-card">
+            <div class="section-title">
+                <span class="material-symbols-outlined" style="font-size: 20px;">local_shipping</span>
+                <span>3. Delivery Options (Fresh Goods)</span>
+            </div>
+            <div>
+                <label class="input-label" for="deliveryTimeInput">Preferred Delivery Time</label>
+                <div style="position: relative; display: flex; align-items: center;">
+                    <span class="material-symbols-outlined"
+                        style="position: absolute; left: 0.75rem; color: var(--primary); font-size: 19px; pointer-events: none;">schedule</span>
+                    <input class="text-input" id="deliveryTimeInput" placeholder="Leave blank if waiting now"
+                        style="padding-left: 2.35rem;" type="text" value="">
+                </div>
+                <p class="note-hint">Specify your preferred delivery time or leave blank for regular dispatch schedule.
+                </p>
+            </div>
+        </div>
+
+        <!-- 4. PAYMENT DETAILS -->
+        <div class="form-card">
+            <div class="section-title">
+                <span class="material-symbols-outlined" style="font-size: 20px;">payments</span>
+                <span>4. Payment Details</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+                <!-- Payment Mode Selectors -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                    <label class="choice-card selected" id="paymode-cash-card">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input checked="" id="paymode-cash" name="paymentMode"
+                                onchange="handlePaymentModeChange('cash')" type="radio" value="Cash">
+                            <span class="material-symbols-outlined" style="color: var(--primary);">price_check</span>
+                            <span class="font-manrope" style="font-size: 0.85rem; font-weight: 700;">Cash</span>
+                        </div>
+                    </label>
+                    <label class="choice-card" id="paymode-gcash-card">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input id="paymode-gcash" name="paymentMode" onchange="handlePaymentModeChange('gcash')"
+                                type="radio" value="GCash">
+                            <span class="material-symbols-outlined" style="color: #007dfe;">qr_code_2</span>
+                            <span class="font-manrope" style="font-size: 0.85rem; font-weight: 700;">GCash</span>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Cash Details Container -->
+                <div id="cashDetailsBox"
+                    style="background: var(--surface-container-low); border-radius: 0.75rem; padding: 0.75rem; display: block;">
+                    <div style="display: flex; flex-direction: column; gap: 0.55rem;">
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+                            <input checked="" name="cashAmountType" onchange="handleCashTypeChange(false)" type="radio"
+                                value="Exact amount">
+                            <span>Exact amount</span>
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+                            <input id="needChangeRadio" name="cashAmountType" onchange="handleCashTypeChange(true)"
+                                type="radio" value="Need change">
+                            <span>Need change</span>
+                        </label>
+                    </div>
+
+                    <!-- Need Change Inputs -->
+                    <div id="cashOnHandWrapper"
+                        style="display: none; margin-top: 0.75rem; padding-top: 0.65rem; border-top: 1px dashed var(--outline-variant);">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; align-items: center;">
+                            <div>
+                                <label class="input-label" for="cashOnHandInput">Cash on Hand (₱)</label>
+                                <input class="text-input" id="cashOnHandInput" min="0" oninput="calculateChange()"
+                                    placeholder="e.g., 500" step="any" type="number" value="">
+                            </div>
+                            <div>
+                                <label class="input-label" for="changeAmountDisplay">Calculated Change</label>
+                                <div class="font-manrope" id="changeAmountDisplay"
+                                    style="background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 0.65rem; padding: 0.65rem 0.85rem; font-weight: 800; color: var(--primary); font-size: 0.95rem; min-height: 42px; display: flex; align-items: center;">
+                                    ₱0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GCash Details Container -->
+                <div id="gcashDetailsBox"
+                    style="display: none; background: rgba(0, 125, 254, 0.05); border: 1px solid rgba(0, 125, 254, 0.2); border-radius: 0.75rem; padding: 0.75rem;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <div style="font-size: 0.8rem; font-weight: 700; color: #0056b3;">GCash Account Info:</div>
+                        <span
+                            style="font-size: 0.7rem; background: #007dfe; color: #fff; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 700;">Verified</span>
+                    </div>
+                    <div class="font-manrope" style="font-size: 0.95rem; font-weight: 800; color: var(--on-surface);">
+                        M.O.C. • 0917 552 7512</div>
+                    <p style="font-size: 0.72rem; color: var(--on-surface-variant); margin: 0.2rem 0 0.65rem;">
+                        Send payment and input the transaction reference below.</p>
+                    <label class="input-label" for="gcashRefInput">Reference #</label>
+                    <input class="text-input" id="gcashRefInput" placeholder="e.g., Ref # 1002 9384 1928" type="text"
+                        value="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Bottom Review Bar - Now relative/inline -->
+    <div class="bottom-cta-bar pb-safe">
+        <div class="cta-inner">
+            <button class="primary-btn" onclick="handleReviewOrderClick()"
+                style="width: 100%; max-width: 420px; margin: 0px auto; text-align: center; justify-content: center; padding: 0.85rem 2rem; font-size: 0.95rem; letter-spacing: 0.01em;"
+                type="button">
+                <span class="font-manrope" style="font-weight: 700;">Review Order</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ORDER SUMMARY MODAL -->
+    <div class="modal-overlay" id="summaryModal">
+        <div class="modal-sheet">
+            <div
+                style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; border-bottom: 1px solid var(--surface-container-high); padding-bottom: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <div
+                        style="width: 38px; height: 38px; border-radius: 50%; background: rgba(0, 62, 30, 0.08); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                        <span class="material-symbols-outlined" style="font-size: 22px;">receipt_long</span>
+                    </div>
+                    <div>
+                        <h2 class="font-manrope"
+                            style="font-size: 1.15rem; font-weight: 800; color: var(--primary); line-height: 1.2;">Order
+                            Review</h2>
+                        <p style="font-size: 0.75rem; color: var(--outline);">Please verify your details before
+                            submitting</p>
+                    </div>
+                </div>
+                <button aria-label="Close" onclick="closeOrderSummaryModal()"
+                    style="background: var(--surface-container); border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--outline);"
+                    type="button">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+                </button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.25rem;">
+                <!-- Customer Details Review -->
+                <div
+                    style="background: var(--surface-container-low); border: 1px solid var(--surface-container-high); border-radius: 0.85rem; padding: 0.85rem;">
+                    <div class="font-manrope"
+                        style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.04em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">person_pin_circle</span>
+                        Delivery &amp; Contact
+                    </div>
+                    <div class="summary-item">
+                        <span style="color: var(--outline);">Contact Info:</span>
+                        <span class="font-manrope" id="sumContact"
+                            style="font-weight: 700; color: var(--on-surface); text-align: right;">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span style="color: var(--outline);">Address:</span>
+                        <span class="font-manrope" id="sumAddress"
+                            style="font-weight: 600; color: var(--on-surface); text-align: right; max-width: 60%; word-break: break-word;">-</span>
+                    </div>
+                    <div class="summary-item" style="border-bottom: none;">
+                        <span style="color: var(--outline);">Village Details:</span>
+                        <span class="font-manrope" id="sumLocation"
+                            style="font-weight: 600; color: var(--on-surface);">-</span>
+                    </div>
+                </div>
+
+                <!-- Items & Order Review -->
+                <div
+                    style="background: var(--surface-container-low); border: 1px solid var(--surface-container-high); border-radius: 0.85rem; padding: 0.85rem;">
+                    <div class="font-manrope"
+                        style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.04em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">shopping_bag</span>
+                        Order Items &amp; Fulfillment
+                    </div>
+                    <div id="summaryItemsList" style="display: flex; flex-direction: column;">
+                        <!-- Dynamically populated selected items -->
+                    </div>
+                    <div class="summary-item">
+                        <span style="color: var(--outline);">Delivery Time:</span>
+                        <span class="font-manrope" id="sumDelivery"
+                            style="font-weight: 600; text-align: right; max-width: 60%;">Anytime / Regular
+                            dispatch</span>
+                    </div>
+                    <div class="summary-item">
+                        <span style="color: var(--outline);">Payment Method:</span>
+                        <span class="font-manrope" id="sumPayment" style="font-weight: 700;">Cash</span>
+                    </div>
+                    <div class="summary-item"
+                        style="border-bottom: none; padding-top: 0.65rem; margin-top: 0.25rem; border-top: 1px dashed var(--outline-variant);">
+                        <span class="font-manrope"
+                            style="font-weight: 800; font-size: 0.95rem; color: var(--primary);">Amount Due | Overall
+                            Total:</span>
+                        <span class="font-manrope" id="sumTotal"
+                            style="font-weight: 800; font-size: 1.25rem; color: var(--primary);">₱0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem;">
+                <button onclick="closeOrderSummaryModal()"
+                    style="flex: 1; padding: 0.8rem 1rem; border-radius: 9999px; background: var(--surface-container); border: 1.5px solid var(--outline-variant); font-family: Manrope, sans-serif; font-weight: 700; font-size: 0.875rem; cursor: pointer; color: var(--on-surface); display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;"
+                    type="button">
+                    <span class="material-symbols-outlined" style="font-size: 17px;">edit</span>
+                    <span>Update</span>
+                </button>
+                <button class="primary-btn" id="confirmSubmitBtn" onclick="submitConsumerOrder()"
+                    style="flex: 1.35; padding: 0.8rem 1.25rem; font-size: 0.875rem;" type="button">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
+                    <span>Submit Order</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS ALERT MODAL -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-sheet" style="text-align: center; padding-top: 1.75rem;">
+            <div
+                style="width: 64px; height: 64px; border-radius: 50%; background: rgb(215, 245, 219); color: rgb(0, 62, 30); display: flex; align-items: center; justify-content: center; margin: 0.5rem auto 1.15rem; box-shadow: rgba(0, 62, 30, 0.15) 0px 6px 18px;">
+                <span class="material-symbols-outlined" style="font-size: 36px; font-weight: 700;">check</span>
+            </div>
+            <h2 class="font-manrope"
+                style="font-size: 1.3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.4rem;">Order
+                Submitted Successfully!</h2>
+            <p
+                style="font-size: 0.875rem; color: var(--on-surface-variant); max-width: 330px; margin: 0px auto 1.25rem; line-height: 1.5;">
+                Thank you for your order! Your consumable items order has been received and queued at the Community
+                Market Hub. Our dispatch rider will contact you upon delivery.
+            </p>
+            <div
+                style="background: var(--surface-container-low); border: 1px solid var(--surface-container-high); border-radius: 0.85rem; padding: 0.85rem; margin-bottom: 1.5rem; text-align: left; font-size: 0.825rem;">
+                <div
+                    style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; padding-bottom: 0.35rem; border-bottom: 1px dashed var(--outline-variant);">
+                    <span style="color: var(--outline);">Tracking Ref:</span>
+                    <span class="font-manrope" id="successOrderRef"
+                        style="font-weight: 800; color: var(--primary); font-size: 0.9rem;">CNS-8821</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--outline);">Status:</span>
+                    <span
+                        style="color: #1a5632; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">
+                        <span
+                            style="width: 7px; height: 7px; border-radius: 50%; background: #1a5632; display: inline-block;"></span>
+                        Confirmed &amp; Queued
+                    </span>
+                </div>
+            </div>
+            <button class="primary-btn" onclick="acknowledgeSuccess()"
+                style="width: 100%; padding: 0.85rem 1.5rem; font-size: 0.95rem;" type="button">
+                <span>OK</span>
+            </button>
+        </div>
+    </div>
+
+<script>
+    /* =========================================================
+       CONSUMER ORDER FORM LOGIC - MASTER VERSION
+       ========================================================= */        
+    var consumableCatalog = [];
+    var orderItemState = {};
+
+    function initConsumables() {
+        if (typeof google === 'undefined' || !google.script || !google.script.run) {
+            console.error('Google Apps Script is unavailable. Cannot load Consumable Items.');
+            showConsumablesError('Unable to connect to Google Sheets. Please open this form through the Apps Script web app.');
+            return;
+        }
+
+        google.script.run
+            .withSuccessHandler(function (items) {
+                if (!Array.isArray(items) || items.length === 0) {
+                    consumableCatalog = [];
+                    renderConsumables();
+                    showConsumablesError('No products found in the Consumable Items sheet.');
+                    return;
+                }
+                processGoogleSheetItems(items);
+            })
+            .withFailureHandler(function (error) {
+                console.error('Failed to load Consumable Items:', error);
+                showConsumablesError('Unable to load products from Google Sheets. Please try again.');
+            })
+            .getConsumableItems();
+    }
+
+    function showConsumablesError(message) {
+        const container = document.getElementById('consumablesList');
+        if (container) {
+            container.replaceChildren();
+            const notice = document.createElement('p');
+            notice.textContent = message;
+            notice.style.color = '#b45309';
+            notice.style.padding = '12px';
+            container.appendChild(notice);
+        }
+    }
+
+    function processGoogleSheetItems(rawItems) {
+        const map = {};
+
+        rawItems.forEach(item => {
+            const name = String(item.item || item.Item || item.productName || item.name || '').trim();
+            if (!name) return;
+
+            const variant = String(item.size || item.Size || item.variant || 'Standard').trim();
+            const rawPrice = item.amount ?? item.Amount ?? item.price ?? 0;
+            const price = Number(String(rawPrice).replace(/[₱,\s]/g, '')) || 0;
+
+            if (!map[name]) {
+                map[name] = {
+                    productId: item.productId || '',
+                    productName: name,
+                    icon: name.toLowerCase().includes('egg') ? 'egg_alt' : name.toLowerCase().includes('honey') ? 'hive' : 'shopping_bag',
+                    tag: item.tag || 'Available',
+                    variants: []
+                };
+            }
+
+            if (!map[name].variants.some(v => v.variant === variant)) {
+                map[name].variants.push({ variant: variant, price: price });
+            }
+        });
+
+        consumableCatalog = Object.values(map);
+
+        const validNames = new Set(consumableCatalog.map(product => product.productName));
+        Object.keys(orderItemState).forEach(name => {
+            if (!validNames.has(name)) {
+                delete orderItemState[name];
+            }
+        });
+
+        renderConsumables();
+    }
+
+    function renderConsumables() {
+        const container = document.getElementById('consumablesList');
+        if (!container) return;
+        container.innerHTML = '';
+
+        consumableCatalog.forEach((product, pIndex) => {
+            if (!orderItemState[product.productName]) {
+                orderItemState[product.productName] = { checked: false, variants: {} };
+                product.variants.forEach(v => {
+                    orderItemState[product.productName].variants[v.variant] = 0;
+                });
+            }
+
+            const group = document.createElement('div');
+            group.className = 'consumable-item-group' + (orderItemState[product.productName].checked ? ' active' : '');
+            group.id = 'group_' + pIndex;
+
+            const header = document.createElement('div');
+            header.className = 'item-header-row';
+            header.onclick = function (e) {
+                if (e.target.closest('.custom-check')) return;
+                toggleProductCheck(pIndex, product);
+            };
+
+            const checkWrap = document.createElement('div');
+            checkWrap.className = 'item-checkbox-wrap';
+
+            const checkBtn = document.createElement('div');
+            checkBtn.className = 'custom-check' + (orderItemState[product.productName].checked ? ' checked' : '');
+            checkBtn.id = 'check_' + pIndex;
+            checkBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 15px; font-weight: 700;">check</span>';
+            checkBtn.onclick = function (e) {
+                e.stopPropagation();
+                toggleProductCheck(pIndex, product);
+            };
+
+            const titleWrap = document.createElement('div');
+            titleWrap.style.display = 'flex';
+            titleWrap.style.alignItems = 'center';
+            titleWrap.style.gap = '0.45rem';
+
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'material-symbols-outlined';
+            iconSpan.style.fontSize = '18px';
+            iconSpan.style.color = 'var(--primary)';
+            iconSpan.textContent = product.icon || 'inventory_2';
+
+            const nameLabel = document.createElement('span');
+            nameLabel.className = 'font-manrope';
+            nameLabel.style.fontWeight = '700';
+            nameLabel.style.fontSize = '0.88rem';
+            nameLabel.textContent = product.productName;
+
+            titleWrap.appendChild(iconSpan);
+            titleWrap.appendChild(nameLabel);
+
+            checkWrap.appendChild(checkBtn);
+            checkWrap.appendChild(titleWrap);
+
+            const tagSpan = document.createElement('span');
+            tagSpan.className = 'choice-badge';
+            tagSpan.textContent = product.tag;
+
+            header.appendChild(checkWrap);
+            header.appendChild(tagSpan);
+            group.appendChild(header);
+
+            const panel = document.createElement('div');
+            panel.className = 'options-panel';
+            panel.id = 'panel_' + pIndex;
+            panel.style.display = orderItemState[product.productName].checked ? 'flex' : 'none';
+
+            product.variants.forEach((v, vIndex) => {
+                const row = document.createElement('div');
+                row.className = 'variant-row';
+
+                const vInfo = document.createElement('div');
+                vInfo.style.display = 'flex';
+                vInfo.style.flexDirection = 'column';
+
+                const vName = document.createElement('span');
+                vName.className = 'font-manrope';
+                vName.style.fontSize = '0.84rem';
+                vName.style.fontWeight = '600';
+                vName.textContent = v.variant;
+
+                const vPrice = document.createElement('span');
+                vPrice.style.fontSize = '0.78rem';
+                vPrice.style.color = 'var(--primary)';
+                vPrice.style.fontWeight = '700';
+                vPrice.textContent = v.price > 0 ? '₱' + v.price.toFixed(2) : 'Free Booking';
+
+                vInfo.appendChild(vName);
+                vInfo.appendChild(vPrice);
+
+                const stepper = document.createElement('div');
+                stepper.className = 'stepper-wrap';
+
+                const minusBtn = document.createElement('button');
+                minusBtn.type = 'button';
+                minusBtn.className = 'step-btn';
+                minusBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 16px;">remove</span>';
+                minusBtn.onclick = function () { updateQty(product.productName, v.variant, -1, pIndex, vIndex); };
+
+                const qtyVal = document.createElement('span');
+                qtyVal.className = 'qty-val';
+                qtyVal.id = `qty_${pIndex}_${vIndex}`;
+                qtyVal.textContent = orderItemState[product.productName].variants[v.variant] || 0;
+
+                const plusBtn = document.createElement('button');
+                plusBtn.type = 'button';
+                plusBtn.className = 'step-btn';
+                plusBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 16px;">add</span>';
+                plusBtn.onclick = function () { updateQty(product.productName, v.variant, 1, pIndex, vIndex); };
+
+                stepper.appendChild(minusBtn);
+                stepper.appendChild(qtyVal);
+                stepper.appendChild(plusBtn);
+
+                row.appendChild(vInfo);
+                row.appendChild(stepper);
+                panel.appendChild(row);
+            });
+
+            group.appendChild(panel);
+            container.appendChild(group);
+        });
+
+        calculateTotals();
+    }
+
+    function toggleProductCheck(pIndex, product) {
+        const state = orderItemState[product.productName];
+        state.checked = !state.checked;
+
+        const checkEl = document.getElementById('check_' + pIndex);
+        const panelEl = document.getElementById('panel_' + pIndex);
+        const groupEl = document.getElementById('group_' + pIndex);
+
+        if (state.checked) {
+            checkEl.classList.add('checked');
+            groupEl.classList.add('active');
+            panelEl.style.display = 'flex';
+
+            const hasAny = Object.values(state.variants).some(q => q > 0);
+            if (!hasAny && product.variants.length > 0) {
+                const firstVariant = product.variants[0].variant;
+                state.variants[firstVariant] = 1;
+                const firstQtyEl = document.getElementById(`qty_${pIndex}_0`);
+                if (firstQtyEl) firstQtyEl.textContent = '1';
+            }
+        } else {
+            checkEl.classList.remove('checked');
+            groupEl.classList.remove('active');
+            panelEl.style.display = 'none';
+
+            Object.keys(state.variants).forEach(k => { state.variants[k] = 0; });
+            product.variants.forEach((v, vIndex) => {
+                const qEl = document.getElementById(`qty_${pIndex}_${vIndex}`);
+                if (qEl) qEl.textContent = '0';
+            });
+        }
+
+        calculateTotals();
+    }
+
+    function updateQty(productName, variantName, delta, pIndex, vIndex) {
+        const state = orderItemState[productName];
+        if (!state.checked) return;
+
+        let cur = state.variants[variantName] || 0;
+        cur = Math.max(0, cur + delta);
+        state.variants[variantName] = cur;
+
+        const qtyEl = document.getElementById(`qty_${pIndex}_${vIndex}`);
+        if (qtyEl) qtyEl.textContent = cur;
+
+        calculateTotals();
+    }
+
+    function calculateTotals() {
+        let total = 0;
+        if (!Array.isArray(consumableCatalog)) return 0;
+
+        consumableCatalog.forEach(p => {
+            const state = orderItemState[p.productName];
+            if (state && state.checked) {
+                p.variants.forEach(v => {
+                    const qty = Number(state.variants[v.variant]) || 0;
+                    const price = Number(v.price) || 0;
+                    total += qty * price;
+                });
+            }
+        });
+
+        const formatted = '₱' + total.toFixed(2);
+        const itemsSub = document.getElementById('itemsSubtotalDisplay');
+        const subtotal = document.getElementById('subtotalDisplay');
+        if (itemsSub) itemsSub.textContent = formatted;
+        if (subtotal) subtotal.textContent = formatted;
+
+        calculateChange();
+        return total;
+    }
+
+    function handlePaymentModeChange(mode) {
+        const cashCard = document.getElementById('paymode-cash-card');
+        const gcashCard = document.getElementById('paymode-gcash-card');
+        const cashBox = document.getElementById('cashDetailsBox');
+        const gcashBox = document.getElementById('gcashDetailsBox');
+
+        if (mode === 'cash') {
+            cashCard.classList.add('selected');
+            gcashCard.classList.remove('selected');
+            cashBox.style.display = 'block';
+            gcashBox.style.display = 'none';
+        } else {
+            cashCard.classList.remove('selected');
+            gcashCard.classList.add('selected');
+            cashBox.style.display = 'none';
+            gcashBox.style.display = 'block';
+        }
+    }
+
+    function handleCashTypeChange(needChange) {
+        const wrapper = document.getElementById('cashOnHandWrapper');
+        wrapper.style.display = needChange ? 'block' : 'none';
+        calculateChange();
+    }
+
+    function calculateChange() {
+        const needChangeRadio = document.getElementById('needChangeRadio');
+        const display = document.getElementById('changeAmountDisplay');
+        if (!display) return;
+
+        if (!needChangeRadio || !needChangeRadio.checked) {
+            display.textContent = 'Exact';
+            display.style.color = 'var(--outline)';
+            return;
+        }
+
+        const cashInput = document.getElementById('cashOnHandInput');
+        const cashOnHand = parseFloat(cashInput ? cashInput.value : 0) || 0;
+        const totalDue = calculateTotalsWithoutDom();
+
+        if (cashOnHand <= 0) {
+            display.textContent = '₱0.00';
+            display.style.color = 'var(--outline)';
+        } else if (cashOnHand < totalDue) {
+            display.textContent = 'Lacking ₱' + (totalDue - cashOnHand).toFixed(2);
+            display.style.color = 'var(--error)';
+        } else {
+            const change = cashOnHand - totalDue;
+            display.textContent = '₱' + change.toFixed(2);
+            display.style.color = 'var(--primary)';
+        }
+    }
+
+    function calculateTotalsWithoutDom() {
+        let total = 0;
+        if (!Array.isArray(consumableCatalog)) return 0;
+        consumableCatalog.forEach(p => {
+            const state = orderItemState[p.productName];
+            if (state && state.checked) {
+                p.variants.forEach(v => {
+                    const qty = Number(state.variants[v.variant]) || 0;
+                    const price = Number(v.price) || 0;
+                    total += qty * price;
+                });
+            }
+        });
+        return total;
+    }
+
+    function getSelectedOrderItems() {
+        const list = [];
+        consumableCatalog.forEach(p => {
+            const state = orderItemState[p.productName];
+            if (state && state.checked) {
+                p.variants.forEach(v => {
+                    const qty = Number(state.variants[v.variant]) || 0;
+                    const price = Number(v.price) || 0;
+                    if (qty > 0) {
+                        list.push({ item: p.productName, variant: v.variant, price: price, qty: qty, subtotal: qty * price });
+                    }
+                });
+            }
+        });
+        return list;
+    }
+
+    function handleReviewOrderClick() {
+        const contact = document.getElementById('contactInfo').value.trim();
+        if (!contact) {
+            alert('Please enter your contact information (Section 1).');
+            document.getElementById('contactInfo').focus();
+            return;
+        }
+
+        const items = getSelectedOrderItems();
+        if (items.length === 0) {
+            alert('Please select at least one consumable item and specify quantity.');
+            return;
+        }
+
+        document.getElementById('sumContact').textContent = contact;
+
+        const addr = document.getElementById('address').value.trim();
+        document.getElementById('sumAddress').textContent = addr || '(None specified)';
+
+        const ph = document.getElementById('locPhase').value.trim();
+        const blk = document.getElementById('locBlock').value.trim();
+        const lot = document.getElementById('locLot').value.trim();
+        const locDetails = [ph, blk, lot].filter(Boolean).join(' • ');
+        document.getElementById('sumLocation').textContent = locDetails || 'Standard Village Route';
+
+        const itemsContainer = document.getElementById('summaryItemsList');
+        itemsContainer.innerHTML = '';
+        items.forEach(it => {
+            const row = document.createElement('div');
+            row.className = 'summary-item';
+            row.innerHTML = `
+                <span style="color: var(--on-surface); font-weight: 500;">${it.qty}x ${it.item} <small style="color: var(--outline);">(${it.variant})</small></span>
+                <span class="font-manrope" style="font-weight: 700; color: var(--primary);">${it.subtotal > 0 ? '₱' + it.subtotal.toFixed(2) : 'Free'}</span>
+            `;
+            itemsContainer.appendChild(row);
+        });
+
+        const deliveryTime = document.getElementById('deliveryTimeInput').value.trim();
+        document.getElementById('sumDelivery').textContent = deliveryTime || 'Anytime / Regular dispatch';
+
+        const paymentMode = document.querySelector('input[name="paymentMode"]:checked')?.value || 'Cash';
+        const cashType = document.querySelector('input[name="cashAmountType"]:checked')?.value || 'Exact amount';
+        const cashOnHand = document.getElementById('cashOnHandInput').value.trim();
+        let payStr = paymentMode;
+
+        if (paymentMode === 'Cash') {
+            payStr += (cashType === 'Need change' && cashOnHand ? ` (Cash on hand: ₱${cashOnHand})` : ' (Exact amount)');
+        } else {
+            const ref = document.getElementById('gcashRefInput').value.trim();
+            payStr += ref ? ` (Ref: ${ref})` : ' (Pending Transfer)';
+        }
+        document.getElementById('sumPayment').textContent = payStr;
+
+        const total = calculateTotalsWithoutDom();
+        document.getElementById('sumTotal').textContent = '₱' + total.toFixed(2);
+        document.getElementById('summaryModal').classList.add('active');
+    }
+
+    function closeOrderSummaryModal() {
+        document.getElementById('summaryModal').classList.remove('active');
+    }
+
+    function submitConsumerOrder() {
+        const confirmBtn = document.getElementById('confirmSubmitBtn');
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px; animation: spin 1s linear infinite;">sync</span> Saving...';
+
+        const contactInfo = document.getElementById('contactInfo').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const phase = document.getElementById('locPhase').value.trim();
+        const block = document.getElementById('locBlock').value.trim();
+        const lot = document.getElementById('locLot').value.trim();
+        const fullAddress = [address, phase ? 'Ph ' + phase : '', block ? 'Blk ' + block : '', lot ? 'Lot ' + lot : ''].filter(Boolean).join(', ');
+
+        const items = getSelectedOrderItems();
+        const paymentType = document.querySelector('input[name="paymentMode"]:checked')?.value || 'Cash';
+        const cashAmountType = document.querySelector('input[name="cashAmountType"]:checked')?.value || 'Exact amount';
+        const cashOnHand = Number(document.getElementById('cashOnHandInput').value) || 0;
+        const gcashReference = document.getElementById('gcashRefInput').value.trim();
+        const deliveryTime = document.getElementById('deliveryTimeInput').value.trim();
+        const totalAmount = calculateTotalsWithoutDom();
+
+        const orderPayload = {
+            contactInfo: contactInfo,
+            address: fullAddress,
+            items: items,
+            totalAmount: totalAmount,
+            paymentType: paymentType,
+            cashAmountType: cashAmountType,
+            cashOnHand: cashOnHand,
+            gcashReference: gcashReference,
+            deliveryTime: deliveryTime || 'Anytime / Regular dispatch',
+            status: 'Pending',
+            orderDate: new Date().toISOString()
+        };
+
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+            google.script.run
+                .withSuccessHandler(function (result) {
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span> Submit Order';
+
+                    if (result && result.success === false) {
+                        alert('Order Error: ' + (result.message || 'Unable to save.'));
+                        return;
+                    }
+
+                    closeOrderSummaryModal();
+
+                    const newOrderId = (result && result.data && result.data.orderId) ? result.data.orderId : ('CNS-' + Math.floor(1000 + Math.random() * 9000));
+                    showSuccessModal(newOrderId);
+                })
+                .withFailureHandler(function (err) {
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span> Submit Order';
+                    alert('Server Error: ' + (err && err.message ? err.message : err));
+                })
+                .saveConsumerOrder(orderPayload);
+        } else {
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span> Submit Order';
+            alert('Order was not saved. Please open this form through the Google Apps Script web app.');
+        }
+    }
+
+    function showSuccessModal(orderRef) {
+        const trackingEl = document.getElementById('successOrderRef');
+        if (trackingEl) trackingEl.textContent = orderRef;
+        const modalEl = document.getElementById('successModal');
+        if (modalEl) modalEl.classList.add('active');
+    }
+
+    function acknowledgeSuccess() {
+        const modalEl = document.getElementById('successModal');
+        if (modalEl) modalEl.classList.remove('active');
+        
+        document.getElementById('contactInfo').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('locPhase').value = '';
+        document.getElementById('locBlock').value = '';
+        document.getElementById('locLot').value = '';
+        document.getElementById('deliveryTimeInput').value = '';
+        document.getElementById('cashOnHandInput').value = '';
+        document.getElementById('gcashRefInput').value = '';
+
+        consumableCatalog.forEach((p) => {
+            if (orderItemState[p.productName]) {
+                orderItemState[p.productName].checked = false;
+                Object.keys(orderItemState[p.productName].variants).forEach(k => {
+                    orderItemState[p.productName].variants[k] = 0;
+                });
+            }
+        });
+        
+        renderConsumables();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        initConsumables();
+    });
+</script>
+
+</body>
+
+</html>
