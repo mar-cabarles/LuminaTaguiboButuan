@@ -28,10 +28,10 @@ const CONFIG = {
     ADS: 'Ads'
   },
   TELEGRAM: {
-    WATER_BOT_TOKEN: 'YOUR_WATER_BOT_TOKEN',
-    CONSUMER_BOT_TOKEN: 'YOUR_CONSUMER_BOT_TOKEN',
-    RIDES_BOT_TOKEN: 'YOUR_RIDES_BOT_TOKEN', // Added Rides Token
-    CHAT_ID: 'YOUR_TELEGRAM_CHAT_ID' // Trimmed the trailing space for safety
+    WATER_BOT_TOKEN: '8692330388:AAH4wncqQ0ursWAyPVQGDBPpju_GzTtkDBQ',
+    CONSUMER_BOT_TOKEN: '8882179087:AAFGjVo7XPlshbcdfVN7_-2zVq_IjrRNEyA',
+    RIDES_BOT_TOKEN: '8971953563:AAFTW_PgHScRmFXavydq-EP0B_F0AkAAWyY', // Added Rides Token
+    CHAT_ID: '8992653248' // Trimmed the trailing space for safety
   }
 };
 
